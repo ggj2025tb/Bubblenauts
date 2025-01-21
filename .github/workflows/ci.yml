@@ -15,4 +15,4 @@ jobs:
       - name: Deploy with rsync
         run: rsync -rav --delete server/ root@116.203.15.40:/game/server
       - name: Restart game
-        run: ssh root@116.203.15.40 "/game/server/restart.sh"
+        run: chmod +x root@116.203.15.40:/game/server/restart.sh && ssh root@116.203.15.40 "/game/server/restart.sh"
