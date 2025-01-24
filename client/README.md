@@ -25,6 +25,7 @@ An active subscription to Phaser Editor is required to load and use this templat
 | `npm run start-server`   | Launch a development web server                |
 | `npm run start-client`   | Launch a development web client                |
 | `npm run build`          | Create a production build in the `dist` folder |
+| `npm run format`         | Format code with prettier                      |
 
 ## Writing Code
 

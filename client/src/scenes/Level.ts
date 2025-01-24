@@ -1,4 +1,3 @@
-
 // You can write more code here
 
 /* START OF COMPILED CODE */
@@ -7,89 +6,85 @@
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
+    player
+    playerSpeed: number = 0.3
+    constructor() {
+        super('Level')
 
-	player;
-	playerSpeed: number = 0.3;
-	constructor() {
-		super("Level");
+        /* START-USER-CTR-CODE */
+        console.log('asdfasdf')
+        // Write your code here.
+        /* END-USER-CTR-CODE */
+    }
 
-		/* START-USER-CTR-CODE */
-		console.log("asdfasdf");
-		// Write your code here.
-		/* END-USER-CTR-CODE */
-	}
+    editorCreate(): void {
+        // fufuSuperDino
+        this.add.image(656, 212, 'FufuSuperDino')
 
-	editorCreate(): void {
+        // text
+        const text = this.add.text(640, 458, '', {})
+        text.setOrigin(0.5, 0.5)
+        text.text = 'Phaser 3 + Phaser Editor v4\nVite + TypeScript'
+        text.setStyle({ align: 'center', fontFamily: 'Arial', fontSize: '3em' })
 
-		// fufuSuperDino
-		this.add.image(656, 212, "FufuSuperDino");
+        this.events.emit('scene-awake')
+    }
 
-		// text
-		const text = this.add.text(640, 458, "", {});
-		text.setOrigin(0.5, 0.5);
-		text.text = "Phaser 3 + Phaser Editor v4\nVite + TypeScript";
-		text.setStyle({ "align": "center", "fontFamily": "Arial", "fontSize": "3em" });
+    /* START-USER-CODE */
 
-		this.events.emit("scene-awake");
-	}
+    // Write your code here
 
-	/* START-USER-CODE */
+    create() {
+        console.log('asdfasdf')
+        this.editorCreate()
+        this.createServerConnection()
 
-	// Write your code here
+        const obstacles = this.physics.add.staticGroup()
+        obstacles.create(300, 300, 'guapen').setScale(0.3)
 
-	create() {
-		console.log("asdfasdf");
-		this.editorCreate();
-		this.createServerConnection();
+        this.player = this.physics.add
+            .staticSprite(100, 450, 'FufuSuperDino')
+            .setScale(0.3)
+        this.physics.add.collider(this.player, obstacles)
+    }
 
-		const obstacles = this.physics.add.staticGroup();
-		obstacles.create(300, 300, 'guapen').setScale(0.3);
-		
+    update(time: number, delta: number): void {
+        const cursors = this.input.keyboard.createCursorKeys()
+        const speed = this.playerSpeed * delta
 
-		this.player = this.physics.add.staticSprite(100, 450, 'FufuSuperDino').setScale(0.3);
-		this.physics.add.collider(this.player, obstacles);
-	}
+        if (cursors.left.isDown) {
+            this.player.x = this.player.x - speed
+        } else if (cursors.right.isDown) {
+            this.player.x = this.player.x + speed
+        } else if (cursors.up.isDown) {
+            this.player.y = this.player.y - speed
+        } else if (cursors.down.isDown) {
+            this.player.y = this.player.y + speed
+        }
+    }
 
-	update(time: number, delta: number): void {
-		const cursors = this.input.keyboard.createCursorKeys();
-		const speed = this.playerSpeed * delta;
+    createServerConnection() {
+        let socket
 
-		if (cursors.left.isDown) {
-			this.player.x = this.player.x - speed;
-		}
-		else if (cursors.right.isDown) {
-				this.player.x = this.player.x + speed;
-		}
-		else if (cursors.up.isDown) {
-			this.player.y = this.player.y - speed;
-		}
-		else if (cursors.down.isDown) {
-			this.player.y = this.player.y + speed;
-		}
-	}
+        if (location.hostname === 'localhost') {
+            socket = new WebSocket('ws://localhost:9000')
+        } else {
+            socket = new WebSocket('ws://116.203.15.40:9000')
+        }
 
-	createServerConnection() {
-		let socket;
+        socket.addEventListener('close', (event) => {
+            alert('Server is down, please (re)start the server + F5!')
+        })
 
-		if (location.hostname === 'localhost') {
-			socket = new WebSocket('ws://localhost:9000');
-		} else {
-			socket = new WebSocket('ws://116.203.15.40:9000');
-		}
+        socket.addEventListener('message', (event) => {
+            let data = JSON.parse(event.data)
+            console.log(data)
 
-		socket.addEventListener('close', (event) => {
-			alert('Server is down, please (re)start the server + F5!');
-		});
+            //socket.send(JSON.stringify({ "type": "joinRoom", "roomId": roomId, "playerName": playerName }));
+        })
+    }
 
-		socket.addEventListener('message', (event) => {
-			let data = JSON.parse(event.data);
-			console.log(data);
-
-			//socket.send(JSON.stringify({ "type": "joinRoom", "roomId": roomId, "playerName": playerName }));
-		});
-	}
-
-	/* END-USER-CODE */
+    /* END-USER-CODE */
 }
 
 /* END OF COMPILED CODE */
