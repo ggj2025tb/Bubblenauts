@@ -1,6 +1,6 @@
 import { Actor } from './Actor'
 export class Base extends Actor {
-    private life: number = 100;
+    private life: number = 100
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'guapen')
         // PHYSICS
@@ -9,14 +9,14 @@ export class Base extends Actor {
     }
     update(time: number, delta: number): void {
         if (this.life <= 0) {
-            return;
+            return
         }
 
-        this.life -= delta / 1000 * 30;
-        console.log("Base life: " + this.life);
+        this.life -= (delta / 1000) * 30
+        // console.log("Base life: " + this.life);
         // destroy the base if life is less than 0
         if (this.life <= 0) {
-            this.destroy();
+            this.destroy()
         }
     }
 }

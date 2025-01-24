@@ -23,6 +23,7 @@ class Boot extends Phaser.Scene {
         } else {
             this.socket = io('116.203.15.40:9000')
         }
+        console.log(this.socket)
 
         this.socket.on('connect', () => {
             this.registry.set('socket', this.socket)

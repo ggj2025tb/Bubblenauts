@@ -30,12 +30,20 @@ export default class Level extends Phaser.Scene {
     private base?: Base
 
     create() {
+        this.socket = this.registry.get('socket')
+        console.log(this.socket)
+        if (!this.socket) {
+            console.error('No socket found in registry')
+            this.scene.start('Menu')
+            return
+        }
+
         this.editorCreate()
-        // this.createServerConnection()
 
         const obstacles = this.physics.add.staticGroup()
         obstacles.create(300, 300, 'guapen').setScale(0.3)
 
+        // Pass socket to Player
         this.player_1 = new Player(this, 400, 300, this.socket)
         this.enemy_1 = new Enemy(this, 800, 600)
         this.base = new Base(this, 100, 100)

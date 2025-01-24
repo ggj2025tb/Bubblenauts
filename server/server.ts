@@ -40,6 +40,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('playerUpdate', ({ x, y }) => {
+        console.log('playerUpdate')
+        console.log('Player moved:', gameState.players[socket.id])
         if (gameState.players[socket.id]) {
             gameState.players[socket.id].x = x
             gameState.players[socket.id].y = y

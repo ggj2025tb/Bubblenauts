@@ -29,13 +29,11 @@ export default class Menu extends Phaser.Scene {
             .on('pointerup', () => {
                 const playerName = this.nameInput.value.trim()
                 if (playerName) {
-                    console.log('Player name:', playerName)
                     this.registry.set('playerName', playerName)
                     document.body.removeChild(this.nameInput)
                     this.socket.emit('joinGame', { playerName })
-                    this.scene.start('Level')
-                } else {
-                    alert('Please enter a name!')
+                    // Start Level scene with socket in registry
+                    this.scene.start('Level', { socket: this.socket })
                 }
             })
     }
