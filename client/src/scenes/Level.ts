@@ -4,6 +4,7 @@
 
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
+import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 
 export default class Level extends Phaser.Scene {
@@ -22,8 +23,7 @@ export default class Level extends Phaser.Scene {
 
     /* START-USER-CODE */
     private player_1!: Player
-    private enemy_1?: Phaser.Types.Physics.Arcade.SpriteWithStaticBody
-    private playerSpeed: number = 0.3
+    private enemy_1?: Enemy
 
     create() {
         this.editorCreate()
@@ -33,14 +33,7 @@ export default class Level extends Phaser.Scene {
         obstacles.create(300, 300, 'guapen').setScale(0.3)
 
         this.player_1 = new Player(this, 400, 300)
-
-        const enemy = this.physics.add
-            .staticSprite(800, 600, 'FufuSuperDino')
-            .setScale(0.3)
-        this.physics.add.collider(enemy, obstacles)
-        enemy.setTint(0xff0000)
-
-        this.enemy_1 = enemy
+        this.enemy_1 = new Enemy(this, 800, 600)
     }
 
     update(time: number, delta: number): void {
