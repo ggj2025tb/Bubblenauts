@@ -4,6 +4,7 @@
 
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
+import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 
@@ -23,6 +24,7 @@ export default class Level extends Phaser.Scene {
     /* START-USER-CODE */
     private player_1!: Player
     private enemy_1?: Enemy
+    private base?: Base
 
     create() {
         this.editorCreate()
@@ -33,11 +35,14 @@ export default class Level extends Phaser.Scene {
 
         this.player_1 = new Player(this, 400, 300)
         this.enemy_1 = new Enemy(this, 800, 600)
+        this.base = new Base(this, 100, 100)
+
     }
 
     update(time: number, delta: number): void {
         const cursors = this.input.keyboard.createCursorKeys()
         this.player_1.update(cursors, delta)
+        this.base?.update(time, delta)
     }
 
     createServerConnection() {
