@@ -4,6 +4,7 @@
 
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
+import { Player } from '../classes/Player'
 
 export default class Level extends Phaser.Scene {
     constructor() {
@@ -20,7 +21,7 @@ export default class Level extends Phaser.Scene {
     }
 
     /* START-USER-CODE */
-    private player_1?: Phaser.Types.Physics.Arcade.SpriteWithStaticBody
+    private player_1!: Player
     private enemy_1?: Phaser.Types.Physics.Arcade.SpriteWithStaticBody
     private playerSpeed: number = 0.3
 
@@ -31,13 +32,9 @@ export default class Level extends Phaser.Scene {
         const obstacles = this.physics.add.staticGroup()
         obstacles.create(300, 300, 'guapen').setScale(0.3)
 
-        const player = this.physics.add
-            .staticSprite(100, 400, 'FufuSuperDino')
-            .setScale(0.3)
-        this.physics.add.collider(player, obstacles)
-        player.setTint(0x00ff00)
-
-        this.player_1 = player
+        this.player_1 = new Player(this, 400, 300, 'FufuSuperDino').setScale(
+            0.3
+        )
 
         const enemy = this.physics.add
             .staticSprite(800, 600, 'FufuSuperDino')
@@ -50,17 +47,7 @@ export default class Level extends Phaser.Scene {
 
     update(time: number, delta: number): void {
         const cursors = this.input.keyboard.createCursorKeys()
-        const speed = this.playerSpeed * delta
-
-        if (cursors.left.isDown) {
-            this.player_1.x = this.player_1.x - speed
-        } else if (cursors.right.isDown) {
-            this.player_1.x = this.player_1.x + speed
-        } else if (cursors.up.isDown) {
-            this.player_1.y = this.player_1.y - speed
-        } else if (cursors.down.isDown) {
-            this.player_1.y = this.player_1.y + speed
-        }
+        this.player_1.update(cursors, delta)
     }
 
     createServerConnection() {
