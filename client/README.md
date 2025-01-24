@@ -1,3 +1,9 @@
+# Bubblenauts
+
+## Start the game directly in the Level.ts
+
+If you want to start directly in the level (not needing to click "join game") you can copy the `.env.example` into `.env` and use the `VITE_START_DIRECTLY` env variable.
+
 # Phaser Editor Vite TypeScript Template
 
 This is a Phaser Editor v4 project template that uses Vite TypeScript for bundling. It supports hot-reloading for quick development workflow and includes scripts to generate production-ready builds.
