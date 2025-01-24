@@ -36,6 +36,7 @@ io.on('connection', (socket) => {
 
         gameState.players[socket.id] = player
         io.emit('gameState', gameState)
+        console.log('Player joined:', player)
     })
 
     socket.on('playerUpdate', ({ x, y }) => {
