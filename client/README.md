@@ -25,6 +25,7 @@ An active subscription to Phaser Editor is required to load and use this templat
 | `npm run start-server`   | Launch a development web server                |
 | `npm run start-client`   | Launch a development web client                |
 | `npm run build`          | Create a production build in the `dist` folder |
+| `npm run format`         | Format code with prettier                      |
 
 ## Writing Code
 
@@ -74,8 +75,8 @@ The Scenes, User Components, and ScriptNodes are configured to compile to TypeSc
 
 The project requires the following script libraries:
 
--   [@phaserjs/editor-scripts-core](https://www.npmjs.com/package/@phaserjs/editor-scripts-core)
--   [@phaserjs/editor-scripts-simple-animations](https://www.npmjs.com/package/@phaserjs/editor-scripts-simple-animations)
+- [@phaserjs/editor-scripts-core](https://www.npmjs.com/package/@phaserjs/editor-scripts-core)
+- [@phaserjs/editor-scripts-simple-animations](https://www.npmjs.com/package/@phaserjs/editor-scripts-simple-animations)
 
 You can add your script nodes to the `src/script-nodes` folder.
 

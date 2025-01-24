@@ -1,0 +1,24 @@
+# Phaser Editor 2D generated files
+src/scenes/*.scene
+src/prefabs/*.prefab
+src/components/*.component
+
+# Build output
+dist/
+build/
+
+# Asset directories
+assets/
+public/assets/
+
+# Phaser specific files
+*.scene.mjs
+*.prefab.mjs
+*.component.mjs
+
+# Documentation
+*.md
+LICENSE
+
+# Dependencies
+node_modules/
