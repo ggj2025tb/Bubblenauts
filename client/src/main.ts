@@ -12,23 +12,7 @@ class Boot extends Phaser.Scene {
         this.load.pack('pack', 'assets/preload-asset-pack.json')
     }
 
-    createServerConnection() {
-        let socket
-        if (location.hostname === 'localhost') {
-            socket = new WebSocket('ws://localhost:9000')
-        } else {
-            socket = new WebSocket('ws://116.203.15.40:9000')
-        }
-
-        socket.addEventListener('close', (event) => {
-            alert('Server is down, please (re)start the server + F5!')
-        })
-
-        this.registry.set('socket', socket)
-    }
-
     create() {
-        this.createServerConnection()
         this.scene.start('Preload')
     }
 }
