@@ -13,7 +13,6 @@ export default class Level extends Phaser.Scene {
         super('Level')
 
         /* START-USER-CTR-CODE */
-        console.log('asdfasdf')
         // Write your code here.
         /* END-USER-CTR-CODE */
     }

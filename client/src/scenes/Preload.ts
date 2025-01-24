@@ -70,7 +70,11 @@ export default class Preload extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start('Menu')
+        if (import.meta.env.VITE_START_DIRECTLY === '1') {
+            this.scene.start('Level')
+        } else {
+            this.scene.start('Menu')
+        }
     }
 
     /* END-USER-CODE */
