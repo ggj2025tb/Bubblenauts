@@ -75,8 +75,8 @@ The Scenes, User Components, and ScriptNodes are configured to compile to TypeSc
 
 The project requires the following script libraries:
 
--   [@phaserjs/editor-scripts-core](https://www.npmjs.com/package/@phaserjs/editor-scripts-core)
--   [@phaserjs/editor-scripts-simple-animations](https://www.npmjs.com/package/@phaserjs/editor-scripts-simple-animations)
+- [@phaserjs/editor-scripts-core](https://www.npmjs.com/package/@phaserjs/editor-scripts-core)
+- [@phaserjs/editor-scripts-simple-animations](https://www.npmjs.com/package/@phaserjs/editor-scripts-simple-animations)
 
 You can add your script nodes to the `src/script-nodes` folder.
 
