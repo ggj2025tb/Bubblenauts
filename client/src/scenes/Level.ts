@@ -8,6 +8,8 @@
 
 export default class Level extends Phaser.Scene {
 
+	player;
+	playerSpeed: number = 0.3;
 	constructor() {
 		super("Level");
 
@@ -20,7 +22,7 @@ export default class Level extends Phaser.Scene {
 	editorCreate(): void {
 
 		// fufuSuperDino
-		this.add.image(810, 233, "FufuSuperDino");
+		this.add.image(656, 212, "FufuSuperDino");
 
 		// text
 		const text = this.add.text(640, 458, "", {});
@@ -38,7 +40,35 @@ export default class Level extends Phaser.Scene {
 	create() {
 		console.log("asdfasdf");
 		this.editorCreate();
+		this.createServerConnection();
 
+		const obstacles = this.physics.add.staticGroup();
+		obstacles.create(300, 300, 'guapen').setScale(0.3);
+		
+
+		this.player = this.physics.add.staticSprite(100, 450, 'FufuSuperDino').setScale(0.3);
+		this.physics.add.collider(this.player, obstacles);
+	}
+
+	update(time: number, delta: number): void {
+		const cursors = this.input.keyboard.createCursorKeys();
+		const speed = this.playerSpeed * delta;
+
+		if (cursors.left.isDown) {
+			this.player.x = this.player.x - speed;
+		}
+		else if (cursors.right.isDown) {
+				this.player.x = this.player.x + speed;
+		}
+		else if (cursors.up.isDown) {
+			this.player.y = this.player.y - speed;
+		}
+		else if (cursors.down.isDown) {
+			this.player.y = this.player.y + speed;
+		}
+	}
+
+	createServerConnection() {
 		let socket;
 
 		if (location.hostname === 'localhost') {
