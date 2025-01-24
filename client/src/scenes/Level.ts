@@ -8,46 +8,44 @@
 
 export default class Level extends Phaser.Scene {
 
-	player;
-	playerSpeed: number = 0.3;
 	constructor() {
 		super("Level");
 
 		/* START-USER-CTR-CODE */
-		console.log("asdfasdf");
 		// Write your code here.
 		/* END-USER-CTR-CODE */
 	}
 
 	editorCreate(): void {
 
-		// fufuSuperDino
-		this.add.image(656, 212, "FufuSuperDino");
-
-		// text
-		const text = this.add.text(640, 458, "", {});
-		text.setOrigin(0.5, 0.5);
-		text.text = "Phaser 3 + Phaser Editor v4\nVite + TypeScript";
-		text.setStyle({ "align": "center", "fontFamily": "Arial", "fontSize": "3em" });
-
 		this.events.emit("scene-awake");
 	}
 
 	/* START-USER-CODE */
+	private player_1?: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+	private enemy_1?: Phaser.Types.Physics.Arcade.SpriteWithStaticBody;
+	private playerSpeed: number = 0.3;
 
 	// Write your code here
 
 	create() {
-		console.log("asdfasdf");
 		this.editorCreate();
 		this.createServerConnection();
 
 		const obstacles = this.physics.add.staticGroup();
 		obstacles.create(300, 300, 'guapen').setScale(0.3);
-		
 
-		this.player = this.physics.add.staticSprite(100, 450, 'FufuSuperDino').setScale(0.3);
-		this.physics.add.collider(this.player, obstacles);
+		const player = this.physics.add.staticSprite(100, 400, 'FufuSuperDino').setScale(0.3);
+		this.physics.add.collider(player, obstacles);
+		player.setTint(0x00ff00);
+
+		this.player_1 = player;
+
+		const enemy = this.physics.add.staticSprite(800, 600, 'FufuSuperDino').setScale(0.3);
+		this.physics.add.collider(enemy, obstacles);
+		enemy.setTint(0xff0000);
+
+		this.enemy_1 = enemy;
 	}
 
 	update(time: number, delta: number): void {
@@ -55,16 +53,16 @@ export default class Level extends Phaser.Scene {
 		const speed = this.playerSpeed * delta;
 
 		if (cursors.left.isDown) {
-			this.player.x = this.player.x - speed;
+			this.player_1.x = this.player_1.x - speed;
 		}
 		else if (cursors.right.isDown) {
-				this.player.x = this.player.x + speed;
+				this.player_1.x = this.player_1.x + speed;
 		}
 		else if (cursors.up.isDown) {
-			this.player.y = this.player.y - speed;
+			this.player_1.y = this.player_1.y - speed;
 		}
 		else if (cursors.down.isDown) {
-			this.player.y = this.player.y + speed;
+			this.player_1.y = this.player_1.y + speed;
 		}
 	}
 
