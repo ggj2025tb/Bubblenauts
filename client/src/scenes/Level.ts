@@ -4,9 +4,9 @@
 
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
+import { Player } from '../classes/Player'
 
 export default class Level extends Phaser.Scene {
-    playerSpeed: number = 0.3
     constructor() {
         super('Level')
 
@@ -17,47 +17,58 @@ export default class Level extends Phaser.Scene {
     }
 
     editorCreate(): void {
-        // fufuSuperDino
-        this.add.image(656, 212, 'FufuSuperDino')
-
-        // text
-        const text = this.add.text(640, 458, '', {})
-        text.setOrigin(0.5, 0.5)
-        text.text = 'Phaser 3 + Phaser Editor v4\nVite + TypeScript'
-        text.setStyle({ align: 'center', fontFamily: 'Arial', fontSize: '3em' })
-
         this.events.emit('scene-awake')
     }
 
     /* START-USER-CODE */
-
-    // Write your code here
+    private player_1!: Player
+    private enemy_1?: Phaser.Types.Physics.Arcade.SpriteWithStaticBody
+    private playerSpeed: number = 0.3
 
     create() {
         this.editorCreate()
+        this.createServerConnection()
 
         const obstacles = this.physics.add.staticGroup()
         obstacles.create(300, 300, 'guapen').setScale(0.3)
 
-        this.player = this.physics.add
-            .staticSprite(100, 450, 'FufuSuperDino')
+        this.player_1 = new Player(this, 400, 300, 'FufuSuperDino').setScale(
+            0.3
+        )
+
+        const enemy = this.physics.add
+            .staticSprite(800, 600, 'FufuSuperDino')
             .setScale(0.3)
-        this.physics.add.collider(this.player, obstacles)
+        this.physics.add.collider(enemy, obstacles)
+        enemy.setTint(0xff0000)
+
+        this.enemy_1 = enemy
     }
 
     update(time: number, delta: number): void {
         const cursors = this.input.keyboard.createCursorKeys()
-        const speed = this.playerSpeed * delta
+        this.player_1.update(cursors, delta)
+    }
 
-        if (cursors.left.isDown) {
-            this.player.x = this.player.x - speed
-        } else if (cursors.right.isDown) {
-            this.player.x = this.player.x + speed
-        } else if (cursors.up.isDown) {
-            this.player.y = this.player.y - speed
-        } else if (cursors.down.isDown) {
-            this.player.y = this.player.y + speed
+    createServerConnection() {
+        let socket
+
+        if (location.hostname === 'localhost') {
+            socket = new WebSocket('ws://localhost:9000')
+        } else {
+            socket = new WebSocket('ws://116.203.15.40:9000')
         }
+
+        socket.addEventListener('close', (event) => {
+            alert('Server is down, please (re)start the server + F5!')
+        })
+
+        socket.addEventListener('message', (event) => {
+            let data = JSON.parse(event.data)
+            console.log(data)
+
+            //socket.send(JSON.stringify({ "type": "joinRoom", "roomId": roomId, "playerName": playerName }));
+        })
     }
 }
 
