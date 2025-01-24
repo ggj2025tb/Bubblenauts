@@ -1,5 +1,13 @@
+// You can write more code here
+
+/* START OF COMPILED CODE */
+
+/* START-USER-IMPORTS */
+/* END-USER-IMPORTS */
+import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
+import io from 'socket.io-client'
 
 export default class Level extends Phaser.Scene {
     constructor() {
@@ -18,6 +26,7 @@ export default class Level extends Phaser.Scene {
     private player_1!: Player
     private enemy_1?: Enemy
     private path!: Phaser.Curves.Path
+    private base?: Base
 
     create() {
         this.editorCreate()
@@ -27,6 +36,9 @@ export default class Level extends Phaser.Scene {
         obstacles.create(300, 300, 'guapen').setScale(0.3)
 
         this.player_1 = new Player(this, 400, 300)
+        this.enemy_1 = new Enemy(this, 800, 600)
+        this.base = new Base(this, 100, 100)
+
 
         // Define the path
         this.path = this.add.path(1200, 100)
@@ -54,27 +66,27 @@ export default class Level extends Phaser.Scene {
     update(time: number, delta: number): void {
         const cursors = this.input.keyboard.createCursorKeys()
         this.player_1.update(cursors, delta)
+        this.base?.update(time, delta)
     }
 
     createServerConnection() {
         let socket
-
         if (location.hostname === 'localhost') {
-            socket = new WebSocket('ws://localhost:9000')
+            socket = io('http://localhost:9000')
         } else {
-            socket = new WebSocket('ws://116.203.15.40:9000')
+            socket = io('116.203.15.40:9000')
         }
 
-        socket.addEventListener('close', (event) => {
+        socket.on('disconnect', () => {
             alert('Server is down, please (re)start the server + F5!')
         })
 
-        socket.addEventListener('message', (event) => {
-            let data = JSON.parse(event.data)
-            console.log(data)
+        // socket.addEventListener('message', (event) => {
+        //     let data = JSON.parse(event.data)
+        //     console.log(data)
 
-            //socket.send(JSON.stringify({ "type": "joinRoom", "roomId": roomId, "playerName": playerName }));
-        })
+        //     //socket.send(JSON.stringify({ "type": "joinRoom", "roomId": roomId, "playerName": playerName }));
+        // })
     }
 }
 
