@@ -32,9 +32,7 @@ export default class Level extends Phaser.Scene {
         const obstacles = this.physics.add.staticGroup()
         obstacles.create(300, 300, 'guapen').setScale(0.3)
 
-        this.player_1 = new Player(this, 400, 300, 'FufuSuperDino').setScale(
-            0.3
-        )
+        this.player_1 = new Player(this, 400, 300)
 
         const enemy = this.physics.add
             .staticSprite(800, 600, 'FufuSuperDino')
