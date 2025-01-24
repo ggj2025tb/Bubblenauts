@@ -38,9 +38,7 @@ export default class Level extends Phaser.Scene {
 	// Write your code here
 
 	create() {
-		console.log("asdfasdf");
 		this.editorCreate();
-		this.createServerConnection();
 
 		const obstacles = this.physics.add.staticGroup();
 		obstacles.create(300, 300, 'guapen').setScale(0.3);
@@ -66,27 +64,6 @@ export default class Level extends Phaser.Scene {
 		else if (cursors.down.isDown) {
 			this.player.y = this.player.y + speed;
 		}
-	}
-
-	createServerConnection() {
-		let socket;
-
-		if (location.hostname === 'localhost') {
-			socket = new WebSocket('ws://localhost:9000');
-		} else {
-			socket = new WebSocket('ws://116.203.15.40:9000');
-		}
-
-		socket.addEventListener('close', (event) => {
-			alert('Server is down, please (re)start the server + F5!');
-		});
-
-		socket.addEventListener('message', (event) => {
-			let data = JSON.parse(event.data);
-			console.log(data);
-
-			//socket.send(JSON.stringify({ "type": "joinRoom", "roomId": roomId, "playerName": playerName }));
-		});
 	}
 
 	/* END-USER-CODE */
