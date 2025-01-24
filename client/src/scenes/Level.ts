@@ -6,7 +6,6 @@
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
-    player
     playerSpeed: number = 0.3
     constructor() {
         super('Level')
