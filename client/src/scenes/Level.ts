@@ -1,4 +1,3 @@
-
 // You can write more code here
 
 /* START OF COMPILED CODE */
@@ -7,7 +6,6 @@
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
-
 	player;
 	playerSpeed: number = 0.3;
 	constructor() {
@@ -65,8 +63,6 @@ export default class Level extends Phaser.Scene {
 			this.player.y = this.player.y + speed;
 		}
 	}
-
-	/* END-USER-CODE */
 }
 
 /* END OF COMPILED CODE */
