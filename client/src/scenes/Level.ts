@@ -4,6 +4,7 @@
 
 /* START-USER-IMPORTS */
 /* END-USER-IMPORTS */
+import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
@@ -25,6 +26,8 @@ export default class Level extends Phaser.Scene {
     private player_1!: Player
     private enemy_1?: Enemy
     private socket!: Socket
+    private path!: Phaser.Curves.Path
+    private base?: Base
 
     create() {
         this.editorCreate()
@@ -35,11 +38,40 @@ export default class Level extends Phaser.Scene {
 
         this.player_1 = new Player(this, 400, 300, this.socket)
         this.enemy_1 = new Enemy(this, 800, 600)
+        this.base = new Base(this, 100, 100)
+
+        // Define the path
+        this.path = this.add.path(1200, 100)
+        this.path.lineTo(1200, 300)
+        this.path.lineTo(800, 300)
+        this.path.lineTo(800, 150)
+        this.path.lineTo(1000, 150)
+        this.path.lineTo(1000, 600)
+        this.path.lineTo(600, 600)
+
+        const graphics = this.add.graphics()
+        graphics.lineStyle(1, 0xffffff, 1)
+        this.path.draw(graphics)
+
+        const enemy = new Enemy(this, 1200, 100)
+        this.enemy_1 = this.add.follower(
+            this.path,
+            enemy.x,
+            enemy.y,
+            enemy.texture.key
+        )
+        this.enemy_1.startFollow({
+            duration: 5000,
+            yoyo: false,
+            repeat: -1,
+            rotateToPath: true,
+        })
     }
 
     update(time: number, delta: number): void {
         const cursors = this.input.keyboard.createCursorKeys()
         this.player_1.update(cursors, delta)
+        this.base?.update(time, delta)
     }
 }
 
