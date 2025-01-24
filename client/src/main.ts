@@ -14,7 +14,6 @@ class Boot extends Phaser.Scene {
 
     createServerConnection() {
         let socket
-
         if (location.hostname === 'localhost') {
             socket = new WebSocket('ws://localhost:9000')
         } else {
@@ -25,15 +24,11 @@ class Boot extends Phaser.Scene {
             alert('Server is down, please (re)start the server + F5!')
         })
 
-        socket.addEventListener('message', (event) => {
-            let data = JSON.parse(event.data)
-            console.log(data)
-
-            //socket.send(JSON.stringify({ "type": "joinRoom", "roomId": roomId, "playerName": playerName }));
-        })
+        this.registry.set('socket', socket)
     }
 
     create() {
+        this.createServerConnection()
         this.scene.start('Preload')
     }
 }
