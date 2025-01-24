@@ -1,5 +1,6 @@
 import { Server } from 'socket.io'
 import { createServer } from 'http'
+import { GameState, Player } from '../client/types/ServerTypes'
 
 const httpServer = createServer()
 const io = new Server(httpServer, {
@@ -7,17 +8,6 @@ const io = new Server(httpServer, {
         methods: ['GET', 'POST'],
     },
 })
-
-interface Player {
-    id: string
-    name: string
-    x: number
-    y: number
-}
-
-interface GameState {
-    players: Record<string, Player>
-}
 
 const gameState: GameState = {
     players: {},
@@ -39,7 +29,7 @@ io.on('connection', (socket) => {
         console.log('Player joined:', player)
     })
 
-    socket.on('playerUpdate', ({ x, y }) => {
+    socket.on('playerUpdate', ({ x, y, flipX, offset }) => {
         console.log('playerUpdate')
         console.log('Player moved:', gameState.players[socket.id])
         if (gameState.players[socket.id]) {
@@ -49,6 +39,8 @@ io.on('connection', (socket) => {
                 id: socket.id,
                 x,
                 y,
+                flipX,
+                offset,
             })
         }
     })

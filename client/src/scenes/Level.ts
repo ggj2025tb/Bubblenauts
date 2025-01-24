@@ -8,6 +8,7 @@ import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
+import type { GameState } from '../../types/ServerTypes'
 
 export default class Level extends Phaser.Scene {
     constructor() {
@@ -28,6 +29,7 @@ export default class Level extends Phaser.Scene {
     private socket!: Socket
     private path!: Phaser.Curves.Path
     private base?: Base
+    private otherPlayers: Map<string, Phaser.GameObjects.Sprite> = new Map()
 
     create() {
         this.socket = this.registry.get('socket')
@@ -47,6 +49,45 @@ export default class Level extends Phaser.Scene {
         this.player_1 = new Player(this, 400, 300, this.socket)
         this.enemy_1 = new Enemy(this, 800, 600)
         this.base = new Base(this, 100, 100)
+
+        // Vielleicht lager ich das in ein game.ts file aus
+        this.socket.on('gameState', (gameState: GameState) => {
+            // Clear existing players
+            this.otherPlayers.forEach((player) => player.destroy())
+            this.otherPlayers.clear()
+
+            // Create sprites for other players
+            Object.values(gameState.players).forEach((player) => {
+                if (player.id !== this.socket.id) {
+                    const otherPlayer = this.add.sprite(
+                        player.x,
+                        player.y,
+                        'FufuSuperDino'
+                    )
+                    otherPlayer.setTint(0x00ff00) // Different color to distinguish other players
+                    this.otherPlayers.set(player.id, otherPlayer)
+                }
+            })
+        })
+
+        // Listen for player movement updates
+        this.socket.on(
+            'playerMoved',
+            (playerInfo: {
+                id: string
+                x: number
+                y: number
+                flipX?: boolean
+            }) => {
+                const otherPlayer = this.otherPlayers.get(playerInfo.id)
+                if (otherPlayer) {
+                    otherPlayer.setPosition(playerInfo.x, playerInfo.y)
+                    if (playerInfo.flipX !== undefined) {
+                        otherPlayer.setFlipX(playerInfo.flipX)
+                    }
+                }
+            }
+        )
 
         // Define the path
         this.path = this.add.path(1200, 100)

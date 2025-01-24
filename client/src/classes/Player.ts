@@ -26,7 +26,6 @@ export class Player extends Actor {
         this.getBody().setVelocity(0)
         if (this.keyW?.isDown) {
             this.body.velocity.y = -110
-            this.socket.emit('playerUpdate', { x: 5, y: 5 })
         }
         if (this.keyA?.isDown) {
             this.body.velocity.x = -110
@@ -41,5 +40,13 @@ export class Player extends Actor {
             this.checkFlip()
             this.getBody().setOffset(15, 15)
         }
+
+        // Weißßßßß ich nicht digga
+        this.socket.emit('playerUpdate', {
+            x: this.x,
+            y: this.y,
+            flipX: this.flipX,
+            offset: this.getBody().offset,
+        })
     }
 }
