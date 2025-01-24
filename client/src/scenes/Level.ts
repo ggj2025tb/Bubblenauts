@@ -23,7 +23,6 @@ export default class Level extends Phaser.Scene {
     /* START-USER-CODE */
     private player_1!: Player
     private enemy_1?: Phaser.Types.Physics.Arcade.SpriteWithStaticBody
-    private playerSpeed: number = 0.3
 
     create() {
         this.editorCreate()
@@ -34,6 +33,7 @@ export default class Level extends Phaser.Scene {
 
         this.player_1 = new Player(this, 400, 300)
 
+        // Please create a new enemy in classes/Enemy.ts
         const enemy = this.physics.add
             .staticSprite(800, 600, 'FufuSuperDino')
             .setScale(0.3)
