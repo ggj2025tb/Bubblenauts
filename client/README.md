@@ -16,11 +16,13 @@ An active subscription to Phaser Editor is required to load and use this templat
 
 ## Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm install`   | Install project dependencies |
-| `npm start`     | Launch a development web server |
-| `npm run build` | Create a production build in the `dist` folder |
+| Command                  | Description                                    |
+|--------------------------|------------------------------------------------|
+| `npm run install`        | Install project dependencies                   |
+| `npm run install-server` | Install server dependencies                    |
+| `npm run start`          | Launch a development web server                |
+| `npm run start-server`   | Launch a development web server                |
+| `npm run build`          | Create a production build in the `dist` folder |
 
 ## Writing Code
 
