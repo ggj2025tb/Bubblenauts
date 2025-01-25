@@ -125,11 +125,13 @@ io.on('connection', (socket) => {
     })
 
     socket.on('enemyGetDamage', ({ enemyId, damage }) => {
-        gameState.enemies[enemyId].health =
+        if (gameState.enemies[enemyId]) {
+            gameState.enemies[enemyId].health =
             gameState.enemies[enemyId].health - damage
-        if (gameState.enemies[enemyId].health <= 0) {
-            delete gameState.enemies[enemyId]
-            io.emit('enemyDied', enemyId)
+            if (gameState.enemies[enemyId].health <= 0) {
+                delete gameState.enemies[enemyId]
+                io.emit('enemyDied', enemyId)
+            }
         }
     })
 
