@@ -1,6 +1,6 @@
 import { Physics } from 'phaser'
 export class Actor extends Physics.Arcade.Sprite {
-    protected health = 100
+    public health = 100
     constructor(
         scene: Phaser.Scene,
         x: number,

@@ -3,7 +3,7 @@ import { Bubble } from './Bubble'
 
 export class Enemy extends Actor {
     private bubbleToFollow: Bubble
-    private speed: number = 50
+    private speed: number = 75
     private bubbles: Bubble[]
     private isDying: boolean = false
     public health: number
@@ -40,6 +40,13 @@ export class Enemy extends Actor {
             if (this.bubbleToFollow === undefined) {
                 return
             }
+        }
+
+        if (
+            Math.abs(this.x - this.bubbleToFollow.x) < 10 &&
+            Math.abs(this.y - this.bubbleToFollow.y) < 10
+        ) {
+            this.bubbleToFollow.updateHealth(time, delta)
         }
 
         this.scene.physics.moveTo(

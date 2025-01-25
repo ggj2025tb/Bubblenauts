@@ -174,7 +174,8 @@ export default class Level extends Phaser.Scene {
             const newBubble = new Bubble(
                 this,
                 [bubble.x, bubble.y],
-                bubble.pathArray
+                bubble.pathArray,
+                this.socket
             )
             this.bubbles.push(newBubble)
         })
@@ -189,6 +190,19 @@ export default class Level extends Phaser.Scene {
                 }
             }
         )
+
+        this.socket.on(
+            'bubbleHealthUpdate',
+            (bubbleInfo: { id: string; health: number }) => {
+                const bubble = this.bubbles[0]
+                if (bubble) {
+                    bubble.healthBar.text = bubbleInfo.health.toString() + '% Life'
+                    bubble.health = bubbleInfo.health;
+                }
+            }
+        )
+
+
 
         // Listen for player movement updates
         this.socket.on(

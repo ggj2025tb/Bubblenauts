@@ -65,7 +65,12 @@ export class Player extends Actor {
                 this.y <= 180
             ) {
                 if (this.health < 100) {
-                    this.health += 1
+                    if (this.health == 99) {
+                        this.health += 1
+                    } else {
+                        this.health += 2
+                    }
+
                     this.socket.emit('playerHealthUpdate', {
                         health: this.health,
                     })

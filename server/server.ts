@@ -135,6 +135,18 @@ io.on('connection', (socket) => {
         }
     })
 
+
+
+    socket.on('bubbleHealthUpdate', ({ health }) => {
+        if (gameState.bubbles['bubble1']) {
+            gameState.bubbles['bubble1'].health = health
+            socket.broadcast.emit('bubbleHealthUpdate', {
+                id: 'bubble1',
+                health,
+            })
+        }
+    })
+
     socket.on('playerHealthUpdate', ({ health }) => {
         if (gameState.players[socket.id]) {
             gameState.players[socket.id].health = health
