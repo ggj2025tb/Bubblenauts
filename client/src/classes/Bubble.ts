@@ -2,6 +2,7 @@ import { Actor } from './Actor'
 export class Bubble extends Actor {
     private pathArray: number[][]
     private speed: number = 50
+    public healthBar: Phaser.GameObjects.Text
 
     constructor(
         scene: Phaser.Scene,
@@ -15,6 +16,11 @@ export class Bubble extends Actor {
         this.setTint(0xf00ff0)
         this.scale = 0.3
         this.pathArray = pathArray
+        this.healthBar = scene.add.text(
+            bubbleStart[0] - 35,
+            bubbleStart[1] - 60,
+            this.health.toString() + '% Life'
+        )
     }
 
     update(time: number, delta: number): void {
@@ -26,6 +32,8 @@ export class Bubble extends Actor {
                 this.pathArray[0][1],
                 this.speed
             )
+
+            this.healthBar.setPosition(this.x - 35, this.y - 60)
 
             // if pathArray[0] is reached, within a 10 pixel range, remove it from pathArray, withour matter
             if (
