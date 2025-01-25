@@ -15,10 +15,7 @@
     "homepage": "https://github.com/phaserjs/template-vite-ts#readme",
     "scripts": {
         "install-server": "docker run -it --rm -v \"$PWD\"/../server:/usr/src/app -w /usr/src/app node npm install",
-        "start-client": "vite --config vite/config.dev.mjs",
-        "start-server": "docker run --init --rm -p9000:9000 -v \"$PWD\"/../server:/usr/src/app -w /usr/src/app node server.ts",
-        "start": "npm run start-client & npm run start-server",
-        "start-dev": "npm run start-client & cd ../server && npm run nodemon",
+        "start-dev": "vite --config vite/config.dev.mjs & cd ../server && npm run nodemon",
         "stop": "docker stop $(docker ps -q)",
         "build": "vite build --config vite/config.prod.mjs && phaser-asset-pack-hashing -j -r dist",
         "format": "npx prettier --write ."
@@ -29,7 +26,6 @@
         "typescript": "^5.3.3",
         "vite": "^5.1.4"
     },
-
     "dependencies": {
         "@phaserjs/editor-scripts-base": "^1.0.0",
         "phaser": "3.80.1",

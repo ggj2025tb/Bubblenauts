@@ -7,7 +7,5 @@ export class Enemy extends Actor {
         this.getBody().setOffset(8, 0)
         this.setTint(0xff0000)
     }
-    update(): void {
-        
-    }
+    update(): void {}
 }
