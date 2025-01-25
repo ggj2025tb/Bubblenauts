@@ -57,7 +57,7 @@ export class Player extends Actor {
     }
 
     updateHealth(time: number, delta: number): void {
-        if (time - this.lastHealthUpdateTime > 100) {
+        if (time - this.lastHealthUpdateTime > 200) {
             if (
                 this.x >= 90 &&
                 this.x <= 200 &&
