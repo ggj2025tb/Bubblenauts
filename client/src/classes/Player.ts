@@ -45,8 +45,8 @@ export class Player extends Actor {
         // Weapon
         this.weapon = new Weapon(scene, this)
 
-        this.label = scene.add.text(x, y - 160, this.playerName)
-        this.healthBar = scene.add.text(x, y - 140, this.health.toString())
+        this.label = scene.add.text(x - 16, y - 80, this.playerName)
+        this.healthBar = scene.add.text(x - 16, y - 60, this.health.toString())
 
         this.weaponManager = new WeaponManager(scene, this, socket)
     }
@@ -70,7 +70,7 @@ export class Player extends Actor {
             this.getBody().setOffset(15, 15)
         }
 
-        this.label.setPosition(this.x, this.y - 160)
+        this.label.setPosition(this.x - 16, this.y - 80)
         this.healthBar.setPosition(this.x - 16, this.y - 60)
 
         this.weaponManager.update()

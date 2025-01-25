@@ -107,12 +107,12 @@ export default class Level extends Phaser.Scene {
                 if (otherPlayer) {
                     otherPlayer.setPosition(playerInfo.x, playerInfo.y)
                     otherPlayer.label.setPosition(
-                        playerInfo.x,
-                        playerInfo.y - 160
+                        playerInfo.x - 16,
+                        playerInfo.y - 80
                     )
                     otherPlayer.healthBar.setPosition(
-                        playerInfo.x,
-                        playerInfo.y - 140
+                        playerInfo.x - 16,
+                        playerInfo.y - 60
                     )
                     otherPlayer.scaleX = playerInfo.direction
                 }
