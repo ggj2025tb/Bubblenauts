@@ -23,11 +23,14 @@ const gameState: GameState = {
     },
 }
 
-let enemyCounter = 0;
-const enemySpawnInterval = 5000;
+let enemyCounter = 0
+const enemySpawnInterval = 5000
 
 function spawnBubble() {
-    const bubbleStart = [gameState.mapData.bubbleSpawnPoint[0], gameState.mapData.bubbleSpawnPoint[1]]
+    const bubbleStart = [
+        gameState.mapData.bubbleSpawnPoint[0],
+        gameState.mapData.bubbleSpawnPoint[1],
+    ]
     // Define the path
     const path = [
         [1200, 430],
@@ -56,11 +59,13 @@ function spawnBubble() {
 
 function startEnemySpawner() {
     setInterval(() => {
-        enemyCounter++;
+        enemyCounter++
         // get x and y from gameState.enemySpawnPoints randomly
-        console.log('Spawning enemy');
-        const randomIndex = Math.floor(Math.random() * gameState.mapData.enemySpawnPoints.length);
-        const randomSpawnPoint = gameState.mapData.enemySpawnPoints[randomIndex];
+        console.log('Spawning enemy')
+        const randomIndex = Math.floor(
+            Math.random() * gameState.mapData.enemySpawnPoints.length
+        )
+        const randomSpawnPoint = gameState.mapData.enemySpawnPoints[randomIndex]
         const enemy = {
             id: 'enemy_' + enemyCounter,
             x: randomSpawnPoint[0],
@@ -117,19 +122,28 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on('enemyGetDamage', ({ enemyId, damage }) => {
+        gameState.enemies[enemyId].health =
+            gameState.enemies[enemyId].health - damage
+        if (gameState.enemies[enemyId].health <= 0) {
+            delete gameState.enemies[enemyId]
+            io.emit('enemyDied', enemyId)
+        }
+    })
+
     socket.on('disconnect', () => {
         delete gameState.players[socket.id]
         io.emit('gameState', gameState)
     })
 
     socket.on('startGame', ({ mapData }) => {
-        gameState.mapData.enemySpawnPoints = mapData.enemySpawnPoints;
-        gameState.mapData.enemyPath = mapData.enemyPath;
-        gameState.mapData.bubbleSpawnPoint = mapData.bubbleSpawnPoint;
-        gameState.mapData.bubblePath = mapData.bubblePath;
-        console.log('Starting game');
-        spawnBubble();
-        startEnemySpawner();
+        gameState.mapData.enemySpawnPoints = mapData.enemySpawnPoints
+        gameState.mapData.enemyPath = mapData.enemyPath
+        gameState.mapData.bubbleSpawnPoint = mapData.bubbleSpawnPoint
+        gameState.mapData.bubblePath = mapData.bubblePath
+        console.log('Starting game')
+        spawnBubble()
+        startEnemySpawner()
         io.emit('gameState', gameState)
     })
 })

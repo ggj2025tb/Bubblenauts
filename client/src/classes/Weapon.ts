@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { Enemy } from './Enemy'
+import { Socket } from 'socket.io-client'
 
 export class Weapon {
     private scene: Phaser.Scene
@@ -12,6 +13,7 @@ export class Weapon {
     private damage: number = 20
     private maxRange: number = 50
     private weaponSprite: string
+    private socket: Socket
 
     constructor(
         scene: Phaser.Scene,
@@ -23,6 +25,7 @@ export class Weapon {
         this.player = player
         this.mousePointer = mousePointer
         this.weaponSprite = weaponSprite
+        this.socket = this.scene.registry.get('socket')
 
         this.hitBox = scene.add.rectangle(0, 0, 50, 30, 0xff0000, 0.2)
         scene.physics.add.existing(this.hitBox, false)
@@ -84,6 +87,10 @@ export class Weapon {
                 )
             ) {
                 this.damageEnemy(enemy)
+                this.socket.emit('enemyGetDamage', {
+                    enemyId: enemy.id,
+                    damage: this.damage,
+                })
             }
         })
 

@@ -7,8 +7,15 @@ export class Enemy extends Actor {
     private bubbles: Bubble[]
     private isDying: boolean = false
     public health: number
+    public id: string
 
-    constructor(scene: Phaser.Scene, x: number, y: number, bubbles: Bubble[]) {
+    constructor(
+        scene: Phaser.Scene,
+        x: number,
+        y: number,
+        bubbles: Bubble[],
+        id: string
+    ) {
         super(scene, x, y, 'FufuSuperDino')
         // PHYSICS
         this.getBody().setSize(10, 10)
@@ -16,6 +23,7 @@ export class Enemy extends Actor {
         this.setTint(0xff0000)
         this.scale = 0.2
         this.health = 100 // Override default health from Actor
+        this.id = id
 
         // Select random bubble
         this.bubbles = bubbles
@@ -40,11 +48,6 @@ export class Enemy extends Actor {
             this.bubbleToFollow.y,
             this.speed
         )
-
-        // Check if enemy is dead
-        if (this.health <= 0) {
-            this.die()
-        }
     }
 
     selectNewBubble(): void {
@@ -66,7 +69,7 @@ export class Enemy extends Actor {
         })
     }
 
-    private die(): void {
+    public die(): void {
         this.isDying = true
 
         // Death animation

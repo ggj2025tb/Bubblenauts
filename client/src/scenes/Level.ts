@@ -7,7 +7,12 @@ import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
-import type { GameState, Enemy as ServerEnemy, MapData as ServerMapData, Bubble as ServerBubble } from '../../types/ServerTypes'
+import type {
+    GameState,
+    Enemy as ServerEnemy,
+    MapData as ServerMapData,
+    Bubble as ServerBubble,
+} from '../../types/ServerTypes'
 import { Bubble } from '../classes/Bubble'
 import { EnemySpawner } from '../classes/EnemySpawner'
 /* END-USER-IMPORTS */
@@ -114,7 +119,7 @@ export default class Level extends Phaser.Scene {
                     [160, 150],
                 ],
             }
-            this.socket.emit('startGame', { mapData });
+            this.socket.emit('startGame', { mapData })
         })
 
         this.socket.on('gameState', (gameState: GameState) => {
@@ -140,13 +145,21 @@ export default class Level extends Phaser.Scene {
             })
         })
 
+        this.socket.on('enemyDied', (enemyId: string) => {
+            const enemy = this.enemies.find((enemy) => enemy.id === enemyId)
+            if (enemy) {
+                enemy.die()
+            }
+        })
+
         this.socket.on('enemyCreated', (enemy: ServerEnemy) => {
             console.log(`Spawning enemy at ${enemy.x}, ${enemy.y}`)
             const newEnemy = new Enemy(
                 this,
                 enemy.x,
                 enemy.y,
-                this.bubbles
+                this.bubbles,
+                enemy.id
             )
             this.enemies.push(newEnemy)
         })
