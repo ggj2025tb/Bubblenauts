@@ -34,7 +34,6 @@ export class Enemy extends Actor {
         if (this.isDying) return
 
         if (this.bubbleToFollow === undefined) {
-            this.anims.play('enemy_1_walk', true)
             this.selectNewBubble()
             // No new bubble found, do nothing
             if (this.bubbleToFollow === undefined) {
@@ -48,6 +47,20 @@ export class Enemy extends Actor {
             this.bubbleToFollow.y,
             this.speed
         )
+
+        //check if the enemy is close to the bubble
+        if (
+            Phaser.Math.Distance.Between(
+                this.x,
+                this.y,
+                this.bubbleToFollow.x,
+                this.bubbleToFollow.y
+            ) < 10
+        ) {
+            this.anims.play('enemy_1_attack', true)
+        } else {
+            this.anims.play('enemy_1_walk', true)
+        }
     }
 
     selectNewBubble(): void {

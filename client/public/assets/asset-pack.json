@@ -146,6 +146,11 @@
                 "key": "playerGreenBlueAnimation"
             },
             {
+                "url": "assets/animations/enemy_1.json",
+                "type": "animation",
+                "key": "enemy_1"
+            },
+            {
                 "url": "assets/StartButtonRendered.png",
                 "type": "image",
                 "key": "StartButtonRendered"
