@@ -3,7 +3,7 @@ import { Bubble } from './Bubble'
 
 export class Enemy extends Actor {
     private bubbleToFollow: Bubble
-    private speed: number = 50
+    private speed: number = 60
     private bubbles: Bubble[]
     private isDying: boolean = false
     public health: number
