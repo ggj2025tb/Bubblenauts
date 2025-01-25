@@ -7,7 +7,7 @@ If you want to start directly in the level (not needing to click "join game") yo
 ## Available Commands
 
 | Command                  | Description                                    |
-|--------------------------|------------------------------------------------|
+| ------------------------ | ---------------------------------------------- |
 | `npm install`            | Install client dependencies                    |
 | `npm run install-server` | Install server dependencies                    |
 | `npm run start-dev`      | Launch a development server                    |
