@@ -41,23 +41,12 @@ export class Weapon {
         }
 
         // Determine attack constraints based on player movement
-        const isMoving =
-            player.body.velocity.x !== 0 || player.body.velocity.y !== 0
         const mouseAngle = Phaser.Math.Angle.Between(
             player.x,
             player.y,
             this.mousePointer.worldX,
             this.mousePointer.worldY
         )
-
-        // Check if attack direction is valid
-        // const isValidAttackDirection = isMoving
-        //     ? this.isPointingInFacingDirection()
-        //     : this.isValidIdleAttackDirection(mouseAngle, player.scaleX)
-
-        // if (!isValidAttackDirection) {
-        //     return
-        // }
 
         this.isAttacking = true
         this.lastAttackTime = currentTime
@@ -104,31 +93,6 @@ export class Weapon {
                 this.isAttacking = false
             },
         })
-    }
-
-    private isValidIdleAttackDirection(
-        angle: number,
-        playerScaleX: number
-    ): boolean {
-        // When idle, allow horizontal attacks left and right
-        return playerScaleX > 0
-            ? angle > -Math.PI / 2 && angle < Math.PI / 2 // Facing right
-            : angle < -Math.PI / 2 || angle > Math.PI / 2 // Facing left
-    }
-
-    private isPointingInFacingDirection(): boolean {
-        const player: any = this.player
-        const mouseAngle = Phaser.Math.Angle.Between(
-            player.x,
-            player.y,
-            this.mousePointer.worldX,
-            this.mousePointer.worldY
-        )
-
-        // When moving, restrict to forward direction
-        return player.scaleX > 0
-            ? mouseAngle > -Math.PI / 2 && mouseAngle < Math.PI / 2
-            : mouseAngle < -Math.PI / 2 || mouseAngle > Math.PI / 2
     }
 
     private damageEnemy(enemy: Enemy): void {

@@ -68,6 +68,7 @@ function startEnemySpawner() {
         )
         const randomSpawnPoint = gameState.mapData.enemySpawnPoints[randomIndex]
 
+        // buggy
         const enemy = {
             id: 'enemy_' + enemyCounter,
             x: randomSpawnPoint[0],

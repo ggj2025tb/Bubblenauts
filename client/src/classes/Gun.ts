@@ -1,4 +1,5 @@
 import { Enemy } from './Enemy'
+import { Socket } from 'socket.io-client'
 
 export class Gun {
     private scene: Phaser.Scene
@@ -11,6 +12,7 @@ export class Gun {
     private damage: number = 15
     private texture: string
     private isRemote: boolean
+    private socket: Socket
 
     constructor(
         scene: Phaser.Scene,
@@ -25,6 +27,8 @@ export class Gun {
         this.texture = texture
 
         this.isRemote = isRemote
+
+        this.socket = this.scene.registry.get('socket')
 
         this.projectiles = scene.physics.add.group({
             classType: Phaser.Physics.Arcade.Image,
@@ -70,6 +74,7 @@ export class Gun {
         )
 
         if (projectile) {
+            projectile.body.onWorldBounds = true
             projectile.setActive(true)
             projectile.setVisible(true)
             projectile.body.enable = true
@@ -110,15 +115,34 @@ export class Gun {
     private setupProjectileCollision(projectile: Phaser.Physics.Arcade.Image) {
         const enemies: Enemy[] = (this.scene as any).enemies || []
 
-        this.scene.time.delayedCall(1000, () => {
-            if (projectile.active) {
-                projectile.destroy()
+        // Destroy projectile on map boundaries
+        this.scene.physics.world.on(
+            'worldbounds',
+            (body: Phaser.Physics.Arcade.Body) => {
+                if (body.gameObject === projectile) {
+                    projectile.destroy()
+                }
             }
-        })
+        )
 
+        // Set world bounds for projectile
+        projectile.body.setCollideWorldBounds(true)
+
+        // Destroy after 1 second
+        // this.scene.time.delayedCall(1000, () => {
+        //     if (projectile.active) {
+        //         projectile.destroy()
+        //     }
+        // })
+
+        // Check enemy collision
         enemies.forEach((enemy) => {
             this.scene.physics.add.overlap(projectile, enemy, () => {
                 this.damageEnemy(enemy)
+                this.socket.emit('enemyGetDamage', {
+                    enemyId: enemy.id,
+                    damage: this.damage,
+                })
                 projectile.destroy()
             })
         })

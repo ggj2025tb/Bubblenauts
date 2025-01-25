@@ -269,23 +269,6 @@ export default class Level extends Phaser.Scene {
         graphics.lineStyle(3, 0xffffff, 1)
     }
 
-    private createRemoteProjectile(x: number, y: number, angle: number) {
-        const projectile = this.physics.add.image(x, y, 'projectile')
-        projectile.setActive(true)
-        projectile.setVisible(true)
-
-        const speed = 500
-        projectile.body.velocity.x = Math.cos(angle) * speed
-        projectile.body.velocity.y = Math.sin(angle) * speed
-        projectile.setRotation(angle - 80)
-        projectile.setScale(2)
-
-        // Automatically destroy projectile after time
-        this.time.delayedCall(1000, () => {
-            projectile.destroy()
-        })
-    }
-
     update(time: number, delta: number): void {
         this.player.update(time, delta)
         this.base?.update(time, delta)
