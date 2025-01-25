@@ -7,6 +7,11 @@
                 "key": "BubbleNautsMap"
             },
             {
+                "url": "assets/tilemap/BubbleNautsMapBig.json",
+                "type": "tilemapTiledJSON",
+                "key": "BubbleNautsMapBig"
+            },
+            {
                 "url": "assets/tileset/bubbles.png",
                 "frameConfig": {
                     "frameWidth": 32,

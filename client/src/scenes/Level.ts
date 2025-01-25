@@ -53,7 +53,7 @@ export default class Level extends Phaser.Scene {
     private playername!: string
     private enemyInterval: number = 5000
     private enemyWaveCount: number = 5
-    private startGameButton!: Phaser.GameObjects.Text
+    private startGameButton!: Phaser.GameObjects.Image
 
     create() {
         this.socket = this.registry.get('socket')
@@ -72,13 +72,16 @@ export default class Level extends Phaser.Scene {
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
         // A static button that can be used to send a message to the server
-        this.startGameButton = this.add.text(400, 100, 'Start game', {
-            fill: '#fff',
-            backgroundColor: '#999',
-        })
+        this.startGameButton = this.add.image(0, 0, 'StartButtonRendered')
+            this.startGameButton.setOrigin(0, 0)
+            this.startGameButton.setDisplaySize(
+                144,
+                48
+            )
         this.startGameButton.setInteractive()
 
         this.startGameButton.on('pointerdown', () => {
+            this.startGameButton.alpha = 0.5
             const mapData: ServerMapData = {
                 enemySpawnPoints: [
                     [1200, 100],
