@@ -28,6 +28,10 @@ export class Enemy extends Actor {
 
         if (this.bubbleToFollow === undefined) {
             this.selectNewBubble()
+            // No new bubble found, do nothing
+            if (this.bubbleToFollow === undefined) {
+                return
+            }
         }
 
         this.scene.physics.moveTo(

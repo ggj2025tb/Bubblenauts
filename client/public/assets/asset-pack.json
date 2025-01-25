@@ -77,6 +77,11 @@
                 "url": "assets/Dreizack.png",
                 "type": "image",
                 "key": "Dreizack"
+            },
+            {
+                "url": "assets/intro.png",
+                "type": "image",
+                "key": "intro"
             }
         ]
     },
