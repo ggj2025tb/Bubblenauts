@@ -43,7 +43,7 @@ export class Player extends Actor {
         this.getBody().setMaxVelocity(this.MAX_SPEED, this.MAX_SPEED)
 
         // Weapon
-        this.weapon = new Weapon(scene, this)
+        this.weapon = new Weapon(scene, this, Phaser.Input.Pointer, 'Dreizack')
 
         this.label = scene.add.text(x, y - 160, this.playerName)
         this.healthBar = scene.add.text(x, y - 140, this.health.toString())
@@ -72,8 +72,6 @@ export class Player extends Actor {
 
         this.label.setPosition(this.x, this.y - 160)
         this.healthBar.setPosition(this.x - 16, this.y - 60)
-
-        this.weaponManager.update()
 
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
             this.socket.emit('playerUpdate', {

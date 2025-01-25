@@ -67,6 +67,16 @@
                 "url": "assets/animations/playerGreenBlueAnimation.json",
                 "type": "animation",
                 "key": "playerGreenBlueAnimation"
+            },
+            {
+                "url": "assets/Harpune.png",
+                "type": "image",
+                "key": "Harpune"
+            },
+            {
+                "url": "assets/Dreizack.png",
+                "type": "image",
+                "key": "Dreizack"
             }
         ]
     },
