@@ -11,59 +11,60 @@ import type { GameState } from '../../types/ServerTypes'
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
+    constructor() {
+        super('Level')
 
-	constructor() {
-		super("Level");
-
-		/* START-USER-CTR-CODE */
+        /* START-USER-CTR-CODE */
         // Write your code here.
         /* END-USER-CTR-CODE */
-	}
+    }
 
-	editorCreate(): void {
+    editorCreate(): void {
+        // level1Map
+        const level1Map = this.add.tilemap('BubbleNautsMap')
+        level1Map.addTilesetImage('Decoration', 'decoration')
+        level1Map.addTilesetImage('Bubbles', 'bubbles')
+        level1Map.addTilesetImage('Player', 'player')
+        level1Map.addTilesetImage('Environment', 'environment')
 
-		// level1Map
-		const level1Map = this.add.tilemap("BubbleNautsMap");
-		level1Map.addTilesetImage("Decoration", "decoration");
-		level1Map.addTilesetImage("Bubbles", "bubbles");
-		level1Map.addTilesetImage("Player", "player");
-		level1Map.addTilesetImage("Environment", "environment");
+        // ground_1
+        level1Map.createLayer('Ground', ['Environment'], 0, 0)
 
-		// ground_1
-		level1Map.createLayer("Ground", ["Environment"], 0, 0);
+        // walls_1
+        level1Map.createLayer('Walls', ['Environment'], 0, 0)
 
-		// walls_1
-		level1Map.createLayer("Walls", ["Environment"], 0, 0);
+        // floor_1
+        level1Map.createLayer('Floor', ['Environment', 'Decoration'], 0, 0)
 
-		// floor_1
-		level1Map.createLayer("Floor", ["Environment","Decoration"], 0, 0);
+        // roadBottom_1
+        level1Map.createLayer('RoadBottom', ['Decoration'], 0, 0)
 
-		// roadBottom_1
-		level1Map.createLayer("RoadBottom", ["Decoration"], 0, 0);
+        // roadTop_1
+        level1Map.createLayer('RoadTop', ['Environment', 'Decoration'], 0, 0)
 
-		// roadTop_1
-		level1Map.createLayer("RoadTop", ["Environment","Decoration"], 0, 0);
+        // base_1
+        level1Map.createLayer('Base', ['Environment', 'Decoration'], 0, 0)
 
-		// base_1
-		level1Map.createLayer("Base", ["Environment","Decoration"], 0, 0);
+        this.level1Map = level1Map
 
-		this.level1Map = level1Map;
+        this.events.emit('scene-awake')
+    }
 
-		this.events.emit("scene-awake");
-	}
+    private level1Map!: Phaser.Tilemaps.Tilemap
 
-	private level1Map!: Phaser.Tilemaps.Tilemap;
-
-	/* START-USER-CODE */
+    /* START-USER-CODE */
     private player_1!: Player
     private enemy_1?: Enemy
     private socket!: Socket
     private path!: Phaser.Curves.Path
     private base?: Base
     private otherPlayers: Map<string, Phaser.GameObjects.Sprite> = new Map()
+    private playername!: string
 
     create() {
         this.socket = this.registry.get('socket')
+        this.playername = this.registry.get('playerName')
+
         if (!this.socket) {
             console.error('No socket found in registry')
             this.scene.start('Menu')
@@ -119,18 +120,25 @@ export default class Level extends Phaser.Scene {
             }
         )
 
+        this.socket.emit('joinGame', { playerName: this.playername })
+
         // Define the path
         this.path = this.add.path(1200, 100)
-        this.path.lineTo(1200, 300)
-        this.path.lineTo(800, 300)
-        this.path.lineTo(800, 150)
-        this.path.lineTo(1000, 150)
-        this.path.lineTo(1000, 600)
-        this.path.lineTo(600, 600)
+        this.path.lineTo(1200, 430)
+        this.path.lineTo(1082, 430)
+        this.path.lineTo(1082, 208)
+        this.path.lineTo(820, 208)
+        this.path.lineTo(820, 620)
+        this.path.lineTo(975, 620)
+        this.path.lineTo(955, 130)
+        this.path.lineTo(615, 140)
+        this.path.lineTo(590, 530)
+        this.path.lineTo(180, 530)
+        this.path.lineTo(160, 150)
 
         const graphics = this.add.graphics()
-        graphics.lineStyle(1, 0xffffff, 1)
-        this.path.draw(graphics)
+        graphics.lineStyle(3, 0xffffff, 1)
+        // this.path.draw(graphics)
 
         const enemy = new Enemy(this, 1200, 100)
         this.enemy_1 = this.add.follower(
