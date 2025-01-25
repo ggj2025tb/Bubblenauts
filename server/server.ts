@@ -59,21 +59,34 @@ function spawnBubble() {
 }
 
 function startEnemySpawner() {
+    // Define map corners for spawning
+    const mapCorners = [
+        [50, 50], // Top left
+        [50, 750], // Bottom left
+        [1200, 50], // Top right
+        [1200, 750], // Bottom right
+    ]
+
     enemySpawnerInterval = setInterval(() => {
         enemyCounter++
-        // get x and y from gameState.enemySpawnPoints randomly
-
         console.log('Spawning enemy')
-        const randomIndex = Math.floor(
-            Math.random() * gameState.mapData.enemySpawnPoints.length
-        )
-        const randomSpawnPoint = gameState.mapData.enemySpawnPoints[randomIndex]
-        if (!randomSpawnPoint) return
+
+        // Select random corner
+        const cornerIndex = Math.floor(Math.random() * mapCorners.length)
+        const cornerPoint = mapCorners[cornerIndex]
+
+        // Add small random offset (-20 to +20 pixels)
+        const randomOffset = () => Math.random() * 40 - 20
+
+        const spawnPoint = [
+            Math.max(0, Math.min(1250, cornerPoint[0] + randomOffset())),
+            Math.max(0, Math.min(800, cornerPoint[1] + randomOffset())),
+        ]
 
         const enemy = {
             id: 'enemy_' + enemyCounter,
-            x: randomSpawnPoint[0],
-            y: randomSpawnPoint[1],
+            x: spawnPoint[0],
+            y: spawnPoint[1],
             health: 100,
             pathArray: [
                 [1200, 430],
