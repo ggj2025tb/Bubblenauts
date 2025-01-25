@@ -72,7 +72,7 @@ export default class Level extends Phaser.Scene {
             this.level1Map.heightInPixels
         )
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
-        this.cameras.main.setZoom(1.5) // Optional: zoom level
+        this.cameras.main.setZoom(1.5)
 
         this.socket.on('gameState', (gameState: GameState) => {
             // Create sprites for other players EXCEPT current player
