@@ -1,6 +1,6 @@
 import { Physics } from 'phaser'
 export class Actor extends Physics.Arcade.Sprite {
-    protected hp = 100
+    protected health = 100
     constructor(
         scene: Phaser.Scene,
         x: number,
@@ -22,7 +22,7 @@ export class Actor extends Physics.Arcade.Sprite {
             alpha: 0.5,
             onStart: () => {
                 if (value) {
-                    this.hp = this.hp - value
+                    this.health = this.health - value
                 }
             },
             onComplete: () => {
@@ -30,9 +30,7 @@ export class Actor extends Physics.Arcade.Sprite {
             },
         })
     }
-    public getHPValue(): number {
-        return this.hp
-    }
+
     protected checkFlip(): void {
         if (this.body.velocity.x < 0) {
             this.scaleX = -1

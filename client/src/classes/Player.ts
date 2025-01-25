@@ -13,6 +13,7 @@ export class Player extends Actor {
     private keyD: Phaser.Input.Keyboard.Key
     private readonly playerName: string
     public label: Phaser.GameObjects.Text
+    public healthBar: Phaser.GameObjects.Text
     private socket: Socket
     private weapon: Weapon
 
@@ -39,11 +40,11 @@ export class Player extends Actor {
         this.getBody().setDrag(this.DRAG, this.DRAG)
         this.getBody().setMaxVelocity(this.MAX_SPEED, this.MAX_SPEED)
 
-        // Label
-        this.label = scene.add.text(x, y + 120, this.playerName)
-
         // Weapon
         this.weapon = new Weapon(scene, this)
+
+        this.label = scene.add.text(x, y - 160, this.playerName)
+        this.healthBar = scene.add.text(x, y - 140, this.health.toString())
     }
 
     update(): void {
@@ -64,7 +65,8 @@ export class Player extends Actor {
             this.getBody().setOffset(15, 15)
         }
 
-        this.label.setPosition(this.x, this.y + 120)
+        this.label.setPosition(this.x, this.y - 160)
+        this.healthBar.setPosition(this.x, this.y - 140)
 
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
             this.socket.emit('playerUpdate', {

@@ -57,13 +57,6 @@ export default class Level extends Phaser.Scene {
     create() {
         this.socket = this.registry.get('socket')
         this.playername = this.registry.get('playerName')
-
-        if (!this.socket) {
-            console.error('No socket found in registry')
-            this.scene.start('Menu')
-            return
-        }
-
         this.editorCreate()
 
         // Pass socket to Player
@@ -79,6 +72,11 @@ export default class Level extends Phaser.Scene {
         this.cameras.main.setZoom(1.5)
 
         this.socket.on('gameState', (gameState: GameState) => {
+            this.otherPlayers.forEach((player) => player.destroy())
+            this.otherPlayers.forEach((player) => player.label.destroy())
+            this.otherPlayers.forEach((player) => player.healthBar.destroy())
+            this.otherPlayers.clear()
+
             // Create sprites for other players EXCEPT current player
             Object.values(gameState.players).forEach((player) => {
                 if (player.id !== this.socket.id) {
@@ -110,7 +108,11 @@ export default class Level extends Phaser.Scene {
                     otherPlayer.setPosition(playerInfo.x, playerInfo.y)
                     otherPlayer.label.setPosition(
                         playerInfo.x,
-                        playerInfo.y + 120
+                        playerInfo.y - 160
+                    )
+                    otherPlayer.healthBar.setPosition(
+                        playerInfo.x,
+                        playerInfo.y - 140
                     )
                     otherPlayer.scaleX = playerInfo.direction
                 }

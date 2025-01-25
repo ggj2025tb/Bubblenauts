@@ -6,6 +6,7 @@ export class Enemy extends Actor {
     private speed: number = 50
     private bubbles: Bubble[]
     private isDying: boolean = false
+    public health: number
 
     constructor(scene: Phaser.Scene, x: number, y: number, bubbles: Bubble[]) {
         super(scene, x, y, 'FufuSuperDino')
@@ -14,7 +15,7 @@ export class Enemy extends Actor {
         this.getBody().setOffset(8, 0)
         this.setTint(0xff0000)
         this.scale = 0.2
-        this.hp = 100 // Override default HP from Actor
+        this.health = 100 // Override default health from Actor
 
         // Select random bubble
         this.bubbles = bubbles
@@ -37,7 +38,7 @@ export class Enemy extends Actor {
         )
 
         // Check if enemy is dead
-        if (this.hp <= 0) {
+        if (this.health <= 0) {
             this.die()
         }
     }

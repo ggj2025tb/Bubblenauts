@@ -15,19 +15,27 @@ export class Weapon {
         this.scene = scene
         this.player = player
 
+        console.log('Weapon initialized', {
+            scene: !!scene,
+            player: !!player,
+        })
+
         // Create an invisible hit box for sword range
-        this.hitBox = scene.add.rectangle(0, 0, 50, 30, 0xff0000, 0)
+        this.hitBox = scene.add.rectangle(0, 0, 50, 30, 0xff0000, 0.2)
         scene.physics.add.existing(this.hitBox, false)
 
         // Listen for attack input
         scene.input.keyboard.on('keydown-SPACE', this.attack, this)
+        console.log('Attack listener added')
     }
 
     private attack(): void {
+        console.log('Attack method triggered')
         const currentTime = this.scene.time.now
 
         // Check attack cooldown
         if (currentTime - this.lastAttackTime < this.attackCooldown) {
+            console.log('Attack on cooldown')
             return
         }
 
@@ -42,15 +50,24 @@ export class Weapon {
         this.hitBox.x = player.x + 50 * offsetMultiplier
         this.hitBox.y = player.y
 
+        console.log('Hitbox positioned', {
+            x: this.hitBox.x,
+            y: this.hitBox.y,
+        })
+
         // Check for enemy collisions
-        const enemies: Enemy[] = this.scene.enemies || []
-        enemies.forEach((enemy) => {
+        const enemies: Enemy[] = (this.scene as any).enemies || []
+        console.log('Enemies count:', enemies.length)
+
+        enemies.forEach((enemy, index) => {
+            console.log(`Checking enemy ${index}`)
             if (
                 Phaser.Geom.Intersects.RectangleToRectangle(
                     this.hitBox.getBounds(),
                     enemy.getBounds()
                 )
             ) {
+                console.log(`Enemy ${index} hit!`)
                 this.damageEnemy(enemy)
             }
         })
@@ -68,7 +85,10 @@ export class Weapon {
     }
 
     private damageEnemy(enemy: Enemy): void {
-        // Apply damage to enemy
+        console.log('Damaging enemy', {
+            damage: this.damage,
+            enemyCurrentHeahlth: enemy.health,
+        })
         enemy.getDamage(this.damage)
 
         // Optional: Knockback effect
