@@ -1,7 +1,6 @@
 import { Server } from 'socket.io'
 import { createServer } from 'http'
 import { GameState, Player } from '../client/types/ServerTypes'
-import { start } from 'repl'
 
 const httpServer = createServer()
 const io = new Server(httpServer, {
@@ -11,7 +10,7 @@ const io = new Server(httpServer, {
     },
 })
 
-const gameState: GameState = {
+let gameState: GameState = {
     players: {},
     enemies: {},
     bubbles: {},
@@ -24,6 +23,7 @@ const gameState: GameState = {
 }
 
 let enemyCounter = 0
+let enemySpawnerInterval
 const enemySpawnInterval = 5000
 
 function spawnBubble() {
@@ -58,7 +58,7 @@ function spawnBubble() {
 }
 
 function startEnemySpawner() {
-    setInterval(() => {
+    enemySpawnerInterval = setInterval(() => {
         enemyCounter++
         // get x and y from gameState.enemySpawnPoints randomly
 
@@ -148,6 +148,23 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         delete gameState.players[socket.id]
         io.emit('gameState', gameState)
+
+        if (Object.keys(gameState.players).length == 0) {
+            enemyCounter = 0
+            clearInterval(enemySpawnerInterval)
+            gameState = {
+                players: {},
+                enemies: {},
+                bubbles: {},
+                mapData: {
+                    enemySpawnPoints: [],
+                    enemyPath: [],
+                    bubbleSpawnPoint: [],
+                    bubblePath: [],
+                },
+            }
+        }
+
     })
 
     socket.on('startGame', ({ mapData }) => {
@@ -155,7 +172,6 @@ io.on('connection', (socket) => {
         gameState.mapData.enemyPath = mapData.enemyPath
         gameState.mapData.bubbleSpawnPoint = mapData.bubbleSpawnPoint
         gameState.mapData.bubblePath = mapData.bubblePath
-        console.log('Starting game')
         spawnBubble()
         startEnemySpawner()
         io.emit('gameState', gameState)
