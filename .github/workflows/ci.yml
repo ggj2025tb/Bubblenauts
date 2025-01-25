@@ -14,6 +14,8 @@ jobs:
           echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
       - name: Build client
         run: cd client && npm install && npm run build
+      - name: Build server
+        run: cd server && npm install && npm run build
       - name: Deploy with rsync
         run: rsync -rav --delete --exclude='node_modules' ./ root@116.203.15.40:/game
       - name: Restart game
