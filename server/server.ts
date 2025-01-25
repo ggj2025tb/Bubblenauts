@@ -102,6 +102,7 @@ io.on('connection', (socket) => {
             x: 400,
             y: 300,
             health: 100,
+            animation: 'idle',
         }
 
         // Add player to gameState
@@ -110,7 +111,7 @@ io.on('connection', (socket) => {
         io.emit('gameState', gameState)
     })
 
-    socket.on('playerUpdate', ({ x, y, direction }) => {
+    socket.on('playerUpdate', ({ x, y, direction, animation }) => {
         if (gameState.players[socket.id]) {
             gameState.players[socket.id].x = x
             gameState.players[socket.id].y = y
@@ -120,6 +121,7 @@ io.on('connection', (socket) => {
                 x,
                 y,
                 direction,
+                animation,
             })
         }
     })
@@ -127,15 +129,13 @@ io.on('connection', (socket) => {
     socket.on('enemyGetDamage', ({ enemyId, damage }) => {
         if (gameState.enemies[enemyId]) {
             gameState.enemies[enemyId].health =
-            gameState.enemies[enemyId].health - damage
+                gameState.enemies[enemyId].health - damage
             if (gameState.enemies[enemyId].health <= 0) {
                 delete gameState.enemies[enemyId]
                 io.emit('enemyDied', enemyId)
             }
         }
     })
-
-
 
     socket.on('bubbleHealthUpdate', ({ health }) => {
         if (gameState.bubbles['bubble1']) {
@@ -176,7 +176,6 @@ io.on('connection', (socket) => {
                 },
             }
         }
-
     })
 
     socket.on('startGame', ({ mapData }) => {

@@ -42,31 +42,14 @@ export class Actor extends Physics.Arcade.Sprite {
         return this.body as Physics.Arcade.Body
     }
 
-    protected updateAnimation(): void {
-        //same but when two keys are pressed at the same time
-        if (this.keyW?.isDown && this.keyA?.isDown) {
-            this.anims.play('walk', true)
-        } else if (this.keyW?.isDown && this.keyD?.isDown) {
-            this.anims.play('walk', true)
-        } else if (this.keyS?.isDown && this.keyA?.isDown) {
-            this.anims.play('walk', true)
-        } else if (this.keyS?.isDown && this.keyD?.isDown) {
-            this.anims.play('walk', true)
-        } else if (this.keyA?.isDown) {
-            this.anims.play('walk', true)
-        } else if (this.keyS?.isDown) {
-            this.anims.play('down', true)
-        } else if (this.keyD?.isDown) {
-            this.anims.play('walk', true)
-        } else if (this.keyW?.isDown) {
-            this.anims.play('up', true)
-        } else if (
-            this.keyW?.isUp &&
-            this.keyA?.isUp &&
-            this.keyS?.isUp &&
-            this.keyD?.isUp
-        ) {
-            this.anims.play('idle', true)
+    public updateAnimation(): void {
+        const speed = Math.sqrt(
+            this.body.velocity.x ** 2 + this.body.velocity.y ** 2
+        )
+        const animationState = speed > 0 ? 'walk' : 'idle'
+
+        if (this.anims.currentAnim?.key !== animationState) {
+            this.play(animationState)
         }
     }
 }

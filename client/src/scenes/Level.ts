@@ -133,7 +133,6 @@ export default class Level extends Phaser.Scene {
             // Create sprites for other players EXCEPT current player
             Object.values(gameState.players).forEach((player) => {
                 if (player.id !== this.socket.id) {
-                    // Skip current player
                     const otherPlayer = new Player(
                         this,
                         player.x,
@@ -141,7 +140,11 @@ export default class Level extends Phaser.Scene {
                         this.socket,
                         player.name
                     )
-                    otherPlayer.setTint(0x00ff00)
+                    // otherPlayer.setTint(0x00ff00)
+                    // Play initial animation
+                    if (player.animation) {
+                        otherPlayer.play(player.animation)
+                    }
                     this.otherPlayers.set(player.id, otherPlayer)
                 }
             })
@@ -208,6 +211,7 @@ export default class Level extends Phaser.Scene {
                 x: number
                 y: number
                 direction: number
+                animation: string
             }) => {
                 const otherPlayer = this.otherPlayers.get(playerInfo.id)
                 if (otherPlayer) {
@@ -221,6 +225,15 @@ export default class Level extends Phaser.Scene {
                         playerInfo.y - 60
                     )
                     otherPlayer.scaleX = playerInfo.direction
+
+                    // Play animation if different from current
+                    if (
+                        playerInfo.animation &&
+                        otherPlayer.anims.currentAnim?.key !==
+                            playerInfo.animation
+                    ) {
+                        otherPlayer.play(playerInfo.animation)
+                    }
                 }
             }
         )
