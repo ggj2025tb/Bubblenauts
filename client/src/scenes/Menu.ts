@@ -11,6 +11,13 @@ export default class Menu extends Phaser.Scene {
     }
 
     create() {
+        const image = this.add.image(0, 0, 'intro')
+        image.setOrigin(0, 0)
+        image.setDisplaySize(
+            this.sys.game.config.width,
+            this.sys.game.config.height
+        )
+
         this.socket = this.registry.get('socket')
         this.nameInput = document.createElement('input')
         this.nameInput.style.width = '200px'
@@ -19,7 +26,7 @@ export default class Menu extends Phaser.Scene {
         this.nameInput.placeholder = 'Enter your name'
         this.nameInput.onkeyup = (e) => {
             if (e.key == 'Enter') {
-                this.joinGame(this) // Pass the current context (this) to joinGame
+                this.joinGame(this)
             }
         }
         this.div = document.createElement('div')
