@@ -1,27 +1,26 @@
-import { Socket } from 'socket.io-client'
 import { Enemy } from './Enemy'
 
 export class Gun {
     private scene: Phaser.Scene
     private player: Phaser.GameObjects.GameObject
-    private socket: Socket
     private mousePointer: Phaser.Input.Pointer
     private projectiles: Phaser.Physics.Arcade.Group
     private isAttacking: boolean = false
     private attackCooldown: number = 300
     private lastAttackTime: number = 0
     private damage: number = 15
+    private texture: string
 
     constructor(
         scene: Phaser.Scene,
         player: Phaser.GameObjects.GameObject,
         mousePointer: Phaser.Input.Pointer,
-        socket: Socket
+        texture: string
     ) {
         this.scene = scene
         this.player = player
         this.mousePointer = mousePointer
-        this.socket = socket
+        this.texture = texture
 
         this.projectiles = scene.physics.add.group({
             classType: Phaser.Physics.Arcade.Image,
@@ -54,7 +53,11 @@ export class Gun {
         )
 
         // Create projectile
-        const projectile = this.projectiles.get(player.x, player.y, 'Harpune')
+        const projectile = this.projectiles.get(
+            player.x,
+            player.y,
+            this.texture
+        )
 
         if (projectile) {
             projectile.setActive(true)

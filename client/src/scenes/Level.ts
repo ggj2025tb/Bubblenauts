@@ -14,7 +14,6 @@ import type {
     Bubble as ServerBubble,
 } from '../../types/ServerTypes'
 import { Bubble } from '../classes/Bubble'
-import { EnemySpawner } from '../classes/EnemySpawner'
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
@@ -58,7 +57,7 @@ export default class Level extends Phaser.Scene {
     private playername!: string
     private enemyInterval: number = 5000
     private enemyWaveCount: number = 5
-    private startGameButton!: Phaser.GameObjects.Text
+    private startGameButton!: Phaser.GameObjects.Image
 
     create() {
         this.socket = this.registry.get('socket')
@@ -77,13 +76,13 @@ export default class Level extends Phaser.Scene {
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
         // A static button that can be used to send a message to the server
-        this.startGameButton = this.add.text(400, 100, 'Start game', {
-            fill: '#fff',
-            backgroundColor: '#999',
-        })
+        this.startGameButton = this.add.image(0, 0, 'StartButtonRendered')
+        this.startGameButton.setOrigin(0, 0)
+        this.startGameButton.setDisplaySize(144, 48)
         this.startGameButton.setInteractive()
 
         this.startGameButton.on('pointerdown', () => {
+            this.startGameButton.alpha = 0.5
             const mapData: ServerMapData = {
                 enemySpawnPoints: [
                     [1200, 100],
@@ -145,9 +144,22 @@ export default class Level extends Phaser.Scene {
             })
         })
 
+        this.socket.on('enemyDied', (enemyId: string) => {
+            const enemy = this.enemies.find((enemy) => enemy.id === enemyId)
+            if (enemy) {
+                enemy.die()
+            }
+        })
+
         this.socket.on('enemyCreated', (enemy: ServerEnemy) => {
-            console.log(`Spawning enemy at ${enemy.x}, ${enemy.y}`)
-            const newEnemy = new Enemy(this, enemy.x, enemy.y, this.bubbles)
+            const newEnemy = new Enemy(
+                this,
+                enemy.x,
+                enemy.y,
+                this.bubbles,
+                enemy.id
+            )
+
             this.enemies.push(newEnemy)
         })
 
