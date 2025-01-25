@@ -58,7 +58,6 @@ function startEnemySpawner() {
     setInterval(() => {
         enemyCounter++;
         // get x and y from gameState.enemySpawnPoints randomly
-        console.log('Spawning enemy');
         const randomIndex = Math.floor(Math.random() * gameState.mapData.enemySpawnPoints.length);
         const randomSpawnPoint = gameState.mapData.enemySpawnPoints[randomIndex];
         const enemy = {
@@ -113,6 +112,16 @@ io.on('connection', (socket) => {
                 x,
                 y,
                 direction,
+            })
+        }
+    })
+
+    socket.on('playerHealthUpdate', ({ health }) => {
+        if (gameState.players[socket.id]) {
+            gameState.players[socket.id].health = health
+            socket.broadcast.emit('playerHealthUpdate', {
+                id: socket.id,
+                health,
             })
         }
     })

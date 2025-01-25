@@ -7,7 +7,12 @@ import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
-import type { GameState, Enemy as ServerEnemy, MapData as ServerMapData, Bubble as ServerBubble } from '../../types/ServerTypes'
+import type {
+    GameState,
+    Enemy as ServerEnemy,
+    MapData as ServerMapData,
+    Bubble as ServerBubble,
+} from '../../types/ServerTypes'
 import { Bubble } from '../classes/Bubble'
 import { EnemySpawner } from '../classes/EnemySpawner'
 /* END-USER-IMPORTS */
@@ -117,7 +122,7 @@ export default class Level extends Phaser.Scene {
                     [160, 150],
                 ],
             }
-            this.socket.emit('startGame', { mapData });
+            this.socket.emit('startGame', { mapData })
         })
 
         this.socket.on('gameState', (gameState: GameState) => {
@@ -145,12 +150,7 @@ export default class Level extends Phaser.Scene {
 
         this.socket.on('enemyCreated', (enemy: ServerEnemy) => {
             console.log(`Spawning enemy at ${enemy.x}, ${enemy.y}`)
-            const newEnemy = new Enemy(
-                this,
-                enemy.x,
-                enemy.y,
-                this.bubbles
-            )
+            const newEnemy = new Enemy(this, enemy.x, enemy.y, this.bubbles)
             this.enemies.push(newEnemy)
         })
 
@@ -163,6 +163,17 @@ export default class Level extends Phaser.Scene {
             )
             this.bubbles.push(newBubble)
         })
+
+        this.socket.on(
+            'playerHealthUpdate',
+            (playerInfo: { id: string; health: number }) => {
+                const otherPlayer = this.otherPlayers.get(playerInfo.id)
+                if (otherPlayer) {
+                    otherPlayer.healthBar.text =
+                        playerInfo.health.toString() + '% Air'
+                }
+            }
+        )
 
         // Listen for player movement updates
         this.socket.on(
@@ -196,9 +207,7 @@ export default class Level extends Phaser.Scene {
     }
 
     update(time: number, delta: number): void {
-        const cursors = this.input.keyboard.createCursorKeys()
-        this.player.update(cursors, delta)
-
+        this.player.update(time, delta)
         this.base?.update(time, delta)
         this.enemies.forEach((enemy) => {
             enemy.update(time, delta)

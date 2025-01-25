@@ -51,11 +51,25 @@
                     "frame": 7,
                     "duration": 0,
                     "keyframe": false
+                },
+                {
+                    "key": "dreizack",
+                    "frame": 8,
+                    "duration": 0,
+                    "keyframe": false
+                },
+                {
+                    "key": "dreizack",
+                    "frame": 9,
+                    "duration": 0,
+                    "keyframe": false
                 }
             ],
-            "frameRate": 5,
+            "frameRate": 60,
             "skipMissedFrames": true,
-            "repeat": -1,
+            "delay": 2,
+            "repeatDelay": 5,
+            "yoyo": true,
             "randomFrame": false
         }
     ],
