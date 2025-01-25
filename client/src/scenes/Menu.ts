@@ -17,6 +17,12 @@ export default class Menu extends Phaser.Scene {
             this.sys.game.config.width,
             this.sys.game.config.height
         )
+        const interfaceimg = this.add.image(0, 0, 'interfaceimg')
+        interfaceimg.setOrigin(0, 0)
+        interfaceimg.setDisplaySize(
+            560,
+            96
+        )
 
         this.socket = this.registry.get('socket')
         this.nameInput = document.createElement('input')
