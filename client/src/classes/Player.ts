@@ -11,7 +11,13 @@ export class Player extends Actor {
 
     private socket: Socket
 
-    constructor(scene: Phaser.Scene, x: number, y: number, socket: Socket, playerName: string) {
+    constructor(
+        scene: Phaser.Scene,
+        x: number,
+        y: number,
+        socket: Socket,
+        playerName: string
+    ) {
         super(scene, x, y, 'FufuSuperDino')
         this.socket = socket
         this.playerName = playerName
