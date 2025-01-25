@@ -8,6 +8,7 @@ import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
 import type { GameState } from '../../types/ServerTypes'
+import { Bubble } from '../classes/Bubble'
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
@@ -43,11 +44,13 @@ export default class Level extends Phaser.Scene {
     /* START-USER-CODE */
     private player!: Player
     private enemy?: Enemy
+    private bubbles: Bubble[] = [];
     private socket!: Socket
     private path!: Phaser.Curves.Path
     private base?: Base
     private otherPlayers: Map<string, Player> = new Map()
     private playername!: string
+
 
     create() {
         this.socket = this.registry.get('socket')
@@ -112,39 +115,26 @@ export default class Level extends Phaser.Scene {
 
         this.socket.emit('joinGame', { playerName: this.playername })
 
+        const bubbleStart = [1200, 100];
         // Define the path
-        this.path = this.add.path(1200, 100)
-        this.path.lineTo(1200, 430)
-        this.path.lineTo(1082, 430)
-        this.path.lineTo(1082, 208)
-        this.path.lineTo(820, 208)
-        this.path.lineTo(820, 620)
-        this.path.lineTo(975, 620)
-        this.path.lineTo(955, 130)
-        this.path.lineTo(615, 140)
-        this.path.lineTo(590, 530)
-        this.path.lineTo(180, 530)
-        this.path.lineTo(160, 150)
+        const path = [
+            [1200, 430],
+            [1082, 430],
+            [1082, 208],
+            [820, 208],
+            [820, 620],
+            [975, 620],
+            [955, 130],
+            [615, 140],
+            [590, 530],
+            [180, 530],
+            [160, 150],
+        ];
 
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
 
-        //uncomment to show path
-        // this.path.draw(graphics)
-
-        const enemy = new Enemy(this, 1200, 100)
-        this.enemy = this.add.follower(
-            this.path,
-            enemy.x,
-            enemy.y,
-            enemy.texture.key
-        )
-        this.enemy.startFollow({
-            duration: 5000,
-            yoyo: false,
-            repeat: -1,
-            rotateToPath: true,
-        })
+        this.bubbles.push(new Bubble(this, bubbleStart, path))
     }
 
     update(time: number, delta: number): void {
@@ -153,5 +143,8 @@ export default class Level extends Phaser.Scene {
 
 
         this.base?.update(time, delta)
+        this.bubbles.forEach((bubble) => {
+            bubble.update(time, delta)
+        })
     }
 }
