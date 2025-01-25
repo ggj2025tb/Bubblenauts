@@ -50,10 +50,12 @@ export class Enemy extends Actor {
 
         this.scene.physics.moveTo(
             this,
-            this.bubbleToFollow.x,
-            this.bubbleToFollow.y,
+            this.bubbleToFollow.x + 10,
+            this.bubbleToFollow.y + 10,
             this.speed
         )
+
+        this.checkFlip()
 
         //check if the enemy is close to the bubble
         if (
@@ -74,6 +76,14 @@ export class Enemy extends Actor {
         if (this.bubbles !== undefined) {
             // Select random bubble
             this.bubbleToFollow = Phaser.Math.RND.pick(this.bubbles)
+        }
+    }
+
+    protected checkFlip(): void {
+        if (this.body.velocity.x < 0) {
+            this.scaleX = -1
+        } else {
+            this.scaleX = 1
         }
     }
 
