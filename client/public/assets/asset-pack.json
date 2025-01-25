@@ -33,6 +33,29 @@
                 "key": "decoration"
             },
             {
+                "url": "assets/tileset/dreizack.png",
+                "frameConfig": {
+                    "frameWidth": 16,
+                    "frameHeight": 80,
+                    "startFrame": 0,
+                    "endFrame": 7,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "dreizack"
+            },
+            {
+                "url": "assets/Dreizack.png",
+                "type": "image",
+                "key": "Dreizack"
+            },
+            {
+                "url": "assets/animations/dreizack.json",
+                "type": "animation",
+                "key": "dreizack_1"
+            },
+            {
                 "url": "assets/tileset/environment.png",
                 "frameConfig": {
                     "frameWidth": 32,
@@ -51,6 +74,16 @@
                 "key": "FufuSuperDino"
             },
             {
+                "url": "assets/Harpune.png",
+                "type": "image",
+                "key": "Harpune"
+            },
+            {
+                "url": "assets/intro.png",
+                "type": "image",
+                "key": "intro"
+            },
+            {
                 "url": "assets/tileset/player.png",
                 "frameConfig": {
                     "frameWidth": 52,
@@ -67,21 +100,6 @@
                 "url": "assets/animations/playerGreenBlueAnimation.json",
                 "type": "animation",
                 "key": "playerGreenBlueAnimation"
-            },
-            {
-                "url": "assets/Harpune.png",
-                "type": "image",
-                "key": "Harpune"
-            },
-            {
-                "url": "assets/Dreizack.png",
-                "type": "image",
-                "key": "Dreizack"
-            },
-            {
-                "url": "assets/intro.png",
-                "type": "image",
-                "key": "intro"
             }
         ]
     },
