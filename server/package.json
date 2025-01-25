@@ -1,8 +1,8 @@
 {
     "type": "module",
     "scripts": {
-        "nodemon": "nodemon --watch 'src/**/*.ts' ./server.ts",
         "build": "tsc"
+        "nodemon": "nodemon ./server.ts"
     },
     "dependencies": {
         "@types/node": "^18.0.0",
