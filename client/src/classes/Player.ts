@@ -65,7 +65,7 @@ export class Player extends Actor {
         }
 
         this.label.setPosition(this.x, this.y - 160)
-        this.healthBar.setPosition(this.x, this.y - 140)
+        this.healthBar.setPosition(this.x - 16, this.y - 60)
 
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
             this.socket.emit('playerUpdate', {
