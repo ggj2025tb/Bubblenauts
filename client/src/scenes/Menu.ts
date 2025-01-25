@@ -26,7 +26,7 @@ export default class Menu extends Phaser.Scene {
         this.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.0)'
         this.nameInput.style.border = 'none'
         this.nameInput.style.outline = 'none'
-        this.nameInput.style.fontSize = '50px'
+        this.nameInput.style.fontSize = '3vw'
         this.nameInput.maxLength = 20
 
         this.nameInput.placeholder = 'Enter your name'
@@ -39,7 +39,7 @@ export default class Menu extends Phaser.Scene {
         this.div.style.width = '100%'
         this.div.style.textAlign = 'center'
         this.div.style.position = 'absolute'
-        this.div.style.top = '470px'
+        this.div.style.top = 'calc(100% - 61%)'
         this.div.appendChild(this.nameInput)
 
         this.div.appendChild(document.createElement('br'))
