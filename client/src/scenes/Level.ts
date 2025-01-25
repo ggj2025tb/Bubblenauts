@@ -43,18 +43,16 @@ export default class Level extends Phaser.Scene {
     private level1Map!: Phaser.Tilemaps.Tilemap
 
     /* START-USER-CODE */
-    private player!: Player;
+    private player!: Player
     // enemies will be filled by the EnemySpawner
-    private enemies: Enemy[] = [];
-    private bubbles: Bubble[] = [];
-    private socket!: Socket;
-    private base?: Base;
-    private otherPlayers: Map<string, Player> = new Map();
-    private playername!: string;
-    private enemyInterval: number = 5000;
-    private enemyWaveCount: number = 5;
-
-
+    private enemies: Enemy[] = []
+    private bubbles: Bubble[] = []
+    private socket!: Socket
+    private base?: Base
+    private otherPlayers: Map<string, Player> = new Map()
+    private playername!: string
+    private enemyInterval: number = 5000
+    private enemyWaveCount: number = 5
     create() {
         this.socket = this.registry.get('socket')
         this.playername = this.registry.get('playerName')
@@ -111,7 +109,11 @@ export default class Level extends Phaser.Scene {
                     otherPlayer.setPosition(playerInfo.x, playerInfo.y)
                     otherPlayer.label.setPosition(
                         playerInfo.x,
-                        playerInfo.y + 120
+                        playerInfo.y - 160
+                    )
+                    otherPlayer.healthBar.setPosition(
+                        playerInfo.x,
+                        playerInfo.y - 140
                     )
                     otherPlayer.scaleX = playerInfo.direction
                 }
@@ -120,7 +122,7 @@ export default class Level extends Phaser.Scene {
 
         this.socket.emit('joinGame', { playerName: this.playername })
 
-        const bubbleStart = [1200, 100];
+        const bubbleStart = [1200, 100]
         // Define the path
         const path = [
             [1200, 430],
@@ -134,20 +136,25 @@ export default class Level extends Phaser.Scene {
             [590, 530],
             [180, 530],
             [160, 150],
-        ];
+        ]
 
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
 
-        this.bubbles.push(new Bubble(this, bubbleStart, path));
+        this.bubbles.push(new Bubble(this, bubbleStart, path))
         const enemySpawnPoints = [
             new Phaser.Math.Vector2(1200, 100),
             new Phaser.Math.Vector2(1200, 300),
             new Phaser.Math.Vector2(1200, 500),
             new Phaser.Math.Vector2(1200, 700),
-        ];
-        const enemySpawner = new EnemySpawner(this, enemySpawnPoints, this.enemyInterval, this.enemyWaveCount);
-        enemySpawner.start();
+        ]
+        const enemySpawner = new EnemySpawner(
+            this,
+            enemySpawnPoints,
+            this.enemyInterval,
+            this.enemyWaveCount
+        )
+        enemySpawner.start()
     }
 
     update(time: number, delta: number): void {
