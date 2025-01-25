@@ -44,13 +44,12 @@ export default class Level extends Phaser.Scene {
     /* START-USER-CODE */
     private player!: Player
     private enemy?: Enemy
-    private bubbles: Bubble[] = [];
+    private bubbles: Bubble[] = []
     private socket!: Socket
     private path!: Phaser.Curves.Path
     private base?: Base
     private otherPlayers: Map<string, Player> = new Map()
     private playername!: string
-
 
     create() {
         this.socket = this.registry.get('socket')
@@ -118,7 +117,7 @@ export default class Level extends Phaser.Scene {
 
         this.socket.emit('joinGame', { playerName: this.playername })
 
-        const bubbleStart = [1200, 100];
+        const bubbleStart = [1200, 100]
         // Define the path
         const path = [
             [1200, 430],
@@ -132,7 +131,7 @@ export default class Level extends Phaser.Scene {
             [590, 530],
             [180, 530],
             [160, 150],
-        ];
+        ]
 
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
