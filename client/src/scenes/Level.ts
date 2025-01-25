@@ -121,17 +121,22 @@ export default class Level extends Phaser.Scene {
         )
 
         // Define the path
-        this.path = this.add.path(1200, 100)
-        this.path.lineTo(1200, 300)
-        this.path.lineTo(800, 300)
-        this.path.lineTo(800, 150)
-        this.path.lineTo(1000, 150)
-        this.path.lineTo(1000, 600)
-        this.path.lineTo(600, 600)
+        this.path = this.add.path(1200, 100);
+        this.path.lineTo(1200, 430);
+        this.path.lineTo(1082, 430);
+        this.path.lineTo(1082, 208);
+        this.path.lineTo(820, 208);
+        this.path.lineTo(820, 620);
+        this.path.lineTo(975, 620);
+        this.path.lineTo(955, 130);
+        this.path.lineTo(615, 140);
+        this.path.lineTo(590, 530);
+        this.path.lineTo(180, 530);
+        this.path.lineTo(160, 150);
 
         const graphics = this.add.graphics()
-        graphics.lineStyle(1, 0xffffff, 1)
-        this.path.draw(graphics)
+        graphics.lineStyle(3, 0xffffff, 1)
+        // this.path.draw(graphics)
 
         const enemy = new Enemy(this, 1200, 100)
         this.enemy_1 = this.add.follower(
