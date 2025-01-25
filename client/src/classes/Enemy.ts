@@ -20,7 +20,7 @@ export class Enemy extends Actor {
         // PHYSICS
         this.getBody().setSize(10, 10)
         this.getBody().setOffset(8, 0)
-        this.scale = 1
+        this.scale = 1.5
         this.health = 100 // Override default health from Actor
         this.id = id
 

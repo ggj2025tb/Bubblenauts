@@ -57,7 +57,7 @@ export class Player extends Actor {
     }
 
     updateHealth(time: number, delta: number): void {
-        if (time - this.lastHealthUpdateTime > 200) {
+        if (time - this.lastHealthUpdateTime > 400) {
             if (
                 this.x >= 90 &&
                 this.x <= 200 &&
@@ -65,7 +65,7 @@ export class Player extends Actor {
                 this.y <= 180
             ) {
                 if (this.health < 100) {
-                    this.health += 1
+                    this.health += 10
                     this.socket.emit('playerHealthUpdate', {
                         health: this.health,
                     })
