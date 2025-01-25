@@ -62,7 +62,7 @@ export default class Level extends Phaser.Scene {
         this.editorCreate()
 
         // Pass socket to Player
-        this.player = new Player(this, 400, 300, this.socket)
+        this.player = new Player(this, 400, 300, this.socket, this.playername)
         this.enemy = new Enemy(this, 800, 600)
 
         this.cameras.main.setBounds(
@@ -83,7 +83,8 @@ export default class Level extends Phaser.Scene {
                         this,
                         player.x,
                         player.y,
-                        this.socket
+                        this.socket,
+                        player.name
                     )
                     otherPlayer.setTint(0x00ff00)
                     this.otherPlayers.set(player.id, otherPlayer)
@@ -103,6 +104,7 @@ export default class Level extends Phaser.Scene {
                 const otherPlayer = this.otherPlayers.get(playerInfo.id)
                 if (otherPlayer) {
                     otherPlayer.setPosition(playerInfo.x, playerInfo.y)
+                    otherPlayer.label.setPosition(playerInfo.x, playerInfo.y + 120)
                     otherPlayer.scaleX = playerInfo.direction
                 }
             }
@@ -148,6 +150,8 @@ export default class Level extends Phaser.Scene {
     update(time: number, delta: number): void {
         const cursors = this.input.keyboard.createCursorKeys()
         this.player.update(cursors, delta)
+
+
         this.base?.update(time, delta)
     }
 }
