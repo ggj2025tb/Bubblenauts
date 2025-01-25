@@ -31,36 +31,6 @@
             "randomFrame": false
         },
         {
-            "key": "walk",
-            "type": "frame",
-            "frames": [
-                {
-                    "key": "player",
-                    "frame": 12,
-                    "duration": 0,
-                    "keyframe": false
-                },
-                {
-                    "key": "player",
-                    "frame": 13,
-                    "duration": 0,
-                    "keyframe": false
-                },
-                {
-                    "key": "player",
-                    "frame": 14,
-                    "duration": 0,
-                    "keyframe": false
-                }
-            ],
-            "frameRate": 10,
-            "skipMissedFrames": true,
-            "delay": 1,
-            "repeat": -1,
-            "yoyo": true,
-            "randomFrame": false
-        },
-        {
             "key": "down",
             "type": "frame",
             "frames": [
@@ -109,6 +79,36 @@
                 {
                     "key": "player",
                     "frame": 38,
+                    "duration": 0,
+                    "keyframe": false
+                }
+            ],
+            "frameRate": 10,
+            "skipMissedFrames": true,
+            "delay": 1,
+            "repeat": -1,
+            "yoyo": true,
+            "randomFrame": false
+        },
+        {
+            "key": "walk",
+            "type": "frame",
+            "frames": [
+                {
+                    "key": "player",
+                    "frame": 24,
+                    "duration": 0,
+                    "keyframe": false
+                },
+                {
+                    "key": "player",
+                    "frame": 25,
+                    "duration": 0,
+                    "keyframe": false
+                },
+                {
+                    "key": "player",
+                    "frame": 26,
                     "duration": 0,
                     "keyframe": false
                 }
