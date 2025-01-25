@@ -4,6 +4,7 @@ export interface Player {
     x: number
     y: number
     direction?: number
+    health: number
 }
 
 export interface GameState {
