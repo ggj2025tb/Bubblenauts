@@ -1,4 +1,5 @@
 import { Actor } from './Actor'
+import { WeaponManager } from './WeaponManager'
 import { Weapon } from './Weapon'
 import { Socket } from 'socket.io-client'
 
@@ -16,6 +17,7 @@ export class Player extends Actor {
     public healthBar: Phaser.GameObjects.Text
     private socket: Socket
     private weapon: Weapon
+    private weaponManager: WeaponManager
 
     constructor(
         scene: Phaser.Scene,
@@ -45,10 +47,12 @@ export class Player extends Actor {
 
         this.label = scene.add.text(x, y - 160, this.playerName)
         this.healthBar = scene.add.text(x, y - 140, this.health.toString())
+
+        this.weaponManager = new WeaponManager(scene, this, socket)
     }
 
     update(): void {
-        this.updateAnimation();
+        this.updateAnimation()
         if (this.keyW?.isDown) {
             this.body.velocity.y = -this.MOVEMENT_SPEED
         }
@@ -69,6 +73,8 @@ export class Player extends Actor {
         this.label.setPosition(this.x, this.y - 160)
         this.healthBar.setPosition(this.x - 16, this.y - 60)
 
+        this.weaponManager.update()
+
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
             this.socket.emit('playerUpdate', {
                 x: this.x,
@@ -80,5 +86,8 @@ export class Player extends Actor {
 
     public getWeapon(): Weapon {
         return this.weapon
+    }
+    public getCurrentWeapon() {
+        return this.weaponManager.getCurrentWeapon()
     }
 }

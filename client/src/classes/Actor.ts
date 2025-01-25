@@ -33,9 +33,9 @@ export class Actor extends Physics.Arcade.Sprite {
 
     protected checkFlip(): void {
         if (this.body.velocity.x < 0) {
-            this.scaleX = 1
-        } else {
             this.scaleX = -1
+        } else {
+            this.scaleX = 1
         }
     }
     protected getBody(): Physics.Arcade.Body {
@@ -60,7 +60,12 @@ export class Actor extends Physics.Arcade.Sprite {
             this.anims.play('walk', true)
         } else if (this.keyW?.isDown) {
             this.anims.play('up', true)
-        } else if (this.keyW?.isUp && this.keyA?.isUp && this.keyS?.isUp && this.keyD?.isUp) {
+        } else if (
+            this.keyW?.isUp &&
+            this.keyA?.isUp &&
+            this.keyS?.isUp &&
+            this.keyD?.isUp
+        ) {
             this.anims.play('idle', true)
         }
     }
