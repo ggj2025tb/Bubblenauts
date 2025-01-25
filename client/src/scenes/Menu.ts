@@ -2,6 +2,8 @@ import type { Socket } from 'socket.io-client'
 
 export default class Menu extends Phaser.Scene {
     private nameInput!: HTMLInputElement
+    private button!: HTMLButtonElement
+    private div!: HTMLButtonElement
     private socket: Socket
 
     constructor() {
@@ -10,38 +12,45 @@ export default class Menu extends Phaser.Scene {
 
     create() {
         this.socket = this.registry.get('socket')
-        if (!this.socket) {
-            console.error('No socket found in registry')
-            return
-        }
         this.nameInput = document.createElement('input')
-        this.nameInput.style.position = 'absolute'
-        this.nameInput.style.left = '100px'
-        this.nameInput.style.top = '50px'
-        this.nameInput.style.padding = '8px'
         this.nameInput.style.width = '200px'
+        this.nameInput.style.height = '40px'
+        this.nameInput.style.textAlign = 'center'
         this.nameInput.placeholder = 'Enter your name'
-        document.body.appendChild(this.nameInput)
+        this.nameInput.onkeyup = (e) => {
+            if (e.key == 'Enter') {
+                this.joinGame(this) // Pass the current context (this) to joinGame
+            }
+        }
+        this.div = document.createElement('div')
+        this.div.style.width = '100%'
+        this.div.style.textAlign = 'center'
+        this.div.style.position = 'absolute'
+        this.div.style.top = '250px'
+        this.div.appendChild(this.nameInput)
 
-        this.add
-            .text(100, 100, 'Join Game!', { fill: '#0f0' })
-            .setInteractive()
-            .on('pointerup', () => {
-                const playerName = this.nameInput.value.trim()
-                if (playerName) {
-                    this.registry.set('playerName', playerName)
-                    document.body.removeChild(this.nameInput)
-                    // Start Level scene with socket in registry
-                    this.scene.start('Level', {
-                        socket: this.socket,
-                    })
-                }
-            })
+        this.div.appendChild(document.createElement('br'))
+        this.div.appendChild(document.createElement('br'))
+
+        this.button = document.createElement('button')
+        this.button.style.height = '40px'
+        this.button.style.width = '200px'
+        this.button.textContent = 'Join Game'
+        this.button.onclick = () => this.joinGame(this)
+        this.div.appendChild(this.button)
+
+        document.body.appendChild(this.div)
+        this.nameInput.focus()
     }
 
-    shutdown() {
-        if (this.nameInput && this.nameInput.parentElement) {
-            document.body.removeChild(this.nameInput)
+    private joinGame(that) {
+        const playerName = that.nameInput.value.trim()
+        if (playerName) {
+            that.registry.set('playerName', playerName)
+            document.body.removeChild(that.div)
+            that.scene.start('Level', {
+                socket: that.socket,
+            })
         }
     }
 }

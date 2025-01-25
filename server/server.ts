@@ -23,6 +23,7 @@ io.on('connection', (socket) => {
             name: playerName,
             x: 400,
             y: 300,
+            health: 100,
         }
 
         // Add player to gameState
@@ -48,7 +49,6 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         delete gameState.players[socket.id]
         io.emit('gameState', gameState)
-        console.log('Client disconnected:', socket.id)
     })
 })
 
