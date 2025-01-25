@@ -26,23 +26,11 @@ export default class Level extends Phaser.Scene {
         level1Map.addTilesetImage('Bubbles', 'bubbles')
         level1Map.addTilesetImage('Player', 'player')
         level1Map.addTilesetImage('Environment', 'environment')
-
-        // ground_1
         level1Map.createLayer('Ground', ['Environment'], 0, 0)
-
-        // walls_1
         level1Map.createLayer('Walls', ['Environment'], 0, 0)
-
-        // floor_1
         level1Map.createLayer('Floor', ['Environment', 'Decoration'], 0, 0)
-
-        // roadBottom_1
         level1Map.createLayer('RoadBottom', ['Decoration'], 0, 0)
-
-        // roadTop_1
         level1Map.createLayer('RoadTop', ['Environment', 'Decoration'], 0, 0)
-
-        // base_1
         level1Map.createLayer('Base', ['Environment', 'Decoration'], 0, 0)
 
         this.level1Map = level1Map
@@ -73,13 +61,9 @@ export default class Level extends Phaser.Scene {
 
         this.editorCreate()
 
-        const obstacles = this.physics.add.staticGroup()
-        obstacles.create(300, 300, 'guapen').setScale(0.3)
-
         // Pass socket to Player
         this.player_1 = new Player(this, 400, 300, this.socket)
         this.enemy_1 = new Enemy(this, 800, 600)
-        this.base = new Base(this, 100, 100)
 
         this.socket.on('gameState', (gameState: GameState) => {
             // Clear existing players
@@ -138,6 +122,8 @@ export default class Level extends Phaser.Scene {
 
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
+
+        //uncomment to show path
         // this.path.draw(graphics)
 
         const enemy = new Enemy(this, 1200, 100)
