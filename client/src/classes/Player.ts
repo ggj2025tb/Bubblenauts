@@ -40,28 +40,22 @@ export class Player extends Actor {
     }
 
     update(): void {
+        this.updateAnimation();
         if (this.keyW?.isDown) {
             this.body.velocity.y = -this.MOVEMENT_SPEED
-            this.anims.play('up', true)
         }
         if (this.keyA?.isDown) {
             this.body.velocity.x = -this.MOVEMENT_SPEED
             this.checkFlip()
             this.getBody().setOffset(48, 15)
-            this.anims.play('walk', true)
         }
         if (this.keyS?.isDown) {
             this.body.velocity.y = this.MOVEMENT_SPEED
-            this.anims.play('down', true)
         }
         if (this.keyD?.isDown) {
             this.body.velocity.x = this.MOVEMENT_SPEED
             this.checkFlip()
             this.getBody().setOffset(15, 15)
-            this.anims.play('walk', true)
-        }
-        if(this.keyW?.isUp && this.keyA?.isUp && this.keyS?.isUp && this.keyD?.isUp) {
-            this.anims.play('idle', true)
         }
 
         this.label.setPosition(this.x, this.y - 160)
