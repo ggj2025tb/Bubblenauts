@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { Socket } from 'socket.io-client'
+import { Enemy } from './Enemy'
 
 export class Weapon {
     private scene: Phaser.Scene
@@ -8,6 +9,7 @@ export class Weapon {
     private isAttacking: boolean = false
     private attackCooldown: number = 500 // milliseconds
     private lastAttackTime: number = 0
+    private damage: number = 20 // Base damage value
 
     constructor(scene: Phaser.Scene, player: Phaser.GameObjects.GameObject) {
         this.scene = scene
@@ -40,7 +42,20 @@ export class Weapon {
         this.hitBox.x = player.x + 50 * offsetMultiplier
         this.hitBox.y = player.y
 
-        // Visual/animation feedback (optional)
+        // Check for enemy collisions
+        const enemies: Enemy[] = this.scene.enemies || []
+        enemies.forEach((enemy) => {
+            if (
+                Phaser.Geom.Intersects.RectangleToRectangle(
+                    this.hitBox.getBounds(),
+                    enemy.getBounds()
+                )
+            ) {
+                this.damageEnemy(enemy)
+            }
+        })
+
+        // Visual feedback
         this.scene.tweens.add({
             targets: this.hitBox,
             alpha: 0.5,
@@ -50,14 +65,18 @@ export class Weapon {
                 this.isAttacking = false
             },
         })
+    }
 
-        // Emit attack event to server (for multiplayer synchronization)
-        const socket: Socket = (player as any).socket
-        socket.emit('playerAttack', {
-            x: this.hitBox.x,
-            y: this.hitBox.y,
-            direction: player.scaleX,
-        })
+    private damageEnemy(enemy: Enemy): void {
+        // Apply damage to enemy
+        enemy.getDamage(this.damage)
+
+        // Optional: Knockback effect
+        const knockbackForce = 100
+        const player: any = this.player
+        const direction = player.scaleX < 0 ? -1 : 1
+        enemy.body.velocity.x = knockbackForce * direction
+        enemy.body.velocity.y = -50 // Slight upward push
     }
 
     public getHitBox(): Phaser.GameObjects.Rectangle {
