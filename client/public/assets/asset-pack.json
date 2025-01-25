@@ -51,19 +51,6 @@
                 "key": "dreizack"
             },
             {
-                "url": "assets/tileset/enemy_1_attack.png",
-                "frameConfig": {
-                    "frameWidth": 48,
-                    "frameHeight": 48,
-                    "startFrame": 0,
-                    "endFrame": -1,
-                    "spacing": 0,
-                    "margin": 0
-                },
-                "type": "spritesheet",
-                "key": "enemy_1"
-            },
-            {
                 "url": "assets/enemies/enemy_1_attack.png",
                 "frameConfig": {
                     "frameWidth": 48,
@@ -119,6 +106,11 @@
                 "url": "assets/FufuSuperDino.png",
                 "type": "image",
                 "key": "FufuSuperDino"
+            },
+            {
+                "url": "assets/enemies/enemy_1.png",
+                "type": "image",
+                "key": "enemy_1"
             },
             {
                 "url": "assets/Harpune.png",

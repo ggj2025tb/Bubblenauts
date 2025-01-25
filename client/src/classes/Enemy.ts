@@ -16,12 +16,11 @@ export class Enemy extends Actor {
         bubbles: Bubble[],
         id: string
     ) {
-        super(scene, x, y, 'FufuSuperDino')
+        super(scene, x, y, 'enemy_1')
         // PHYSICS
         this.getBody().setSize(10, 10)
         this.getBody().setOffset(8, 0)
-        this.setTint(0xff0000)
-        this.scale = 0.2
+        this.scale = 1
         this.health = 100 // Override default health from Actor
         this.id = id
 
@@ -35,6 +34,7 @@ export class Enemy extends Actor {
         if (this.isDying) return
 
         if (this.bubbleToFollow === undefined) {
+            this.anims.play('enemy_1_walk', true)
             this.selectNewBubble()
             // No new bubble found, do nothing
             if (this.bubbleToFollow === undefined) {
@@ -63,7 +63,6 @@ export class Enemy extends Actor {
         super.getDamage(value)
 
         // Optional: Flash red when hit
-        this.setTint(0xff0000)
         this.scene.time.delayedCall(100, () => {
             this.clearTint()
         })
@@ -85,6 +84,7 @@ export class Enemy extends Actor {
                 if (index > -1) {
                     ;(this.scene as any).enemies.splice(index, 1)
                 }
+                this.anims.play('enemy_1_death')
                 this.destroy()
             },
         })
