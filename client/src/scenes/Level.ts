@@ -56,8 +56,6 @@ export default class Level extends Phaser.Scene {
     private base?: Base
     private otherPlayers: Map<string, Player> = new Map()
     private playername!: string
-    private enemyInterval: number = 5000
-    private enemyWaveCount: number = 5
     private startGameButton!: Phaser.GameObjects.Image
 
     create() {

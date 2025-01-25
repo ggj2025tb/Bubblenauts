@@ -1,10 +1,7 @@
-import type { Socket } from 'socket.io-client'
-
 export default class Menu extends Phaser.Scene {
     private nameInput!: HTMLInputElement
     private button!: HTMLButtonElement
     private div!: HTMLButtonElement
-    private socket: Socket
 
     constructor() {
         super('Menu')

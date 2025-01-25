@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import Level from './scenes/Level'
 import Menu from './scenes/Menu'
+import GameOver from './scenes/GameOver'
 import Preload from './scenes/Preload'
 import io from 'socket.io-client'
 import type { Socket } from 'socket.io-client'
@@ -49,7 +50,7 @@ window.addEventListener('load', function () {
             mode: Phaser.Scale.ScaleModes.FIT,
             autoCenter: Phaser.Scale.Center.CENTER_BOTH,
         },
-        scene: [Boot, Preload, Menu, Level],
+        scene: [Boot, Preload, Menu, Level, GameOver],
         physics: {
             default: 'arcade',
             arcade: {

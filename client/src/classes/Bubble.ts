@@ -41,7 +41,8 @@ export class Bubble extends Actor {
 
             if (this.health <= 0) {
                 // scenen wechsel hier
-                alert('game over')
+                // alert('game over')
+                this.scene.scene.start('GameOver')
             }
         }
     }
