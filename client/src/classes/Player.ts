@@ -18,6 +18,7 @@ export class Player extends Actor {
     private socket: Socket
     private weapon: Weapon
     private weaponManager: WeaponManager
+    private lastHealthUpdateTime: number = 0
 
     constructor(
         scene: Phaser.Scene,
@@ -46,13 +47,49 @@ export class Player extends Actor {
         this.weapon = new Weapon(scene, this, Phaser.Input.Pointer, 'Dreizack')
 
         this.label = scene.add.text(x - 16, y - 80, this.playerName)
-        this.healthBar = scene.add.text(x - 16, y - 60, this.health.toString())
+        this.healthBar = scene.add.text(
+            x - 16,
+            y - 60,
+            this.health.toString() + '% Air'
+        )
 
         this.weaponManager = new WeaponManager(scene, this, socket)
     }
 
-    update(): void {
+    updateHealth(time: number, delta: number): void {
+        if (time - this.lastHealthUpdateTime > 100) {
+            if (
+                this.x >= 90 &&
+                this.x <= 200 &&
+                this.y >= 100 &&
+                this.y <= 180
+            ) {
+                if (this.health < 100) {
+                    this.health += 1
+                    this.socket.emit('playerHealthUpdate', {
+                        health: this.health,
+                    })
+                }
+            } else {
+                if (this.health > 0) {
+                    this.health -= 1
+                    this.socket.emit('playerHealthUpdate', {
+                        health: this.health,
+                    })
+                } else {
+                    this.scene.input.keyboard.enabled = false
+                }
+            }
+
+            this.healthBar.text = this.health.toString() + '% Air'
+            this.lastHealthUpdateTime = time
+        }
+    }
+
+    update(time: number, delta: number): void {
         this.updateAnimation()
+        this.updateHealth(time, delta)
+
         if (this.keyW?.isDown) {
             this.body.velocity.y = -this.MOVEMENT_SPEED
         }
