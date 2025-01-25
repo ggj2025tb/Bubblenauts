@@ -51,6 +51,58 @@
                 "key": "dreizack"
             },
             {
+                "url": "assets/tileset/enemy_1_attack.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_1"
+            },
+            {
+                "url": "assets/enemies/enemy_1_attack.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_1_attack"
+            },
+            {
+                "url": "assets/enemies/enemy_1_death.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_1_death"
+            },
+            {
+                "url": "assets/enemies/enemy_1_walk.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_1_walk"
+            },
+            {
                 "url": "assets/tileset/environment.png",
                 "frameConfig": {
                     "frameWidth": 32,
