@@ -44,7 +44,7 @@ export class Player extends Actor {
         this.getBody().setMaxVelocity(this.MAX_SPEED, this.MAX_SPEED)
 
         // Weapon
-        this.weapon = new Weapon(scene, this, Phaser.Input.Pointer, 'Dreizack')
+        this.weapon = new Weapon(scene, this, Phaser.Input.Pointer, 'dreizack')
 
         this.label = scene.add.text(x - 16, y - 80, this.playerName)
         this.healthBar = scene.add.text(
@@ -57,20 +57,20 @@ export class Player extends Actor {
     }
 
     updateHealth(time: number, delta: number): void {
-        if (time - this.lastHealthUpdateTime > 200) {
+        if (time - this.lastHealthUpdateTime > 400) {
             if (
                 this.x >= 90 &&
                 this.x <= 200 &&
                 this.y >= 100 &&
                 this.y <= 180
             ) {
-                if (this.health < 100) {
-                    if (this.health == 99) {
-                        this.health += 1
-                    } else {
-                        this.health += 2
-                    }
-
+                if (this.health < 95) {
+                    this.health += 5
+                    this.socket.emit('playerHealthUpdate', {
+                        health: this.health,
+                    })
+                } else {
+                    this.health = 100
                     this.socket.emit('playerHealthUpdate', {
                         health: this.health,
                     })

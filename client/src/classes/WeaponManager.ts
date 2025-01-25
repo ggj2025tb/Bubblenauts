@@ -25,11 +25,11 @@ export class WeaponManager {
         // Initialize weapons with trident asset
         this.weapons.set(
             'melee',
-            new Weapon(scene, player, this.mousePointer, 'Dreizack')
+            new Weapon(scene, player, this.mousePointer, 'dreizack')
         )
         this.weapons.set(
             'gun',
-            new Gun(scene, player, this.mousePointer, 'Dreizack')
+            new Gun(scene, player, this.mousePointer, 'dreizack')
         )
 
         // Weapon indicator

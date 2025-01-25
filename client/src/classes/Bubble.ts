@@ -1,5 +1,5 @@
 import { Actor } from './Actor'
-import {Socket} from "socket.io-client";
+import { Socket } from 'socket.io-client'
 export class Bubble extends Actor {
     private pathArray: number[][]
     private speed: number = 50
@@ -28,7 +28,6 @@ export class Bubble extends Actor {
         this.socket = socket
     }
 
-
     updateHealth(time: number, delta: number): void {
         if (time - this.lastHealthUpdateTime > 200) {
             this.health -= 1
@@ -42,7 +41,7 @@ export class Bubble extends Actor {
 
             if (this.health <= 0) {
                 // scenen wechsel hier
-                alert('game over');
+                alert('game over')
             }
         }
     }

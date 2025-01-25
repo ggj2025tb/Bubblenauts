@@ -77,10 +77,7 @@ export default class Level extends Phaser.Scene {
         this.cameras.main.setZoom(1.5)
         const interfaceimg = this.add.image(0, 0, 'interfaceimg')
         interfaceimg.setOrigin(0, 1)
-        interfaceimg.setDisplaySize(
-            560,
-            96
-        )
+        interfaceimg.setDisplaySize(560, 96)
         // A static button that can be used to send a message to the server
         this.startGameButton = this.add.image(140, 200, 'StartButtonRendered')
         this.startGameButton.setOrigin(0, 0)
@@ -196,13 +193,12 @@ export default class Level extends Phaser.Scene {
             (bubbleInfo: { id: string; health: number }) => {
                 const bubble = this.bubbles[0]
                 if (bubble) {
-                    bubble.healthBar.text = bubbleInfo.health.toString() + '% Life'
-                    bubble.health = bubbleInfo.health;
+                    bubble.healthBar.text =
+                        bubbleInfo.health.toString() + '% Life'
+                    bubble.health = bubbleInfo.health
                 }
             }
         )
-
-
 
         // Listen for player movement updates
         this.socket.on(
