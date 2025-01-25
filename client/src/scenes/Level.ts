@@ -69,7 +69,6 @@ export default class Level extends Phaser.Scene {
 
         // Pass socket to Player
         this.player = new Player(this, 400, 300, this.socket, this.playername)
-        this.enemy = new Enemy(this, 800, 600)
 
         this.cameras.main.setBounds(
             0,
