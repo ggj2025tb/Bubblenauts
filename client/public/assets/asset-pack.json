@@ -126,6 +126,11 @@
                 "key": "Harpune"
             },
             {
+                "url": "assets/interfaceimg.png",
+                "type": "image",
+                "key": "interfaceimg"
+            },
+            {
                 "url": "assets/intro.png",
                 "type": "image",
                 "key": "intro"
@@ -147,6 +152,11 @@
                 "url": "assets/animations/playerGreenBlueAnimation.json",
                 "type": "animation",
                 "key": "playerGreenBlueAnimation"
+            },
+            {
+                "url": "assets/StartButtonRendered.png",
+                "type": "image",
+                "key": "StartButtonRendered"
             }
         ]
     },
