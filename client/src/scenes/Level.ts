@@ -7,7 +7,7 @@ import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
-import type { GameState } from '../../types/ServerTypes'
+import type { GameState, Enemy as ServerEnemy, MapData as ServerMapData, Bubble as ServerBubble } from '../../types/ServerTypes'
 import { Bubble } from '../classes/Bubble'
 import { EnemySpawner } from '../classes/EnemySpawner'
 /* END-USER-IMPORTS */
@@ -53,6 +53,7 @@ export default class Level extends Phaser.Scene {
     private playername!: string
     private enemyInterval: number = 5000
     private enemyWaveCount: number = 5
+    private startGameButton!: Phaser.GameObjects.Text
 
     create() {
         this.socket = this.registry.get('socket')
@@ -70,6 +71,51 @@ export default class Level extends Phaser.Scene {
         )
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
+        // A static button that can be used to send a message to the server
+        this.startGameButton = this.add.text(400, 100, 'Start game', {
+            fill: '#fff',
+            backgroundColor: '#999',
+        })
+        this.startGameButton.setInteractive()
+
+        this.startGameButton.on('pointerdown', () => {
+            const mapData: ServerMapData = {
+                enemySpawnPoints: [
+                    [1200, 100],
+                    [1200, 300],
+                    [1200, 500],
+                    [1200, 700],
+                ],
+                enemyPath: [
+                    [1200, 430],
+                    [1082, 430],
+                    [1082, 208],
+                    [820, 208],
+                    [820, 620],
+                    [975, 620],
+                    [955, 130],
+                    [615, 140],
+                    [590, 530],
+                    [180, 530],
+                    [160, 150],
+                ],
+                bubbleSpawnPoint: [1200, 100],
+                bubblePath: [
+                    [1200, 430],
+                    [1082, 430],
+                    [1082, 208],
+                    [820, 208],
+                    [820, 620],
+                    [975, 620],
+                    [955, 130],
+                    [615, 140],
+                    [590, 530],
+                    [180, 530],
+                    [160, 150],
+                ],
+            }
+            this.socket.emit('startGame', { mapData });
+        })
 
         this.socket.on('gameState', (gameState: GameState) => {
             this.otherPlayers.forEach((player) => player.destroy())
@@ -92,6 +138,27 @@ export default class Level extends Phaser.Scene {
                     this.otherPlayers.set(player.id, otherPlayer)
                 }
             })
+        })
+
+        this.socket.on('enemyCreated', (enemy: ServerEnemy) => {
+            console.log(`Spawning enemy at ${enemy.x}, ${enemy.y}`)
+            const newEnemy = new Enemy(
+                this,
+                enemy.x,
+                enemy.y,
+                this.bubbles
+            )
+            this.enemies.push(newEnemy)
+        })
+
+        this.socket.on('bubbleCreated', (bubble: ServerBubble) => {
+            console.log(`Spawning bubble at ${bubble.x}, ${bubble.y}`)
+            const newBubble = new Bubble(
+                this,
+                [bubble.x, bubble.y],
+                bubble.pathArray
+            )
+            this.bubbles.push(newBubble)
         })
 
         // Listen for player movement updates
@@ -121,39 +188,8 @@ export default class Level extends Phaser.Scene {
 
         this.socket.emit('joinGame', { playerName: this.playername })
 
-        const bubbleStart = [1200, 100]
-        // Define the path
-        const path = [
-            [1200, 430],
-            [1082, 430],
-            [1082, 208],
-            [820, 208],
-            [820, 620],
-            [975, 620],
-            [955, 130],
-            [615, 140],
-            [590, 530],
-            [180, 530],
-            [160, 150],
-        ]
-
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
-
-        this.bubbles.push(new Bubble(this, bubbleStart, path))
-        const enemySpawnPoints = [
-            new Phaser.Math.Vector2(1200, 100),
-            new Phaser.Math.Vector2(1200, 300),
-            new Phaser.Math.Vector2(1200, 500),
-            new Phaser.Math.Vector2(1200, 700),
-        ]
-        const enemySpawner = new EnemySpawner(
-            this,
-            enemySpawnPoints,
-            this.enemyInterval,
-            this.enemyWaveCount
-        )
-        enemySpawner.start()
     }
 
     update(time: number, delta: number): void {

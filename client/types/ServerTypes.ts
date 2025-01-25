@@ -7,6 +7,32 @@ export interface Player {
     health: number
 }
 
+export interface Enemy {
+    id: string
+    x: number
+    y: number
+    health: number
+    pathArray: number[][]
+}
+
+export interface Bubble {
+    id: string
+    x: number
+    y: number
+    health: number
+    pathArray: number[][]
+}
+
+export interface MapData {
+    enemySpawnPoints: number[][]
+    enemyPath: number[][]
+    bubbleSpawnPoint: number[]
+    bubblePath: number[][]
+}
+
 export interface GameState {
     players: Record<string, Player>
+    enemies: Record<string, Enemy>
+    bubbles: Record<string, Bubble>
+    mapData: MapData
 }
