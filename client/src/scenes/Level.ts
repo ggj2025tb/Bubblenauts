@@ -3,27 +3,58 @@
 /* START OF COMPILED CODE */
 
 /* START-USER-IMPORTS */
-/* END-USER-IMPORTS */
 import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
 import type { GameState } from '../../types/ServerTypes'
+/* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
-    constructor() {
-        super('Level')
 
-        /* START-USER-CTR-CODE */
+	constructor() {
+		super("Level");
+
+		/* START-USER-CTR-CODE */
         // Write your code here.
         /* END-USER-CTR-CODE */
-    }
+	}
 
-    editorCreate(): void {
-        this.events.emit('scene-awake')
-    }
+	editorCreate(): void {
 
-    /* START-USER-CODE */
+		// level1Map
+		const level1Map = this.add.tilemap("BubbleNautsMap");
+		level1Map.addTilesetImage("Decoration", "decoration");
+		level1Map.addTilesetImage("Bubbles", "bubbles");
+		level1Map.addTilesetImage("Player", "player");
+		level1Map.addTilesetImage("Environment", "environment");
+
+		// ground_1
+		level1Map.createLayer("Ground", ["Environment"], 0, 0);
+
+		// walls_1
+		level1Map.createLayer("Walls", ["Environment"], 0, 0);
+
+		// floor_1
+		level1Map.createLayer("Floor", ["Environment","Decoration"], 0, 0);
+
+		// roadBottom_1
+		level1Map.createLayer("RoadBottom", ["Decoration"], 0, 0);
+
+		// roadTop_1
+		level1Map.createLayer("RoadTop", ["Environment","Decoration"], 0, 0);
+
+		// base_1
+		level1Map.createLayer("Base", ["Environment","Decoration"], 0, 0);
+
+		this.level1Map = level1Map;
+
+		this.events.emit("scene-awake");
+	}
+
+	private level1Map!: Phaser.Tilemaps.Tilemap;
+
+	/* START-USER-CODE */
     private player_1!: Player
     private enemy_1?: Enemy
     private socket!: Socket
@@ -123,7 +154,3 @@ export default class Level extends Phaser.Scene {
         this.base?.update(time, delta)
     }
 }
-
-/* END OF COMPILED CODE */
-
-// You can write more code here

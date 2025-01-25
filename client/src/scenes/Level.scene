@@ -11,8 +11,112 @@
         "borderWidth": 1280,
         "borderHeight": 720
     },
-    "displayList": [],
-    "plainObjects": [],
+    "displayList": [
+        {
+            "type": "TilemapLayer",
+            "id": "24555457-6a04-47e1-931a-422b3a34f849",
+            "label": "ground_1",
+            "tilemapId": "54d106d5-b3e1-4c6e-8725-5741c72fe667",
+            "layerName": "Ground",
+            "tilesets": [
+                "Decoration",
+                "Bubbles",
+                "Player",
+                "Environment"
+            ]
+        },
+        {
+            "type": "TilemapLayer",
+            "id": "570d401e-75a8-4a53-ba80-5bf87211d144",
+            "label": "walls_1",
+            "tilemapId": "54d106d5-b3e1-4c6e-8725-5741c72fe667",
+            "layerName": "Walls",
+            "tilesets": [
+                "Decoration",
+                "Bubbles",
+                "Player",
+                "Environment"
+            ]
+        },
+        {
+            "type": "TilemapLayer",
+            "id": "351dec81-c5aa-4281-b435-8b7911e7a327",
+            "label": "floor_1",
+            "tilemapId": "54d106d5-b3e1-4c6e-8725-5741c72fe667",
+            "layerName": "Floor",
+            "tilesets": [
+                "Decoration",
+                "Bubbles",
+                "Player",
+                "Environment"
+            ]
+        },
+        {
+            "type": "TilemapLayer",
+            "id": "2439c52a-e1ae-4377-8807-6cec084e4ef6",
+            "label": "roadBottom_1",
+            "tilemapId": "54d106d5-b3e1-4c6e-8725-5741c72fe667",
+            "layerName": "RoadBottom",
+            "tilesets": [
+                "Decoration",
+                "Bubbles",
+                "Player",
+                "Environment"
+            ]
+        },
+        {
+            "type": "TilemapLayer",
+            "id": "4dc4b756-031c-41a7-af91-7a83b8cb69e6",
+            "label": "roadTop_1",
+            "tilemapId": "54d106d5-b3e1-4c6e-8725-5741c72fe667",
+            "layerName": "RoadTop",
+            "tilesets": [
+                "Decoration",
+                "Bubbles",
+                "Player",
+                "Environment"
+            ]
+        },
+        {
+            "type": "TilemapLayer",
+            "id": "c0f6b661-0bca-4fd1-bc58-ee0ea5636cf7",
+            "label": "base_1",
+            "tilemapId": "54d106d5-b3e1-4c6e-8725-5741c72fe667",
+            "layerName": "Base",
+            "tilesets": [
+                "Decoration",
+                "Bubbles",
+                "Player",
+                "Environment"
+            ]
+        }
+    ],
+    "plainObjects": [
+        {
+            "id": "54d106d5-b3e1-4c6e-8725-5741c72fe667",
+            "type": "Tilemap",
+            "label": "level1Map",
+            "key": "BubbleNautsMap",
+            "tilesets": [
+                {
+                    "name": "Decoration",
+                    "imageKey": "decoration"
+                },
+                {
+                    "name": "Bubbles",
+                    "imageKey": "bubbles"
+                },
+                {
+                    "name": "Player",
+                    "imageKey": "player"
+                },
+                {
+                    "name": "Environment",
+                    "imageKey": "environment"
+                }
+            ]
+        }
+    ],
     "meta": {
         "app": "Phaser Editor - Scene Editor",
         "url": "https://phaser.io/editor",
