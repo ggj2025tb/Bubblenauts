@@ -151,6 +151,11 @@
                 "key": "enemy_1"
             },
             {
+                "url": "assets/animations/dreizack.json",
+                "type": "animation",
+                "key": "dreizack"
+            },
+            {
                 "url": "assets/StartButtonRendered.png",
                 "type": "image",
                 "key": "StartButtonRendered"
