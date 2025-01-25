@@ -35,12 +35,12 @@ export class Gun {
         const player: any = this.player
 
         // Check attack cooldown and facing direction
-        if (
-            currentTime - this.lastAttackTime < this.attackCooldown ||
-            !this.isPointingInFacingDirection()
-        ) {
-            return
-        }
+        // if (
+        //     currentTime - this.lastAttackTime < this.attackCooldown ||
+        //     !this.isPointingInFacingDirection()
+        // ) {
+        //     return
+        // }
 
         this.isAttacking = true
         this.lastAttackTime = currentTime
@@ -55,7 +55,6 @@ export class Gun {
 
         // Create projectile
         const projectile = this.projectiles.get(player.x, player.y, 'Harpune')
-        // rotate the projectile
 
         if (projectile) {
             projectile.setActive(true)
@@ -70,11 +69,10 @@ export class Gun {
             // Rotate projectile to face direction
             projectile.setRotation(angle - 80)
 
+            projectile.setScale(2)
+
             // Set collision and lifecycle
             this.setupProjectileCollision(projectile)
-
-            // Scale projectile
-            projectile.setScale(2)
         }
     }
 
