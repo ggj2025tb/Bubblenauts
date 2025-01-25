@@ -33,6 +33,7 @@ export interface MapData {
 
 export interface GameState {
     gameStarted: boolean
+    wave: number
     players: Record<string, Player>
     enemies: Record<string, Enemy>
     bubbles: Record<string, Bubble>

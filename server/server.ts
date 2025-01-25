@@ -12,6 +12,7 @@ const io = new Server(httpServer, {
 
 let gameState: GameState = {
     gameStarted: false,
+    wave: 0,
     players: {},
     enemies: {},
     bubbles: {},
@@ -155,6 +156,7 @@ io.on('connection', (socket) => {
         clearInterval(enemySpawnerInterval)
         gameState = {
             gameStarted: false,
+            wave: 0,
             players: {},
             enemies: {},
             bubbles: {},
@@ -165,6 +167,18 @@ io.on('connection', (socket) => {
                 bubblePath: [],
             },
         }
+    })
+
+    socket.on('enemyMove', ({ enemyId, x, y }) => {
+        if (gameState.enemies[enemyId]) {
+            gameState.enemies[enemyId].x = x
+            gameState.enemies[enemyId].y = y
+            socket.broadcast.emit('enemyMoved', { enemyId, x, y })
+        }
+    })
+
+    socket.on('waveCompleted', () => {
+        io.emit('waveFinished', gameState.wave)
     })
 
     socket.on('enemyGetDamage', ({ enemyId, damage }) => {
@@ -211,6 +225,7 @@ io.on('connection', (socket) => {
             clearInterval(enemySpawnerInterval)
             gameState = {
                 gameStarted: false,
+                wave: 0,
                 players: {},
                 enemies: {},
                 bubbles: {},
@@ -230,6 +245,7 @@ io.on('connection', (socket) => {
         gameState.mapData.enemyPath = mapData.enemyPath
         gameState.mapData.bubbleSpawnPoint = mapData.bubbleSpawnPoint
         gameState.mapData.bubblePath = mapData.bubblePath
+        gameState.wave += 1
         spawnBubble()
         startEnemySpawner()
         io.emit('gameState', gameState)

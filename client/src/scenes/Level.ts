@@ -57,11 +57,16 @@ export default class Level extends Phaser.Scene {
     private otherPlayers: Map<string, Player> = new Map()
     private playername!: string
     private startGameButton!: Phaser.GameObjects.Image
+    private waveNumber: number
+    private waveText!: Phaser.GameObjects.Text
+    private mapData!: ServerMapData
 
     create() {
         this.socket = this.registry.get('socket')
         this.playername = this.registry.get('playerName')
         this.editorCreate()
+
+        this.waveNumber = 0
 
         // Pass socket to Player
         this.player = new Player(
@@ -90,43 +95,57 @@ export default class Level extends Phaser.Scene {
         this.startGameButton.setDisplaySize(144, 48)
         this.startGameButton.setInteractive()
 
+        // display fix wave number but with following camera
+        this.add.text(325, 80, 'Wave: ', {
+            fontSize: '32px',
+            fill: 'white',
+        })
+        this.waveText = this.add.text(425, 80, this.waveNumber.toString(), {
+            fontSize: '32px',
+            fill: 'white',
+        })
+
+        this.mapData = {
+            enemySpawnPoints: [
+                [1200, 100],
+                [1200, 300],
+                [1200, 500],
+                [1200, 700],
+            ],
+            enemyPath: [
+                [1200, 430],
+                [1082, 430],
+                [1082, 208],
+                [820, 208],
+                [820, 620],
+                [975, 620],
+                [955, 130],
+                [615, 140],
+                [590, 530],
+                [180, 530],
+                [160, 150],
+            ],
+            bubbleSpawnPoint: [1200, 100],
+            bubblePath: [
+                [1200, 430],
+                [1082, 430],
+                [1082, 208],
+                [820, 208],
+                [820, 620],
+                [975, 620],
+                [955, 130],
+                [615, 140],
+                [590, 530],
+                [180, 530],
+                [160, 150],
+            ],
+        }
+
         this.startGameButton.on('pointerdown', () => {
             this.startGameButton.alpha = 0.5
-            const mapData: ServerMapData = {
-                enemySpawnPoints: [
-                    [1200, 100],
-                    [1200, 300],
-                    [1200, 500],
-                    [1200, 700],
-                ],
-                enemyPath: [
-                    [1200, 430],
-                    [1082, 430],
-                    [1082, 208],
-                    [820, 208],
-                    [820, 620],
-                    [975, 620],
-                    [955, 130],
-                    [615, 140],
-                    [590, 530],
-                    [180, 530],
-                    [160, 150],
-                ],
-                bubbleSpawnPoint: [1200, 100],
-                bubblePath: [
-                    [1200, 430],
-                    [1082, 430],
-                    [1082, 208],
-                    [820, 208],
-                    [820, 620],
-                    [975, 620],
-                    [955, 130],
-                    [615, 140],
-                    [590, 530],
-                    [180, 530],
-                    [160, 150],
-                ],
-            }
+            this.startGameButton.disableInteractive()
+
+            const mapData = this.mapData
             this.socket.emit('startGame', { mapData })
         })
 
@@ -135,6 +154,9 @@ export default class Level extends Phaser.Scene {
             this.otherPlayers.forEach((player) => player.label.destroy())
             this.otherPlayers.forEach((player) => player.healthBar.destroy())
             this.otherPlayers.clear()
+
+            this.waveNumber = gameState.wave
+            this.waveText.setText(this.waveNumber.toString())
 
             // Create sprites for other players EXCEPT current player
             Object.values(gameState.players).forEach((player) => {
@@ -150,6 +172,20 @@ export default class Level extends Phaser.Scene {
                     this.otherPlayers.set(player.id, otherPlayer)
                 }
             })
+        })
+
+        this.socket.on('waveFinished', (wave: number) => {
+            this.enemies.forEach((enemy) => enemy.destroy())
+            this.enemies = []
+
+            this.bubbles.forEach((bubble) => bubble.destroy())
+            this.bubbles = []
+
+            this.waveNumber = wave
+            this.waveText.setText(this.waveNumber.toString())
+
+            const mapData = this.mapData
+            this.socket.emit('startGame', { mapData })
         })
 
         this.socket.on('enemyDied', (enemyId: string) => {
