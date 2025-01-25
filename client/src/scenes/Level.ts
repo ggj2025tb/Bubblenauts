@@ -41,12 +41,12 @@ export default class Level extends Phaser.Scene {
     private level1Map!: Phaser.Tilemaps.Tilemap
 
     /* START-USER-CODE */
-    private player_1!: Player
-    private enemy_1?: Enemy
+    private player!: Player
+    private enemy?: Enemy
     private socket!: Socket
     private path!: Phaser.Curves.Path
     private base?: Base
-    private otherPlayers: Map<string, Phaser.GameObjects.Sprite> = new Map()
+    private otherPlayers: Map<string, Player> = new Map()
     private playername!: string
 
     create() {
@@ -62,22 +62,19 @@ export default class Level extends Phaser.Scene {
         this.editorCreate()
 
         // Pass socket to Player
-        this.player_1 = new Player(this, 400, 300, this.socket)
-        this.enemy_1 = new Enemy(this, 800, 600)
+        this.player = new Player(this, 400, 300, this.socket)
+        this.enemy = new Enemy(this, 800, 600)
 
         this.socket.on('gameState', (gameState: GameState) => {
-            // Clear existing players
-            this.otherPlayers.forEach((player) => player.destroy())
-            this.otherPlayers.clear()
-
             // Create sprites for other players EXCEPT current player
             Object.values(gameState.players).forEach((player) => {
                 if (player.id !== this.socket.id) {
                     // Skip current player
-                    const otherPlayer = this.add.sprite(
+                    const otherPlayer = new Player(
+                        this,
                         player.x,
                         player.y,
-                        'FufuSuperDino'
+                        this.socket
                     )
                     otherPlayer.setTint(0x00ff00)
                     this.otherPlayers.set(player.id, otherPlayer)
@@ -92,14 +89,12 @@ export default class Level extends Phaser.Scene {
                 id: string
                 x: number
                 y: number
-                flipX?: boolean
+                direction: number
             }) => {
                 const otherPlayer = this.otherPlayers.get(playerInfo.id)
                 if (otherPlayer) {
                     otherPlayer.setPosition(playerInfo.x, playerInfo.y)
-                    if (playerInfo.flipX !== undefined) {
-                        otherPlayer.setFlipX(playerInfo.flipX)
-                    }
+                    otherPlayer.scaleX = playerInfo.direction
                 }
             }
         )
@@ -127,13 +122,13 @@ export default class Level extends Phaser.Scene {
         // this.path.draw(graphics)
 
         const enemy = new Enemy(this, 1200, 100)
-        this.enemy_1 = this.add.follower(
+        this.enemy = this.add.follower(
             this.path,
             enemy.x,
             enemy.y,
             enemy.texture.key
         )
-        this.enemy_1.startFollow({
+        this.enemy.startFollow({
             duration: 5000,
             yoyo: false,
             repeat: -1,
@@ -143,7 +138,7 @@ export default class Level extends Phaser.Scene {
 
     update(time: number, delta: number): void {
         const cursors = this.input.keyboard.createCursorKeys()
-        this.player_1.update(cursors, delta)
+        this.player.update(cursors, delta)
         this.base?.update(time, delta)
     }
 }

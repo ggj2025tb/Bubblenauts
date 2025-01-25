@@ -31,16 +31,16 @@ io.on('connection', (socket) => {
         io.emit('gameState', gameState)
     })
 
-    socket.on('playerUpdate', ({ x, y, flipX, offset }) => {
+    socket.on('playerUpdate', ({ x, y, direction }) => {
         if (gameState.players[socket.id]) {
             gameState.players[socket.id].x = x
             gameState.players[socket.id].y = y
+            gameState.players[socket.id].direction = direction
             socket.broadcast.emit('playerMoved', {
                 id: socket.id,
                 x,
                 y,
-                flipX,
-                offset,
+                direction,
             })
         }
     })

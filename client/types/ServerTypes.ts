@@ -3,8 +3,7 @@ export interface Player {
     name: string
     x: number
     y: number
-    flipX?: boolean
-    offset?: { x: number; y: number }
+    direction?: number
 }
 
 export interface GameState {

@@ -39,15 +39,12 @@ export class Player extends Actor {
             this.checkFlip()
             this.getBody().setOffset(15, 15)
         }
-
         // Weißßßßß ich nicht digga
-        // todo: check if player has moved before sending the update to the server
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
             this.socket.emit('playerUpdate', {
                 x: this.x,
                 y: this.y,
-                flipX: this.flipX,
-                offset: this.getBody().offset,
+                direction: this.scaleX,
             })
         }
     }
