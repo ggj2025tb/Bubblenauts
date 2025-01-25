@@ -6,12 +6,15 @@ export class Player extends Actor {
     private keyA: Phaser.Input.Keyboard.Key
     private keyS: Phaser.Input.Keyboard.Key
     private keyD: Phaser.Input.Keyboard.Key
+    private readonly playerName: string
+    public label: Phaser.GameObjects.Text
 
     private socket: Socket
 
-    constructor(scene: Phaser.Scene, x: number, y: number, socket: Socket) {
+    constructor(scene: Phaser.Scene, x: number, y: number, socket: Socket, playerName: string) {
         super(scene, x, y, 'FufuSuperDino')
         this.socket = socket
+        this.playerName = playerName
         // KEYS
         this.keyW = this.scene.input.keyboard.addKey('W')
         this.keyA = this.scene.input.keyboard.addKey('A')
@@ -20,6 +23,8 @@ export class Player extends Actor {
         // PHYSICS
         this.getBody().setSize(30, 30)
         this.getBody().setOffset(8, 0)
+
+        this.label = scene.add.text(x, y + 120, this.playerName)
     }
     update(): void {
         this.getBody().setVelocity(0)
@@ -39,7 +44,9 @@ export class Player extends Actor {
             this.checkFlip()
             this.getBody().setOffset(15, 15)
         }
-        // Weißßßßß ich nicht digga
+
+        this.label.setPosition(this.x, this.y + 120)
+
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
             this.socket.emit('playerUpdate', {
                 x: this.x,
