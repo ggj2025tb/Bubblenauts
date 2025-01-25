@@ -11,6 +11,7 @@ const io = new Server(httpServer, {
 })
 
 let gameState: GameState = {
+    gameStarted: false,
     players: {},
     enemies: {},
     bubbles: {},
@@ -134,6 +135,25 @@ io.on('connection', (socket) => {
         })
     })
 
+    socket.on('gameOver', () => {
+        gameState.gameStarted = false
+
+        enemyCounter = 0
+        clearInterval(enemySpawnerInterval)
+        gameState = {
+            gameStarted: false,
+            players: {},
+            enemies: {},
+            bubbles: {},
+            mapData: {
+                enemySpawnPoints: [],
+                enemyPath: [],
+                bubbleSpawnPoint: [],
+                bubblePath: [],
+            },
+        }
+    })
+
     socket.on('enemyGetDamage', ({ enemyId, damage }) => {
         if (gameState.enemies[enemyId]) {
             gameState.enemies[enemyId].health =
@@ -165,6 +185,10 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on('checkGameState', (data, callback) => {
+        callback(gameState.gameStarted)
+    })
+
     socket.on('disconnect', () => {
         delete gameState.players[socket.id]
         io.emit('gameState', gameState)
@@ -173,6 +197,7 @@ io.on('connection', (socket) => {
             enemyCounter = 0
             clearInterval(enemySpawnerInterval)
             gameState = {
+                gameStarted: false,
                 players: {},
                 enemies: {},
                 bubbles: {},
@@ -187,6 +212,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('startGame', ({ mapData }) => {
+        gameState.gameStarted = true
         gameState.mapData.enemySpawnPoints = mapData.enemySpawnPoints
         gameState.mapData.enemyPath = mapData.enemyPath
         gameState.mapData.bubbleSpawnPoint = mapData.bubbleSpawnPoint

@@ -58,12 +58,28 @@ export default class Menu extends Phaser.Scene {
 
     private joinGame(that) {
         const playerName = that.nameInput.value.trim()
-        if (playerName) {
+
+        // Check if username is empty
+        if (!playerName) {
+            alert('Please enter a username!')
+            return
+        }
+
+        // Check if game is already running by checking number of players in gameState
+        that.socket.emit('checkGameState', {}, (gameStarted: boolean) => {
+            if (gameStarted) {
+                alert(
+                    'A game is already in progress. Please wait until it ends.'
+                )
+                return
+            }
+
+            // If all checks pass, start the game
             that.registry.set('playerName', playerName)
             document.body.removeChild(that.div)
             that.scene.start('Level', {
                 socket: that.socket,
             })
-        }
+        })
     }
 }
