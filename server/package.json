@@ -1,7 +1,7 @@
 {
     "type": "module",
     "scripts": {
-        "nodemon": "nodemon --watch 'src/**/*.ts' ./server.ts"
+        "nodemon": "nodemon ./server.ts"
 
     },
     "dependencies": {
