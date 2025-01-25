@@ -42,6 +42,7 @@ export class Player extends Actor {
         }
 
         // Weißßßßß ich nicht digga
+        // todo: check if player has moved before sending the update to the server
         this.socket.emit('playerUpdate', {
             x: this.x,
             y: this.y,
