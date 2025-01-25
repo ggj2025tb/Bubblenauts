@@ -1,4 +1,5 @@
 import { Actor } from './Actor'
+import { Weapon } from './Weapon'
 import { Socket } from 'socket.io-client'
 
 export class Player extends Actor {
@@ -14,6 +15,7 @@ export class Player extends Actor {
     public label: Phaser.GameObjects.Text
     public healthBar: Phaser.GameObjects.Text
     private socket: Socket
+    private weapon: Weapon
 
     constructor(
         scene: Phaser.Scene,
@@ -25,16 +27,22 @@ export class Player extends Actor {
         super(scene, x, y, 'player')
         this.socket = socket
         this.playerName = playerName
+
         // KEYS
         this.keyW = this.scene.input.keyboard.addKey('W')
         this.keyA = this.scene.input.keyboard.addKey('A')
         this.keyS = this.scene.input.keyboard.addKey('S')
         this.keyD = this.scene.input.keyboard.addKey('D')
+
         // PHYSICS
         this.getBody().setSize(30, 30)
         this.getBody().setOffset(8, 0)
         this.getBody().setDrag(this.DRAG, this.DRAG)
         this.getBody().setMaxVelocity(this.MAX_SPEED, this.MAX_SPEED)
+
+        // Weapon
+        this.weapon = new Weapon(scene, this)
+
         this.label = scene.add.text(x, y - 160, this.playerName)
         this.healthBar = scene.add.text(x, y - 140, this.health.toString())
     }
@@ -68,5 +76,9 @@ export class Player extends Actor {
                 direction: this.scaleX,
             })
         }
+    }
+
+    public getWeapon(): Weapon {
+        return this.weapon
     }
 }

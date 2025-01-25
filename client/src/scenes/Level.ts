@@ -53,6 +53,7 @@ export default class Level extends Phaser.Scene {
     private playername!: string
     private enemyInterval: number = 5000
     private enemyWaveCount: number = 5
+
     create() {
         this.socket = this.registry.get('socket')
         this.playername = this.registry.get('playerName')

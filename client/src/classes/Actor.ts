@@ -1,7 +1,6 @@
 import { Physics } from 'phaser'
 export class Actor extends Physics.Arcade.Sprite {
-    public health = 100
-
+    protected health = 100
     constructor(
         scene: Phaser.Scene,
         x: number,
@@ -13,6 +12,23 @@ export class Actor extends Physics.Arcade.Sprite {
         scene.add.existing(this)
         scene.physics.add.existing(this)
         this.getBody().setCollideWorldBounds(true)
+    }
+    public getDamage(value?: number): void {
+        this.scene.tweens.add({
+            targets: this,
+            duration: 100,
+            repeat: 3,
+            yoyo: true,
+            alpha: 0.5,
+            onStart: () => {
+                if (value) {
+                    this.health = this.health - value
+                }
+            },
+            onComplete: () => {
+                this.setAlpha(1)
+            },
+        })
     }
 
     protected checkFlip(): void {
