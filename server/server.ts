@@ -126,6 +126,13 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on('playerAttack', (attackData) => {
+        socket.broadcast.emit('remotePlayerAttack', {
+            playerId: socket.id,
+            ...attackData,
+        })
+    })
+
     socket.on('enemyGetDamage', ({ enemyId, damage }) => {
         if (gameState.enemies[enemyId]) {
             gameState.enemies[enemyId].health =

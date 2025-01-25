@@ -72,8 +72,23 @@ export class WeaponManager {
     }
 
     private attack() {
-        const currentWeapon = this.getCurrentWeapon()
-        currentWeapon?.attack()
+        // Check if this is the local player's attack
+        if (this.scene.registry.get('socket').id === this.socket.id) {
+            const currentWeapon = this.getCurrentWeapon()
+            currentWeapon?.attack()
+
+            this.socket.emit('playerAttack', {
+                weaponType: this.currentWeapon === 'melee' ? 'melee' : 'gun',
+                x: (this.player as any).x,
+                y: (this.player as any).y,
+                angle: Phaser.Math.Angle.Between(
+                    (this.player as any).x,
+                    (this.player as any).y,
+                    this.mousePointer.worldX,
+                    this.mousePointer.worldY
+                ),
+            })
+        }
     }
 
     private switchToWeapon(weaponKey: string) {

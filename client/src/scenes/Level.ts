@@ -6,6 +6,7 @@
 import { Base } from '../classes/Base'
 import { Enemy } from '../classes/Enemy'
 import { Player } from '../classes/Player'
+import { Gun } from '../classes/Gun'
 import { type Socket } from 'socket.io-client'
 import type {
     GameState,
@@ -65,7 +66,14 @@ export default class Level extends Phaser.Scene {
         this.editorCreate()
 
         // Pass socket to Player
-        this.player = new Player(this, 400, 300, this.socket, this.playername)
+        this.player = new Player(
+            this,
+            400,
+            300,
+            this.socket,
+            this.playername,
+            true
+        )
 
         this.cameras.main.setBounds(
             0,
@@ -138,13 +146,9 @@ export default class Level extends Phaser.Scene {
                         player.x,
                         player.y,
                         this.socket,
-                        player.name
+                        player.name,
+                        false // Mark as non-local player
                     )
-                    // otherPlayer.setTint(0x00ff00)
-                    // Play initial animation
-                    if (player.animation) {
-                        otherPlayer.play(player.animation)
-                    }
                     this.otherPlayers.set(player.id, otherPlayer)
                 }
             })
@@ -238,10 +242,48 @@ export default class Level extends Phaser.Scene {
             }
         )
 
+        this.socket.on('remotePlayerAttack', (attackData) => {
+            const otherPlayer = this.otherPlayers.get(attackData.playerId)
+            if (otherPlayer) {
+                if (attackData.weaponType === 'gun') {
+                    const gunWeapon = new Gun(
+                        this,
+                        otherPlayer,
+                        this.input.activePointer,
+                        'dreizack',
+                        true // Mark as remote weapon
+                    )
+
+                    gunWeapon.attack({
+                        x: attackData.x,
+                        y: attackData.y,
+                        angle: attackData.angle,
+                    })
+                }
+            }
+        })
+
         this.socket.emit('joinGame', { playerName: this.playername })
 
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
+    }
+
+    private createRemoteProjectile(x: number, y: number, angle: number) {
+        const projectile = this.physics.add.image(x, y, 'projectile')
+        projectile.setActive(true)
+        projectile.setVisible(true)
+
+        const speed = 500
+        projectile.body.velocity.x = Math.cos(angle) * speed
+        projectile.body.velocity.y = Math.sin(angle) * speed
+        projectile.setRotation(angle - 80)
+        projectile.setScale(2)
+
+        // Automatically destroy projectile after time
+        this.time.delayedCall(1000, () => {
+            projectile.destroy()
+        })
     }
 
     update(time: number, delta: number): void {

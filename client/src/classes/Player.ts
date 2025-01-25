@@ -1,6 +1,7 @@
 import { Actor } from './Actor'
 import { WeaponManager } from './WeaponManager'
 import { Weapon } from './Weapon'
+import { Gun } from './Gun'
 import { Socket } from 'socket.io-client'
 
 export class Player extends Actor {
@@ -30,34 +31,45 @@ export class Player extends Actor {
     private isDashing: boolean = false
     private dashEndTime: number = 0
     private dashDirection: { x: number; y: number } = { x: 0, y: 0 }
+    private isLocalPlayer: boolean
 
     constructor(
         scene: Phaser.Scene,
         x: number,
         y: number,
         socket: Socket,
-        playerName: string
+        playerName: string,
+        isLocalPlayer: boolean = true
     ) {
         super(scene, x, y, 'player')
         this.socket = socket
         this.playerName = playerName
+        this.isLocalPlayer = isLocalPlayer
 
-        // KEYS
-        this.keyW = this.scene.input.keyboard.addKey('W')
-        this.keyA = this.scene.input.keyboard.addKey('A')
-        this.keyS = this.scene.input.keyboard.addKey('S')
-        this.keyD = this.scene.input.keyboard.addKey('D')
-        this.keyShift = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.SHIFT
-        )
+        if (this.isLocalPlayer) {
+            // KEYS
+            this.keyW = this.scene.input.keyboard.addKey('W')
+            this.keyA = this.scene.input.keyboard.addKey('A')
+            this.keyS = this.scene.input.keyboard.addKey('S')
+            this.keyD = this.scene.input.keyboard.addKey('D')
+            this.keyShift = this.scene.input.keyboard.addKey(
+                Phaser.Input.Keyboard.KeyCodes.SHIFT
+            )
+
+            this.weaponManager = new WeaponManager(scene, this, socket)
+            // Weapon
+            this.weapon = new Weapon(
+                scene,
+                this,
+                Phaser.Input.Pointer,
+                'dreizack'
+            )
+        }
 
         // PHYSICS
         this.getBody().setSize(30, 30)
         this.getBody().setOffset(8, 0)
         this.getBody().setDrag(this.DRAG, this.DRAG)
-
-        // Weapon
-        this.weapon = new Weapon(scene, this, Phaser.Input.Pointer, 'dreizack')
 
         this.label = scene.add.text(x - 16, y - 80, this.playerName)
         this.healthBar = scene.add.text(
@@ -65,8 +77,6 @@ export class Player extends Actor {
             y - 60,
             this.health.toString() + '% Air'
         )
-
-        this.weaponManager = new WeaponManager(scene, this, socket)
     }
 
     private performDash(time: number): void {
@@ -149,46 +159,49 @@ export class Player extends Actor {
     }
 
     update(time: number, delta: number): void {
-        this.updateAnimation()
-        this.updateHealth(time, delta)
+        // Only update local player controls
+        if (this.isLocalPlayer) {
+            this.updateAnimation()
+            this.updateHealth(time, delta)
 
-        // Dash logic
-        if (
-            this.keyShift.isDown &&
-            time - this.lastDashTime > this.DASH_COOLDOWN &&
-            (this.keyW.isDown ||
-                this.keyA.isDown ||
-                this.keyS.isDown ||
-                this.keyD.isDown)
-        ) {
-            this.performDash(time)
-        }
+            // Dash logic
+            if (
+                this.keyShift.isDown &&
+                time - this.lastDashTime > this.DASH_COOLDOWN &&
+                (this.keyW.isDown ||
+                    this.keyA.isDown ||
+                    this.keyS.isDown ||
+                    this.keyD.isDown)
+            ) {
+                this.performDash(time)
+            }
 
-        // End dash if duration is over
-        if (this.isDashing && time >= this.dashEndTime) {
-            this.isDashing = false
-            // Optionally reduce velocity after dash
-            this.body.velocity.x *= 0.5
-            this.body.velocity.y *= 0.5
-        }
+            // End dash if duration is over
+            if (this.isDashing && time >= this.dashEndTime) {
+                this.isDashing = false
+                // Optionally reduce velocity after dash
+                this.body.velocity.x *= 0.5
+                this.body.velocity.y *= 0.5
+            }
 
-        // Regular movement controls (only if not dashing)
-        if (!this.isDashing) {
-            if (this.keyW?.isDown) {
-                this.body.velocity.y = -this.MOVEMENT_SPEED
-            }
-            if (this.keyA?.isDown) {
-                this.body.velocity.x = -this.MOVEMENT_SPEED
-                this.checkFlip()
-                this.getBody().setOffset(48, 15)
-            }
-            if (this.keyS?.isDown) {
-                this.body.velocity.y = this.MOVEMENT_SPEED
-            }
-            if (this.keyD?.isDown) {
-                this.body.velocity.x = this.MOVEMENT_SPEED
-                this.checkFlip()
-                this.getBody().setOffset(15, 15)
+            // Regular movement controls (only if not dashing)
+            if (!this.isDashing) {
+                if (this.keyW?.isDown) {
+                    this.body.velocity.y = -this.MOVEMENT_SPEED
+                }
+                if (this.keyA?.isDown) {
+                    this.body.velocity.x = -this.MOVEMENT_SPEED
+                    this.checkFlip()
+                    this.getBody().setOffset(48, 15)
+                }
+                if (this.keyS?.isDown) {
+                    this.body.velocity.y = this.MOVEMENT_SPEED
+                }
+                if (this.keyD?.isDown) {
+                    this.body.velocity.x = this.MOVEMENT_SPEED
+                    this.checkFlip()
+                    this.getBody().setOffset(15, 15)
+                }
             }
         }
 
@@ -208,7 +221,7 @@ export class Player extends Actor {
     public getWeapon(): Weapon {
         return this.weapon
     }
-    public getCurrentWeapon() {
+    public getCurrentWeapon(): Weapon | Gun | undefined {
         return this.weaponManager.getCurrentWeapon()
     }
 }
