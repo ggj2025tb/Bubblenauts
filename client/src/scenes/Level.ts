@@ -9,6 +9,7 @@ import { Player } from '../classes/Player'
 import { type Socket } from 'socket.io-client'
 import type { GameState } from '../../types/ServerTypes'
 import { Bubble } from '../classes/Bubble'
+import { EnemySpawner } from '../classes/EnemySpawner'
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
@@ -42,14 +43,16 @@ export default class Level extends Phaser.Scene {
     private level1Map!: Phaser.Tilemaps.Tilemap
 
     /* START-USER-CODE */
-    private player!: Player
-    private enemy?: Enemy
+    private player!: Player;
+    // enemies will be filled by the EnemySpawner
+    private enemies: Enemy[] = [];
     private bubbles: Bubble[] = [];
-    private socket!: Socket
-    private path!: Phaser.Curves.Path
-    private base?: Base
-    private otherPlayers: Map<string, Player> = new Map()
-    private playername!: string
+    private socket!: Socket;
+    private base?: Base;
+    private otherPlayers: Map<string, Player> = new Map();
+    private playername!: string;
+    private enemyInterval: number = 5000;
+    private enemyWaveCount: number = 5;
 
 
     create() {
@@ -137,7 +140,15 @@ export default class Level extends Phaser.Scene {
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
 
-        this.bubbles.push(new Bubble(this, bubbleStart, path))
+        this.bubbles.push(new Bubble(this, bubbleStart, path));
+        const enemySpawnPoints = [
+            new Phaser.Math.Vector2(1200, 100),
+            new Phaser.Math.Vector2(1200, 300),
+            new Phaser.Math.Vector2(1200, 500),
+            new Phaser.Math.Vector2(1200, 700),
+        ];
+        const enemySpawner = new EnemySpawner(this, enemySpawnPoints, this.enemyInterval, this.enemyWaveCount);
+        enemySpawner.start();
     }
 
     update(time: number, delta: number): void {
@@ -145,6 +156,9 @@ export default class Level extends Phaser.Scene {
         this.player.update(cursors, delta)
 
         this.base?.update(time, delta)
+        this.enemies.forEach((enemy) => {
+            enemy.update(time, delta)
+        })
         this.bubbles.forEach((bubble) => {
             bubble.update(time, delta)
         })
