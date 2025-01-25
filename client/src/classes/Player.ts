@@ -12,7 +12,6 @@ export class Player extends Actor {
     constructor(scene: Phaser.Scene, x: number, y: number, socket: Socket) {
         super(scene, x, y, 'FufuSuperDino')
         this.socket = socket
-        console.log(this.socket)
         // KEYS
         this.keyW = this.scene.input.keyboard.addKey('W')
         this.keyA = this.scene.input.keyboard.addKey('A')
@@ -43,11 +42,13 @@ export class Player extends Actor {
 
         // Weißßßßß ich nicht digga
         // todo: check if player has moved before sending the update to the server
-        this.socket.emit('playerUpdate', {
-            x: this.x,
-            y: this.y,
-            flipX: this.flipX,
-            offset: this.getBody().offset,
-        })
+        if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
+            this.socket.emit('playerUpdate', {
+                x: this.x,
+                y: this.y,
+                flipX: this.flipX,
+                offset: this.getBody().offset,
+            })
+        }
     }
 }

@@ -33,7 +33,6 @@ export default class Level extends Phaser.Scene {
 
     create() {
         this.socket = this.registry.get('socket')
-        console.log(this.socket)
         if (!this.socket) {
             console.error('No socket found in registry')
             this.scene.start('Menu')
@@ -50,21 +49,21 @@ export default class Level extends Phaser.Scene {
         this.enemy_1 = new Enemy(this, 800, 600)
         this.base = new Base(this, 100, 100)
 
-        // Vielleicht lager ich das in ein game.ts file aus
         this.socket.on('gameState', (gameState: GameState) => {
             // Clear existing players
             this.otherPlayers.forEach((player) => player.destroy())
             this.otherPlayers.clear()
 
-            // Create sprites for other players
+            // Create sprites for other players EXCEPT current player
             Object.values(gameState.players).forEach((player) => {
                 if (player.id !== this.socket.id) {
+                    // Skip current player
                     const otherPlayer = this.add.sprite(
                         player.x,
                         player.y,
                         'FufuSuperDino'
                     )
-                    otherPlayer.setTint(0x00ff00) // Different color to distinguish other players
+                    otherPlayer.setTint(0x00ff00)
                     this.otherPlayers.set(player.id, otherPlayer)
                 }
             })

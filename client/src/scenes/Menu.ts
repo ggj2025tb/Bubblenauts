@@ -31,9 +31,9 @@ export default class Menu extends Phaser.Scene {
                 if (playerName) {
                     this.registry.set('playerName', playerName)
                     document.body.removeChild(this.nameInput)
-                    this.socket.emit('joinGame', { playerName })
                     // Start Level scene with socket in registry
                     this.scene.start('Level', { socket: this.socket })
+                    this.socket.emit('joinGame', { playerName })
                 }
             })
     }
