@@ -361,19 +361,9 @@
                 "key": "StartButtonRendered"
             },
             {
-                "url": "assets/turret_base.png",
+                "url": "assets/turret.png",
                 "type": "image",
-                "key": "turret_base"
-            },
-            {
-                "url": "assets/turret_bullet.png",
-                "type": "image",
-                "key": "turret_bullet"
-            },
-            {
-                "url": "assets/turret_canon.png",
-                "type": "image",
-                "key": "turret_canon"
+                "key": "turret"
             }
         ]
     },
