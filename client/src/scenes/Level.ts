@@ -179,7 +179,7 @@ export default class Level extends Phaser.Scene {
             fontSize: '11px',
             fill: 'white',
         })
-        this.add.text(325, 190, 'Regen air in base', {
+        this.add.text(325, 190, 'Regen air on open shell', {
             fontSize: '11px',
             fill: 'white',
         })
