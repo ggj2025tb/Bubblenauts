@@ -198,15 +198,21 @@ export default class Level extends Phaser.Scene {
         box1.visible = false
         box2.visible = false
 
-        const boundary = this.physics.add.staticGroup();
-        boundary.create(0, 30, null).setSize(9999, 1).setVisible(false); // Top boundary
-        boundary.create(0, this.level1Map.heightInPixels - 30, null).setSize(9999, 1).setVisible(false); // Bottom boundary
-        boundary.create(0, 0, null).setSize(20, 9999).setVisible(false); // Left boundary
-        boundary.create(9999, 0, null).setSize(1, this.level1Map.heightInPixels - 30).setVisible(false); // Right boundary
+        const boundary = this.physics.add.staticGroup()
+        boundary.create(0, 30, null).setSize(9999, 1).setVisible(false) // Top boundary
+        boundary
+            .create(0, this.level1Map.heightInPixels - 30, null)
+            .setSize(9999, 1)
+            .setVisible(false) // Bottom boundary
+        boundary.create(0, 0, null).setSize(20, 9999).setVisible(false) // Left boundary
+        boundary
+            .create(9999, 0, null)
+            .setSize(1, this.level1Map.heightInPixels - 30)
+            .setVisible(false) // Right boundary
 
-        this.physics.add.collider(this.player, boundary);
+        this.physics.add.collider(this.player, boundary)
 
-        this.physics.add.collider(this.player, colliderBox);
+        this.physics.add.collider(this.player, colliderBox)
 
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
@@ -381,7 +387,7 @@ export default class Level extends Phaser.Scene {
             this.socket.emit('startGame', { mapData })
         })
 
-        this.socket.on('enemyDied', ({ enemyId, coins }) => {
+        this.socket.on('enemyDied', ({ enemyId }) => {
             const enemy = this.enemies.find((enemy) => enemy.id === enemyId)
             if (enemy) {
                 enemy.die()

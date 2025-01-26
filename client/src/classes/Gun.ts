@@ -147,11 +147,13 @@ export class Gun {
             this.scene.physics.add.overlap(projectile, enemy, () => {
                 this.damageEnemy(enemy)
 
-                this.socket.emit('enemyGetDamage', {
-                    enemyId: enemy.id,
-                    damage: this.damage,
-                    playerId: this.socket.id,
-                })
+                if (!this.isRemote) {
+                    this.socket.emit('enemyGetDamage', {
+                        enemyId: enemy.id,
+                        damage: this.damage,
+                        playerId: this.socket.id,
+                    })
+                }
                 projectile.destroy()
             })
         })

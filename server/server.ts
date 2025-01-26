@@ -137,7 +137,6 @@ io.on('connection', (socket) => {
             y: 250,
             health: 100,
             animation: 'idle',
-            coins: 0,
         }
 
         // Add player to gameState
@@ -208,14 +207,8 @@ io.on('connection', (socket) => {
             gameState.enemies[enemyId].health =
                 gameState.enemies[enemyId].health - damage
             if (gameState.enemies[enemyId].health <= 0) {
-                if (gameState.players[playerId]) {
-                    gameState.players[playerId].coins += 10
-                }
-
-                const coins = gameState.players[playerId].coins
-
                 delete gameState.enemies[enemyId]
-                io.emit('enemyDied', { enemyId, coins })
+                io.emit('enemyDied', { enemyId })
             }
         }
     })
@@ -250,19 +243,6 @@ io.on('connection', (socket) => {
 
         // Broadcast tower placement to other players
         socket.broadcast.emit('towerPlaced', towerData)
-    })
-
-    socket.on('checkPlayerCoins', (data, callback) => {
-        if (gameState.players[socket.id]) {
-            callback(gameState.players[socket.id].coins)
-        }
-    })
-
-    socket.on('updatePlayerCoins', ({ coins }) => {
-        if (gameState.players[socket.id]) {
-            gameState.players[socket.id].coins = coins
-            io.emit('gameState', gameState)
-        }
     })
 
     socket.on('checkGameState', (data, callback) => {

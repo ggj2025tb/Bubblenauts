@@ -171,6 +171,7 @@ export class Weapon {
 
     private damageEnemy(enemy: Enemy): void {
         enemy.getDamage(this.damage)
+
         if (enemy.health - this.damage <= 0) {
             this.player.coins = this.player.coins + 10
             this.scene.updateCoins(this.player.coins)
