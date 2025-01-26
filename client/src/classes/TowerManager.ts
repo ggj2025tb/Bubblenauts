@@ -87,7 +87,8 @@ export class Tower extends Phaser.GameObjects.Sprite {
         if (!this.target) return
 
         // Basic projectile shooting logic
-        const projectile = this.scene.add.circle(this.x, this.y, 15, 0xdddddd)
+        // const projectile = this.scene.add.circle(this.x, this.y, 15, 0xdddddd)
+        const projectile = this.scene.add.image(this.x, this.y, 'mine')
 
         this.scene.physics.add.existing(projectile)
 

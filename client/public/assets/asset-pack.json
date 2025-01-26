@@ -166,6 +166,11 @@
                 "key": "enemy_3"
             },
             {
+                "url": "assets/mine.png",
+                "type": "image",
+                "key": "mine"
+            },
+            {
                 "url": "assets/enemies/enemy_3_attack.png",
                 "frameConfig": {
                     "frameWidth": 48,
