@@ -229,11 +229,14 @@ export default class Level extends Phaser.Scene {
         })
 
         this.socket.on('enemyCreated', (enemy: ServerEnemy) => {
+            const players = Array.from(this.otherPlayers.values()) as Player[]
+            players.push(this.player)
             const newEnemy = new Enemy(
                 this,
                 enemy.x,
                 enemy.y,
                 this.bubbles,
+                players,
                 enemy.id
             )
 

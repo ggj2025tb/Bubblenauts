@@ -1,19 +1,26 @@
 import { Actor } from './Actor'
 import { Bubble } from './Bubble'
+import { Player } from './Player'
 
 export class Enemy extends Actor {
-    private bubbleToFollow: Bubble
+    private actorToFollow: Actor
     private speed: number = 75
     private bubbles: Bubble[]
+    private players: Player[]
     private isDying: boolean = false
     public health: number
     public id: string
+    private attackCooldown: number = 1000
+    private dmgAgainstBubble: number = 2
+    private dmgAgainstPlayer: number = 5
+    private findNewTargetCooldown: number = 1000
 
     constructor(
         scene: Phaser.Scene,
         x: number,
         y: number,
         bubbles: Bubble[],
+        players: Player[],
         id: string
     ) {
         super(scene, x, y, 'enemy_1')
@@ -24,34 +31,53 @@ export class Enemy extends Actor {
         this.health = 100 // Override default health from Actor
         this.id = id
 
-        // Select random bubble
         this.bubbles = bubbles
-        this.selectNewBubble()
+        this.players = players
+        // Select next target
+        this.selectNewTarget()
     }
 
     update(time: number, delta: number): void {
         // Stop moving if dying
         if (this.isDying) return
 
-        if (this.bubbleToFollow === undefined) {
-            this.selectNewBubble()
+        if (this.actorToFollow === undefined) {
+            this.selectNewTarget()
             // No new bubble found, do nothing
-            if (this.bubbleToFollow === undefined) {
+            if (this.actorToFollow === undefined) {
                 return
             }
         }
 
+        // reduce find new target cooldown
+        this.findNewTargetCooldown -= delta
+        if (this.findNewTargetCooldown <= 0) {
+            this.selectNewTarget()
+            this.findNewTargetCooldown = 1000
+        }
+
+        // reduce attack cooldown
+        this.attackCooldown -= delta
         if (
-            Math.abs(this.x - this.bubbleToFollow.x) < 10 &&
-            Math.abs(this.y - this.bubbleToFollow.y) < 10
+            Math.abs(this.x - this.actorToFollow.x) < 10 &&
+            Math.abs(this.y - this.actorToFollow.y) < 10
         ) {
-            this.bubbleToFollow.updateHealth(time, delta)
+            if (this.attackCooldown <= 0) {
+                // We do different damage against the bubble and the player
+                if (this.actorToFollow instanceof Bubble) {
+                    this.actorToFollow.getDamage(this.dmgAgainstBubble)
+                } else if (this.actorToFollow instanceof Player) {
+                    this.actorToFollow.getDamage(this.dmgAgainstPlayer)
+                }
+
+                this.attackCooldown = 1000
+            }
         }
 
         this.scene.physics.moveTo(
             this,
-            this.bubbleToFollow.x + 10,
-            this.bubbleToFollow.y + 10,
+            this.actorToFollow.x + 10,
+            this.actorToFollow.y + 10,
             this.speed
         )
 
@@ -62,8 +88,8 @@ export class Enemy extends Actor {
             Phaser.Math.Distance.Between(
                 this.x,
                 this.y,
-                this.bubbleToFollow.x,
-                this.bubbleToFollow.y
+                this.actorToFollow.x,
+                this.actorToFollow.y
             ) < 10
         ) {
             this.anims.play('enemy_1_attack', true)
@@ -72,10 +98,49 @@ export class Enemy extends Actor {
         }
     }
 
-    selectNewBubble(): void {
-        if (this.bubbles !== undefined) {
-            // Select random bubble
-            this.bubbleToFollow = Phaser.Math.RND.pick(this.bubbles)
+    selectNewTarget(): void {
+
+        // Calculate the nearest enemy or bubble to follow it
+        let nearestBubble: Bubble
+        let nearestBubbleDistance: number = 999999
+        let nearestPlayer: Player
+        let nearestPlayerDistance: number = 999999
+
+        for (let bubble of this.bubbles) {
+            const distance = Phaser.Math.Distance.Between(
+                this.x,
+                this.y,
+                bubble.x,
+                bubble.y
+            )
+            if (distance < nearestBubbleDistance) {
+                nearestBubble = bubble
+                nearestBubbleDistance = distance
+            }
+        }
+
+        for (let player of this.players) {
+            const distance = Phaser.Math.Distance.Between(
+                this.x,
+                this.y,
+                player.x,
+                player.y
+            )
+            if (distance < nearestPlayerDistance) {
+                nearestPlayer = player
+                nearestPlayerDistance = distance
+            }
+        }
+
+        // Safety check
+        if (nearestBubble === undefined && nearestPlayer === undefined) {
+            return
+        }
+
+        if (nearestBubbleDistance < nearestPlayerDistance) {
+            this.actorToFollow = nearestBubble
+        } else {
+            this.actorToFollow = nearestPlayer
         }
     }
 

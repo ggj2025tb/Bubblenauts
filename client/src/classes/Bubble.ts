@@ -4,7 +4,6 @@ export class Bubble extends Actor {
     private pathArray: number[][]
     private speed: number = 50
     public healthBar: Phaser.GameObjects.Text
-    private lastHealthUpdateTime: number = 0
     private socket: Socket
 
     constructor(
@@ -27,21 +26,19 @@ export class Bubble extends Actor {
         this.socket = socket
     }
 
-    updateHealth(time: number, delta: number): void {
-        if (time - this.lastHealthUpdateTime > 200) {
-            this.health -= 1
+    public getDamage(value?: number): void {
+        super.getDamage(value)
 
-            this.healthBar.text = this.health + '% Life'
-            this.lastHealthUpdateTime = time
+        this.health -= 1
+        this.healthBar.text = this.health + '% Life'
 
-            this.socket.emit('bubbleHealthUpdate', {
-                health: this.health,
-            })
+        this.socket.emit('bubbleHealthUpdate', {
+            health: this.health,
+        })
 
-            if (this.health <= 0) {
-                this.socket.emit('gameOver')
-                this.scene.scene.start('GameOver')
-            }
+        if (this.health <= 0) {
+            this.socket.emit('gameOver')
+            this.scene.scene.start('GameOver')
         }
     }
 
