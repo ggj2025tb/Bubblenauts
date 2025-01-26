@@ -12,41 +12,98 @@ export class Weapon {
     private lastAttackTime: number = 0
     private damage: number = 20
     private maxRange: number = 50
-    private weaponSprite: string
+    private weaponSprite: Phaser.GameObjects.Sprite
+    private weaponOffsetX: number = 15
+    private weaponOffsetY: number = 3
     private socket: Socket
+    private isAnimating: boolean = false
 
     constructor(
         scene: Phaser.Scene,
         player: Phaser.GameObjects.GameObject,
         mousePointer: Phaser.Input.Pointer,
-        weaponSprite: string
+        weaponSpriteName: string
     ) {
         this.scene = scene
         this.player = player
         this.mousePointer = mousePointer
-        this.weaponSprite = weaponSprite
         this.socket = this.scene.registry.get('socket')
+
+        // Create weapon sprite
+        this.weaponSprite = scene.add.sprite(0, 0, weaponSpriteName)
+        this.weaponSprite.setScale(1.2)
+        this.weaponSprite.setOrigin(0.5, 0.8)
+        this.weaponSprite.angle = 90
 
         this.hitBox = scene.add.rectangle(0, 0, 50, 30, 0xff0000, 0.2)
         scene.physics.add.existing(this.hitBox, false)
+
+        // Update weapon position in game loop
+        scene.events.on('update', () => this.updateWeaponPosition())
     }
 
-    public attack(): void {
-        const currentTime = this.scene.time.now
+    private updateWeaponPosition(): void {
+        if (this.isAnimating) return
+
         const player: any = this.player
-
-        // Check attack cooldown
-        if (currentTime - this.lastAttackTime < this.attackCooldown) {
-            return
-        }
-
-        // Determine attack constraints based on player movement
         const mouseAngle = Phaser.Math.Angle.Between(
             player.x,
             player.y,
             this.mousePointer.worldX,
             this.mousePointer.worldY
         )
+
+        this.weaponSprite.angle = Phaser.Math.RadToDeg(mouseAngle) + 90
+
+        // Update position
+        this.weaponSprite.x = player.x + this.weaponOffsetX
+        this.weaponSprite.y = player.y - this.weaponOffsetY
+    }
+
+    public attack(): void {
+        const currentTime = this.scene.time.now
+        const player: any = this.player
+
+        if (currentTime - this.lastAttackTime < this.attackCooldown) {
+            return
+        }
+
+        this.isAnimating = true
+        const originalX = player.x + this.weaponOffsetX
+        const originalY = player.y - this.weaponOffsetY
+
+        const mouseAngle = Phaser.Math.Angle.Between(
+            player.x,
+            player.y,
+            this.mousePointer.worldX,
+            this.mousePointer.worldY
+        )
+
+        const attackSprite = this.scene.add.sprite(
+            originalX,
+            originalY,
+            this.weaponSprite.texture.key
+        )
+        attackSprite.setScale(1.2)
+        attackSprite.setOrigin(0, 0.5)
+        attackSprite.angle = Phaser.Math.RadToDeg(mouseAngle) + 90
+
+        // Hide original sprite
+        this.weaponSprite.setVisible(false)
+
+        this.scene.tweens.add({
+            targets: attackSprite,
+            x: originalX + Math.cos(mouseAngle) * 30,
+            y: originalY + Math.sin(mouseAngle) * 30,
+            scaleY: 1.4,
+            duration: 100,
+            yoyo: true,
+            onComplete: () => {
+                attackSprite.destroy()
+                this.weaponSprite.setVisible(true)
+                this.isAnimating = false
+            },
+        })
 
         this.isAttacking = true
         this.lastAttackTime = currentTime
