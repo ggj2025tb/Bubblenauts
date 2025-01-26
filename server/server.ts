@@ -252,6 +252,19 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('towerPlaced', towerData)
     })
 
+    socket.on('checkPlayerCoins', (data, callback) => {
+        if (gameState.players[socket.id]) {
+            callback(gameState.players[socket.id].coins)
+        }
+    })
+
+    socket.on('updatePlayerCoins', ({ coins }) => {
+        if (gameState.players[socket.id]) {
+            gameState.players[socket.id].coins = coins
+            io.emit('gameState', gameState)
+        }
+    })
+
     socket.on('checkGameState', (data, callback) => {
         callback(gameState.gameStarted)
     })

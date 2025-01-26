@@ -10,7 +10,6 @@ export class WeaponManager {
     private currentWeapon: string = 'melee'
     private mousePointer: Phaser.Input.Pointer
     private weaponIndicator: Phaser.GameObjects.Text
-    private weaponSwitchText: Phaser.GameObjects.Text
     private lastGunAttackTime: number = 0
     private readonly GUN_COOLDOWN: number = 500
 
@@ -36,27 +35,12 @@ export class WeaponManager {
 
         // Weapon indicator
         this.weaponIndicator = scene.add
-            // .text(240, 140, 'Current Weapon: Melee', { // Original position top right
-            .text(510, 555, 'Current Weapon: Melee', {
-                fontSize: '18px',
+            .text(530, 563, 'Weapon: Melee', {
+                fontSize: '11px',
                 color: '#ffffff',
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                padding: { x: 5, y: 5 },
             })
             .setScrollFactor(0)
             .setDepth(1500)
-
-        // Weapon switch instructions
-        // GRRRRRRRRRR folgt nicht der Kamera
-        this.weaponSwitchText = scene.add
-            .text(10, 40, 'Switch Weapons: 1/2', {
-                fontSize: '16px',
-                color: '#ffffff',
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                padding: { x: 5, y: 5 },
-            })
-            .setScrollFactor(0)
-            .setDepth(1000)
 
         this.setupWeaponSwitching()
         this.setupAttackInput()
@@ -120,7 +104,7 @@ export class WeaponManager {
         if (this.weapons.has(weaponKey)) {
             this.currentWeapon = weaponKey
             this.weaponIndicator.setText(
-                `Current Weapon: ${weaponKey === 'melee' ? 'Melee' : 'Ranged'}`
+                `Weapon: ${weaponKey === 'melee' ? 'Melee' : 'Ranged'}`
             )
         }
     }
