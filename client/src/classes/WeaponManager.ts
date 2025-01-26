@@ -44,6 +44,7 @@ export class WeaponManager {
             .setDepth(1000)
 
         // Weapon switch instructions
+        // GRRRRRRRRRR folgt nicht der Kamera
         this.weaponSwitchText = scene.add
             .text(10, 40, 'Switch Weapons: 1/2', {
                 fontSize: '16px',
@@ -65,6 +66,14 @@ export class WeaponManager {
         this.scene.input.keyboard.on('keydown-TWO', () =>
             this.switchToWeapon('gun')
         )
+
+        this.scene.input.on('wheel', (pointer, gameObjects, deltaX, deltaY) => {
+            if (deltaY > 0) {
+                this.switchToWeapon('melee')
+            } else {
+                this.switchToWeapon('gun')
+            }
+        })
     }
 
     private setupAttackInput() {
