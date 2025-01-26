@@ -181,6 +181,8 @@ export default class Level extends Phaser.Scene {
             true
         )
 
+        this.player.setDepth(1000)
+
         this.cameras.main.setBounds(
             0,
             0,
@@ -188,13 +190,21 @@ export default class Level extends Phaser.Scene {
             this.level1Map.heightInPixels
         )
 
-        const colliderBox = this.physics.add.staticGroup();
-        const box1 = colliderBox.create(0, 0, null);
-        const box2 = colliderBox.create(250, 0, null);
-        box1.setSize(150, 340);
-        box2.setSize(80, 340);
-        box1.visible = false;
-        box2.visible = false;
+        const colliderBox = this.physics.add.staticGroup()
+        const box1 = colliderBox.create(0, 0, null)
+        const box2 = colliderBox.create(250, 0, null)
+        box1.setSize(150, 340)
+        box2.setSize(80, 340)
+        box1.visible = false
+        box2.visible = false
+
+        const boundary = this.physics.add.staticGroup();
+        boundary.create(0, 30, null).setSize(9999, 1).setVisible(false); // Top boundary
+        boundary.create(0, this.level1Map.heightInPixels - 30, null).setSize(9999, 1).setVisible(false); // Bottom boundary
+        boundary.create(0, 0, null).setSize(20, 9999).setVisible(false); // Left boundary
+        boundary.create(9999, 0, null).setSize(1, this.level1Map.heightInPixels - 30).setVisible(false); // Right boundary
+
+        this.physics.add.collider(this.player, boundary);
 
         this.physics.add.collider(this.player, colliderBox);
 
@@ -202,6 +212,7 @@ export default class Level extends Phaser.Scene {
         this.cameras.main.setZoom(1.5)
         const interfaceimg = this.add.image(500, 600, 'interfaceimg')
         interfaceimg.setOrigin(0, 1)
+
         interfaceimg.setDisplaySize(300, 50)
         interfaceimg.setScrollFactor(0)
         interfaceimg.setDepth(1000)
@@ -229,6 +240,7 @@ export default class Level extends Phaser.Scene {
         this.startGameButton.setOrigin(0, 0)
         this.startGameButton.setDisplaySize(144, 48)
         this.startGameButton.setInteractive()
+        this.startGameButton.setDepth(0)
         this.towerManager = new TowerManager(this, this.socket)
 
         // display fix wave number but with following camera
@@ -372,11 +384,15 @@ export default class Level extends Phaser.Scene {
         })
 
         this.socket.on('enemyDied', ({ enemyId, coins }) => {
-            this.coinText.setText(coins)
             const enemy = this.enemies.find((enemy) => enemy.id === enemyId)
             if (enemy) {
                 enemy.die()
             }
+        })
+
+        this.socket.on('setPlayerCoins', (coins: number) => {
+            this.player.coins = coins
+            this.coinText.setText(coins.toString())
         })
 
         this.socket.on('enemyCreated', (enemy: ServerEnemy) => {

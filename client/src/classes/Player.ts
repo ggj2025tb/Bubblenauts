@@ -25,7 +25,7 @@ export class Player extends Actor {
     private weapon: Weapon
     private weaponManager: WeaponManager
     private lastHealthUpdateTime: number = 0
-    public coins: number = 0
+    public coins: number = 100
 
     // Dash-related properties
     private lastDashTime: number = 0
@@ -81,6 +81,7 @@ export class Player extends Actor {
             y - 60,
             this.health.toString() + '% Air'
         )
+        this.healthBar.setDepth(1000)
     }
 
     private performDash(time: number): void {
