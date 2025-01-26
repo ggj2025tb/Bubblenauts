@@ -115,8 +115,8 @@ io.on('connection', (socket) => {
         const player: Player = {
             id: socket.id,
             name: playerName,
-            x: 400,
-            y: 300,
+            x: 230,
+            y: 250,
             health: 100,
             animation: 'idle',
         }
