@@ -25,7 +25,7 @@ export default class GameOver extends Phaser.Scene {
                 this.cameras.main.centerY - 20,
                 'Game created with ❤️ by Milka, DerMaddin, kinimodmeyer, AKManiac & SH4CK3R',
                 {
-                    fontSize: '11px',
+                    fontSize: '14px',
                     color: '#ffffff',
                     fontStyle: 'bold',
                 }
@@ -35,7 +35,7 @@ export default class GameOver extends Phaser.Scene {
         this.add
             .text(
                 this.cameras.main.centerX,
-                this.cameras.main.centerY + 300,
+                this.cameras.main.centerY + 10,
                 'Map assets - finalbossblues / ' +
                 'Fish assets - craftpix.net',
                 {
