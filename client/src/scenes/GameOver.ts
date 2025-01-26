@@ -10,7 +10,7 @@ export default class GameOver extends Phaser.Scene {
         const gameOverText = this.add.text(
             this.cameras.main.centerX,
             this.cameras.main.centerY - 100,
-            'GAME OVER',
+            '｡˚○ GAME OVER ｡˚○',
             {
                 fontSize: '64px',
                 color: '#ffffff',
