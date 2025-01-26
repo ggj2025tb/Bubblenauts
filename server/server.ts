@@ -68,43 +68,60 @@ function startEnemySpawner() {
         [1200, 750], // Bottom right
     ]
 
+    const playerMultiplier = Object.keys(gameState.players).length
+    let enemySpawnInterval = 5000
+    // Reduce the interval based on the wave count
+    // gameState.wave = 1 -> 5000 * 0.8 = 4000
+    // gameState.wave = 2 -> 5000 * 0.6 = 3000
+    // gameState.wave = 3 -> 5000 * 0.4 = 2000
+    // gameState.wave = 4 -> 5000 * 0.2 = 1000
+    // gameState.wave = 5 -> 5000 * 0.1 = 500
+    enemySpawnInterval = enemySpawnInterval * (1 - gameState.wave * 0.2)
+    if (enemySpawnInterval < 500) {
+        // minimum spawn interval
+        enemySpawnInterval = 500
+    }
+
     enemySpawnerInterval = setInterval(() => {
-        enemyCounter++
-        console.log('Spawning enemy')
+        // Spawn an enemy for each player
+        for (let i = 0; i < playerMultiplier; i++) {
+            enemyCounter++
+            console.log('Spawning enemy', enemyCounter)
 
-        // Select random corner
-        const cornerIndex = Math.floor(Math.random() * mapCorners.length)
-        const cornerPoint = mapCorners[cornerIndex]
+            // Select random corner
+            const cornerIndex = Math.floor(Math.random() * mapCorners.length)
+            const cornerPoint = mapCorners[cornerIndex]
 
-        // Add small random offset (-20 to +20 pixels)
-        const randomOffset = () => Math.random() * 40 - 20
+            // Add small random offset (-20 to +20 pixels)
+            const randomOffset = () => Math.random() * 40 - 20
 
-        const spawnPoint = [
-            Math.max(0, Math.min(1250, cornerPoint[0] + randomOffset())),
-            Math.max(0, Math.min(800, cornerPoint[1] + randomOffset())),
-        ]
+            const spawnPoint = [
+                Math.max(0, Math.min(1250, cornerPoint[0] + randomOffset())),
+                Math.max(0, Math.min(800, cornerPoint[1] + randomOffset())),
+            ]
 
-        const enemy = {
-            id: 'enemy_' + enemyCounter,
-            x: spawnPoint[0],
-            y: spawnPoint[1],
-            health: 100,
-            pathArray: [
-                [1200, 430],
-                [1082, 430],
-                [1082, 208],
-                [820, 208],
-                [820, 620],
-                [975, 620],
-                [955, 130],
-                [615, 140],
-                [590, 530],
-                [180, 530],
-                [160, 150],
-            ],
+            const enemy = {
+                id: 'enemy_' + enemyCounter,
+                x: spawnPoint[0],
+                y: spawnPoint[1],
+                health: 100,
+                pathArray: [
+                    [1200, 430],
+                    [1082, 430],
+                    [1082, 208],
+                    [820, 208],
+                    [820, 620],
+                    [975, 620],
+                    [955, 130],
+                    [615, 140],
+                    [590, 530],
+                    [180, 530],
+                    [160, 150],
+                ],
+            }
+            gameState.enemies[enemy.id] = enemy
+            io.emit('enemyCreated', enemy)
         }
-        gameState.enemies[enemy.id] = enemy
-        io.emit('enemyCreated', enemy)
     }, enemySpawnInterval)
 }
 
