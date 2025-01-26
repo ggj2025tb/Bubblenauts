@@ -230,6 +230,13 @@ export default class Level extends Phaser.Scene {
             fill: 'white',
         })
 
+        const bubble1 = this.add.sprite(140, 80, 'bubbles');
+        const bubble2 = this.add.sprite(195, 95, 'bubbles');
+
+        bubble1.play('bubbles');
+        bubble2.flipX = true;
+        bubble2.playAfterDelay('bubbles', 100);
+
         this.mapData = {
             enemySpawnPoints: [
                 [1200, 100],
