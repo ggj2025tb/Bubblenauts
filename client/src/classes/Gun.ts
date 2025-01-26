@@ -1,9 +1,10 @@
 import { Enemy } from './Enemy'
 import { Socket } from 'socket.io-client'
+import { Player } from './Player'
 
 export class Gun {
     private scene: Phaser.Scene
-    private player: Phaser.GameObjects.GameObject
+    private player: Player
     private mousePointer: Phaser.Input.Pointer
     private projectiles: Phaser.Physics.Arcade.Group
     private isAttacking: boolean = false
@@ -16,7 +17,7 @@ export class Gun {
 
     constructor(
         scene: Phaser.Scene,
-        player: Phaser.GameObjects.GameObject,
+        player: Player,
         mousePointer: Phaser.Input.Pointer,
         texture: string,
         isRemote: boolean = false
@@ -145,6 +146,7 @@ export class Gun {
         enemies.forEach((enemy) => {
             this.scene.physics.add.overlap(projectile, enemy, () => {
                 this.damageEnemy(enemy)
+
                 this.socket.emit('enemyGetDamage', {
                     enemyId: enemy.id,
                     damage: this.damage,
@@ -157,6 +159,11 @@ export class Gun {
 
     private damageEnemy(enemy: Enemy): void {
         enemy.getDamage(this.damage)
+
+        if (enemy.health - this.damage <= 0) {
+            this.player.coins = this.player.coins + 10
+            this.scene.updateCoins(this.player.coins)
+        }
     }
 
     public isCurrentlyAttacking(): boolean {

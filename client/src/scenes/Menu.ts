@@ -70,6 +70,11 @@ export default class Menu extends Phaser.Scene {
             return
         }
 
+        if(playerName.length > 20) {
+            alert('Username cannot be longer than 20 characters!')
+            return
+        }
+
         // Check if game is already running by checking number of players in gameState
         this.socket.emit('checkGameState', {}, (gameStarted: boolean) => {
             if (gameStarted) {
