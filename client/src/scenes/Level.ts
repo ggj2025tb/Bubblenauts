@@ -331,7 +331,11 @@ export default class Level extends Phaser.Scene {
             this.enemies.forEach((enemy) => enemy.destroy())
             this.enemies = []
 
-            this.bubbles.forEach((bubble) => bubble.destroy())
+            this.bubbles.forEach((bubble) => {
+                bubble.healthBar.destroy()
+                bubble.destroy()
+            })
+
             this.bubbles = []
 
             this.waveNumber = wave
