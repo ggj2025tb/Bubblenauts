@@ -148,6 +148,7 @@ export class Gun {
                 this.socket.emit('enemyGetDamage', {
                     enemyId: enemy.id,
                     damage: this.damage,
+                    playerId: this.socket.id,
                 })
                 projectile.destroy()
             })

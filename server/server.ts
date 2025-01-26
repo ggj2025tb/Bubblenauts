@@ -136,6 +136,7 @@ io.on('connection', (socket) => {
             y: 250,
             health: 100,
             animation: 'idle',
+            coins: 0,
         }
 
         // Add player to gameState
@@ -169,8 +170,8 @@ io.on('connection', (socket) => {
     socket.on('gameOver', () => {
         gameState.gameStarted = false
 
-        enemyCounter = 0
         clearInterval(enemySpawnerInterval)
+        enemyCounter = 0
         gameState = {
             gameStarted: false,
             wave: 0,
@@ -200,13 +201,19 @@ io.on('connection', (socket) => {
         io.emit('waveFinished', gameState.wave)
     })
 
-    socket.on('enemyGetDamage', ({ enemyId, damage }) => {
+    socket.on('enemyGetDamage', ({ enemyId, damage, playerId }) => {
         if (gameState.enemies[enemyId]) {
             gameState.enemies[enemyId].health =
                 gameState.enemies[enemyId].health - damage
             if (gameState.enemies[enemyId].health <= 0) {
+                if (gameState.players[playerId]) {
+                    gameState.players[playerId].coins += 10
+                }
+
+                const coins = gameState.players[playerId].coins
+
                 delete gameState.enemies[enemyId]
-                io.emit('enemyDied', enemyId)
+                io.emit('enemyDied', { enemyId, coins })
             }
         }
     })

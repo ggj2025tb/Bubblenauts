@@ -99,21 +99,23 @@ export class Weapon {
         // Hide original sprite
         this.weaponSprite.setVisible(false)
 
-        this.scene.tweens.add({
-            targets: attackSprite,
-            x: originalX + Math.cos(mouseAngle) * 30,
-            y: originalY + Math.sin(mouseAngle) * 30,
-            angle: Phaser.Math.RadToDeg(mouseAngle) + 90,
-            // scaleY: 1.4,
-            duration: 100,
-            yoyo: true,
-            onComplete: () => {
-                attackSprite.destroy()
-
-                this.weaponSprite.setVisible(true)
-                this.isAnimating = false
-            },
-        })
+        if (this.scene) {
+            this.scene.tweens.add({
+                targets: attackSprite,
+                x: originalX + Math.cos(mouseAngle) * 30,
+                y: originalY + Math.sin(mouseAngle) * 30,
+                angle: Phaser.Math.RadToDeg(mouseAngle) + 90,
+                // scaleY: 1.4,
+                duration: 100,
+                yoyo: true,
+                onComplete: () => {
+                    attackSprite.destroy()
+    
+                    this.weaponSprite.setVisible(true)
+                    this.isAnimating = false
+                },
+            })
+        }
 
         this.isAttacking = true
         this.lastAttackTime = currentTime
@@ -146,20 +148,23 @@ export class Weapon {
                 this.socket.emit('enemyGetDamage', {
                     enemyId: enemy.id,
                     damage: this.damage,
+                    playerId: this.socket.id,
                 })
             }
         })
 
-        // Visual feedback
-        this.scene.tweens.add({
-            targets: this.hitBox,
-            alpha: 0.5,
-            duration: 200,
-            yoyo: true,
-            onComplete: () => {
-                this.isAttacking = false
-            },
-        })
+        if (this.scene) {
+            // Visual feedback
+            this.scene.tweens.add({
+                targets: this.hitBox,
+                alpha: 0.5,
+                duration: 200,
+                yoyo: true,
+                onComplete: () => {
+                    this.isAttacking = false
+                },
+            })
+        }
     }
 
     private damageEnemy(enemy: Enemy): void {

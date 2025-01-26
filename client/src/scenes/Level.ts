@@ -15,6 +15,7 @@ import type {
     Bubble as ServerBubble,
 } from '../../types/ServerTypes'
 import { Bubble } from '../classes/Bubble'
+import { TowerManager } from '../classes/TowerManager'
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
@@ -158,8 +159,10 @@ export default class Level extends Phaser.Scene {
     private startGameButton!: Phaser.GameObjects.Image
     private waveNumber: number
     private waveText!: Phaser.GameObjects.Text
+    private coinText!: Phaser.GameObjects.Text
     private mapData!: ServerMapData
     public gameStarted: boolean = false
+    private towerManager: TowerManager
 
     create() {
         this.socket = this.registry.get('socket')
@@ -194,13 +197,23 @@ export default class Level extends Phaser.Scene {
         this.startGameButton.setOrigin(0, 0)
         this.startGameButton.setDisplaySize(144, 48)
         this.startGameButton.setInteractive()
+        this.towerManager = new TowerManager(this, this.socket)
 
         // display fix wave number but with following camera
         this.add.text(325, 80, 'Wave: ', {
             fontSize: '21px',
             fill: 'white',
         })
-        this.waveText = this.add.text(425, 80, this.waveNumber.toString(), {
+        this.waveText = this.add.text(390, 80, this.waveNumber.toString(), {
+            fontSize: '21px',
+            fill: 'white',
+        })
+
+        this.add.text(425, 80, 'Coins: ', {
+            fontSize: '21px',
+            fill: 'white',
+        })
+        this.coinText = this.add.text(500, 80, this.player.coins.toString(), {
             fontSize: '21px',
             fill: 'white',
         })
@@ -292,6 +305,8 @@ export default class Level extends Phaser.Scene {
             this.waveNumber = gameState.wave
             this.waveText.setText(this.waveNumber.toString())
 
+            this.coinText.setText(this.player.coins.toString())
+
             this.gameStarted = gameState.gameStarted
 
             // Create sprites for other players EXCEPT current player
@@ -311,6 +326,8 @@ export default class Level extends Phaser.Scene {
         })
 
         this.socket.on('waveFinished', (wave: number) => {
+            this.gameStarted = false
+
             this.enemies.forEach((enemy) => enemy.destroy())
             this.enemies = []
 
@@ -327,7 +344,8 @@ export default class Level extends Phaser.Scene {
             this.socket.emit('startGame', { mapData })
         })
 
-        this.socket.on('enemyDied', (enemyId: string) => {
+        this.socket.on('enemyDied', ({ enemyId, coins }) => {
+            this.coinText.setText(coins)
             const enemy = this.enemies.find((enemy) => enemy.id === enemyId)
             if (enemy) {
                 enemy.die()
@@ -455,6 +473,9 @@ export default class Level extends Phaser.Scene {
         this.bubbles.forEach((bubble) => {
             bubble.update(time, delta)
         })
+
+        // Add tower manager update
+        this.towerManager.update(time, this.enemies)
     }
 }
 /* END-USER-CODE */
