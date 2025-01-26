@@ -48,6 +48,11 @@
                 "key": "bubbles"
             },
             {
+                "url": "assets/animations/bubbles.json",
+                "type": "animation",
+                "key": "bubbles_1"
+            },
+            {
                 "url": "assets/tileset/decoration.png",
                 "frameConfig": {
                     "frameWidth": 32,
