@@ -157,12 +157,12 @@ export class Player extends Actor {
                         this.body.velocity.x = 0
                         this.body.velocity.y = 0
 
-                        let allDied = true;
+                        let allDied = true
 
                         if (this.scene.otherPlayers) {
                             this.scene.otherPlayers.forEach((player) => {
                                 if (player.health > 0) {
-                                    allDied = false;
+                                    allDied = false
                                 }
                             })
                         }
@@ -227,7 +227,8 @@ export class Player extends Actor {
             }
         }
 
-        this.label.setPosition(this.x - 16, this.y - 80)
+        const labelWidth = this.label.width
+        this.label.setPosition(this.x - labelWidth / 2, this.y - 80)
         this.healthBar.setPosition(this.x - 30, this.y - 60)
 
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
