@@ -187,6 +187,17 @@ export default class Level extends Phaser.Scene {
             this.level1Map.widthInPixels,
             this.level1Map.heightInPixels
         )
+
+        const colliderBox = this.physics.add.staticGroup();
+        const box1 = colliderBox.create(0, 0, null);
+        const box2 = colliderBox.create(250, 0, null);
+        box1.setSize(150, 340);
+        box2.setSize(80, 340);
+        box1.visible = false;
+        box2.visible = false;
+
+        this.physics.add.collider(this.player, colliderBox);
+
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
         const interfaceimg = this.add.image(500, 600, 'interfaceimg')
