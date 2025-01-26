@@ -202,7 +202,7 @@ io.on('connection', (socket) => {
         io.emit('waveFinished', gameState.wave)
     })
 
-    socket.on('enemyGetDamage', ({ enemyId, damage, playerId }) => {
+    socket.on('enemyGetDamage', ({ enemyId, damage }) => {
         if (gameState.enemies[enemyId]) {
             gameState.enemies[enemyId].health =
                 gameState.enemies[enemyId].health - damage

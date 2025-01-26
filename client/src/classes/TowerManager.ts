@@ -17,19 +17,22 @@ export class Tower extends Phaser.GameObjects.Sprite {
     private range: number
     private lastFired: number = 0
     private rangeCircle: Phaser.GameObjects.Graphics
+    private socket: Socket
 
     constructor(
         scene: Phaser.Scene,
         x: number,
         y: number,
         texture: string,
-        config: TowerConfig
+        config: TowerConfig,
+        socket: Socket
     ) {
         super(scene, x, y, texture)
 
         this.fireRate = config.fireRate
         this.damage = config.damage
         this.range = config.range
+        this.socket = socket
 
         if (config.type == 'advanced') {
             this.tint = 0xff00ff
@@ -84,19 +87,25 @@ export class Tower extends Phaser.GameObjects.Sprite {
         if (!this.target) return
 
         // Basic projectile shooting logic
-        const projectile = this.scene.add.circle(this.x, this.y, 5, 0xff0000)
+        const projectile = this.scene.add.circle(this.x, this.y, 15, 0xdddddd)
 
         this.scene.physics.add.existing(projectile)
 
         this.scene.physics.moveToObject(
             projectile,
             this.target,
-            300 // Projectile speed
+            1000 // Projectile speed
         )
 
         // Destroy projectile on hit or after timeout
         this.scene.physics.add.overlap(projectile, this.target, () => {
-            this.target?.getDamage(this.damage)
+            if (this.target instanceof Enemy) {
+                this.target?.getDamage(this.damage)
+                this.socket.emit('enemyGetDamage', {
+                    enemyId: this.target.id,
+                    damage: this.damage,
+                })
+            }
             projectile.destroy()
         })
 
@@ -263,7 +272,8 @@ export class TowerManager {
             worldPoint.x,
             worldPoint.y,
             `turret`,
-            config
+            config,
+            this.socket
         )
         tower.setScale(1.5)
 
