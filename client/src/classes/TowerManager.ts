@@ -31,6 +31,10 @@ export class Tower extends Phaser.GameObjects.Sprite {
         this.damage = config.damage
         this.range = config.range
 
+        if (config.type == 'advanced') {
+            this.tint = 0xff00ff;
+        }
+
         // Add to scene and enable physics
         scene.add.existing(this)
         scene.physics.add.existing(this)
@@ -173,6 +177,10 @@ export class TowerManager {
                 .setScrollFactor(0)
                 .setDepth(1500)
 
+            if (type == 'advanced') {
+                towerSprite.tint = 0xff00ff;
+            }
+
             offset += 40
             towerSprite.setInteractive()
             towerSprite.on('pointerdown', () => this.selectTowerType(type))
@@ -192,6 +200,10 @@ export class TowerManager {
             this.scene.input.y,
             `turret`
         )
+
+        if (type == 'advanced') {
+            this.currentDragTower.tint = 0xff00ff;
+        }
 
         this.scene.input.on('pointermove', this.updateDragTower, this)
         this.scene.input.on('pointerup', this.placeTower, this)
