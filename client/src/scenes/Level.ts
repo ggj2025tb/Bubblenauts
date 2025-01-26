@@ -187,11 +187,44 @@ export default class Level extends Phaser.Scene {
             this.level1Map.widthInPixels,
             this.level1Map.heightInPixels
         )
+
+        const colliderBox = this.physics.add.staticGroup()
+        const box1 = colliderBox.create(0, 0, null)
+        const box2 = colliderBox.create(250, 0, null)
+        box1.setSize(150, 340)
+        box2.setSize(80, 340)
+        box1.visible = false
+        box2.visible = false
+
+        this.physics.add.collider(this.player, colliderBox)
+
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
-        const interfaceimg = this.add.image(0, 0, 'interfaceimg')
+        const interfaceimg = this.add.image(500, 600, 'interfaceimg')
         interfaceimg.setOrigin(0, 1)
-        interfaceimg.setDisplaySize(560, 96)
+
+        interfaceimg.setDisplaySize(300, 50)
+        interfaceimg.setScrollFactor(0)
+        interfaceimg.setDepth(1000)
+
+        this.add
+            .text(530, 585, 'Coins:', {
+                fontSize: '11px',
+                color: '#ffffff',
+            })
+            .setOrigin(0, 1)
+            .setScrollFactor(0)
+            .setDepth(1500)
+
+        this.coinText = this.add
+            .text(590, 585, this.player.coins.toString(), {
+                fontSize: '11px',
+                color: '#ffffff',
+            })
+            .setOrigin(0, 1)
+            .setScrollFactor(0)
+            .setDepth(1500)
+
         // A static button that can be used to send a message to the server
         this.startGameButton = this.add.image(320, 20, 'StartButtonRendered')
         this.startGameButton.setOrigin(0, 0)
@@ -205,15 +238,6 @@ export default class Level extends Phaser.Scene {
             fill: 'white',
         })
         this.waveText = this.add.text(390, 80, this.waveNumber.toString(), {
-            fontSize: '21px',
-            fill: 'white',
-        })
-
-        this.add.text(425, 80, 'Coins: ', {
-            fontSize: '21px',
-            fill: 'white',
-        })
-        this.coinText = this.add.text(500, 80, this.player.coins.toString(), {
             fontSize: '21px',
             fill: 'white',
         })

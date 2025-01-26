@@ -115,7 +115,6 @@ export class TowerManager {
     private socket: Socket
     private towerConfigs: Map<string, TowerConfig>
     private towers: Tower[] = []
-    private towerMenu: Phaser.GameObjects.Group
     private selectedTowerType: string | null = null
     private currentDragTower: Phaser.GameObjects.Sprite | null = null
     private remoteTowers: Map<string, Tower> = new Map() // Track remote towers
@@ -165,19 +164,17 @@ export class TowerManager {
     }
 
     private createTowerMenu(): void {
-        const menuX = 100
-        const menuY = 200
+        const menuX = 660
+        const menuY = 570
+        let offset = 0
 
-        this.towerMenu = this.scene.add.group()
-
-        let yOffset = 0
         this.towerConfigs.forEach((config, type) => {
-            const towerSprite = this.scene.add.sprite(
-                menuX,
-                menuY + yOffset,
-                `turret`
-            )
+            const towerSprite = this.scene.add
+                .sprite(menuX + offset, menuY, `turret`)
+                .setScrollFactor(0)
+                .setDepth(1500)
 
+            offset += 40
             towerSprite.setInteractive()
             towerSprite.on('pointerdown', () => {
                 this.socket.emit('checkPlayerCoins', {}, (coins: number) => {
@@ -193,8 +190,7 @@ export class TowerManager {
                 }
             })
 
-            this.towerMenu.add(towerSprite)
-            yOffset += 50
+            // this.towerMenu.add(towerSprite)
         })
     }
 
