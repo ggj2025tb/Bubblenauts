@@ -37,7 +37,8 @@ export default class GameOver extends Phaser.Scene {
                 this.cameras.main.centerX,
                 this.cameras.main.centerY + 10,
                 'Map assets - finalbossblues / ' +
-                'Fish assets - craftpix.net',
+                'Fish assets - craftpix.net / ' +
+                'Main menu image (AI generated)',
                 {
                     fontSize: '11px',
                     color: '#ffffff',
