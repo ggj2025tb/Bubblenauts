@@ -72,8 +72,8 @@ export default class Level extends Phaser.Scene {
         // Pass socket to Player
         this.player = new Player(
             this,
-            400,
-            300,
+            230,
+            250,
             this.socket,
             this.playername,
             true
@@ -91,7 +91,7 @@ export default class Level extends Phaser.Scene {
         interfaceimg.setOrigin(0, 1)
         interfaceimg.setDisplaySize(560, 96)
         // A static button that can be used to send a message to the server
-        this.startGameButton = this.add.image(140, 200, 'StartButtonRendered')
+        this.startGameButton = this.add.image(320, 20, 'StartButtonRendered')
         this.startGameButton.setOrigin(0, 0)
         this.startGameButton.setDisplaySize(144, 48)
         this.startGameButton.setInteractive()
