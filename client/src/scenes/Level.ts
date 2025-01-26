@@ -98,33 +98,33 @@ export default class Level extends Phaser.Scene {
 
         // display fix wave number but with following camera
         this.add.text(325, 80, 'Wave: ', {
-            fontSize: '32px',
+            fontSize: '21px',
             fill: 'white',
         })
         this.waveText = this.add.text(425, 80, this.waveNumber.toString(), {
-            fontSize: '32px',
+            fontSize: '21px',
             fill: 'white',
         })
 
         // Füge text darunter hinzu mit anweisungen
         this.add.text(325, 110, 'Press "WASD" to move', {
-            fontSize: '12px',
+            fontSize: '11px',
             fill: 'white',
         })
         this.add.text(325, 130, 'Press "Shift" to dash', {
-            fontSize: '12px',
+            fontSize: '11px',
             fill: 'white',
         })
         this.add.text(325, 150, 'Click to shoot/attack', {
-            fontSize: '12px',
+            fontSize: '11px',
             fill: 'white',
         })
         this.add.text(325, 170, 'Press "1" or "2" to switch weapon', {
-            fontSize: '12px',
+            fontSize: '11px',
             fill: 'white',
         })
         this.add.text(325, 190, 'Regen air in base', {
-            fontSize: '12px',
+            fontSize: '11px',
             fill: 'white',
         })
 
