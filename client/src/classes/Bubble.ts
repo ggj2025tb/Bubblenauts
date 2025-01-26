@@ -13,9 +13,8 @@ export class Bubble extends Actor {
         socket: Socket
     ) {
         super(scene, bubbleStart[0], bubbleStart[1], 'singleBubble')
-        // PHYSICS
-        this.getBody().setSize(10, 10)
-        this.getBody().setOffset(8, 0)
+
+        this.getBody().setCircle(16)
         this.scale = 2
         this.pathArray = pathArray
         this.healthBar = scene.add.text(

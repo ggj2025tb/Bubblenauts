@@ -77,12 +77,23 @@ export class Enemy extends Actor {
             }
         }
 
-        this.scene.physics.moveTo(
-            this,
-            this.actorToFollow.x + 10,
-            this.actorToFollow.y + 10,
-            this.speed
-        )
+        // Move towards target if distance is greater than 10
+        // Makes the enemy "wiggle" a bit when close to the target and attacking
+        if (
+            Phaser.Math.Distance.Between(
+                this.x,
+                this.y,
+                this.actorToFollow.x,
+                this.actorToFollow.y
+            ) > 10
+        ) {
+            this.scene.physics.moveTo(
+                this,
+                this.actorToFollow.x,
+                this.actorToFollow.y,
+                this.speed
+            )
+        }
 
         //check if the enemy is close to the bubble
         if (
