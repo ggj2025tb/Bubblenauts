@@ -24,7 +24,11 @@ export class Actor extends Physics.Arcade.Sprite {
                 alpha: 0.5,
                 onStart: () => {
                     if (value) {
-                        this.health = this.health - value
+                        if (this.health - value < 0) {
+                            this.health = 0
+                        } else {
+                            this.health = this.health - value
+                        }
                     }
                 },
                 onComplete: () => {
