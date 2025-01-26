@@ -213,7 +213,7 @@ export default class Level extends Phaser.Scene {
         const interfaceimg = this.add.image(500, 600, 'interfaceimg')
         interfaceimg.setOrigin(0, 1)
 
-        interfaceimg.setDisplaySize(300, 50)
+        interfaceimg.setDisplaySize(260, 50)
         interfaceimg.setScrollFactor(0)
         interfaceimg.setDepth(1000)
 
