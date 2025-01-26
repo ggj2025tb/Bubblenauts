@@ -154,9 +154,24 @@ export class Player extends Actor {
                         })
                     } else {
                         this.scene.input.keyboard.enabled = false
-                        this.setInteractive(false)
                         this.body.velocity.x = 0
                         this.body.velocity.y = 0
+
+                        let allDied = true;
+
+                        if (this.scene.otherPlayers) {
+                            this.scene.otherPlayers.forEach((player) => function () {
+                                console.log(player)
+                                if (player.health > 0) {
+                                    allDied = false;
+                                }
+                            })
+                        }
+
+                        if (allDied) {
+                            this.socket.emit('gameOver')
+                            this.scene.scene.start('GameOver')
+                        }
                     }
                 }
 

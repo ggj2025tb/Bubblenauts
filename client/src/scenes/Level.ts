@@ -215,8 +215,7 @@ export default class Level extends Phaser.Scene {
             this.waveText.setText(this.waveNumber.toString())
 
             this.player.health = 100
-            this.player.setInteractive(true)
-            this.scene.input.keyboard.enabled = true
+            this.input.keyboard.enabled = true
 
             const mapData = this.mapData
             this.socket.emit('startGame', { mapData })
