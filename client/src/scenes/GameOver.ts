@@ -32,6 +32,20 @@ export default class GameOver extends Phaser.Scene {
             )
             .setOrigin(0.5)
 
+        this.add
+            .text(
+                this.cameras.main.centerX,
+                this.cameras.main.centerY + 300,
+                'Map assets - finalbossblues / ' +
+                'Fish assets - craftpix.net',
+                {
+                    fontSize: '11px',
+                    color: '#ffffff',
+                    fontStyle: 'bold',
+                }
+            )
+            .setOrigin(0.5)
+
         // Create button background
         const buttonWidth = 200
         const buttonHeight = 50
