@@ -9,8 +9,8 @@ export class Actor extends Physics.Arcade.Sprite {
         frame?: string | number
     ) {
         super(scene, x, y, texture, frame)
-        scene.add.existing(this)
-        scene.physics.add.existing(this)
+        this.scene.add.existing(this)
+        this.scene.physics.add.existing(this)
         this.getBody().setCollideWorldBounds(true)
     }
     public getDamage(value?: number): void {
