@@ -112,7 +112,6 @@ export class Enemy extends Actor {
     }
 
     selectNewTarget(): void {
-
         // Calculate the nearest enemy or bubble to follow it
         let nearestBubble: Bubble
         let nearestBubbleDistance: number = 999999
@@ -188,9 +187,12 @@ export class Enemy extends Actor {
             ease: 'Power2',
             onComplete: () => {
                 // Remove from scene and enemies array
-                const index = (this.scene as any).enemies.indexOf(this)
-                if (index > -1) {
-                    ;(this.scene as any).enemies.splice(index, 1)
+
+                if (this.scene && (this.scene as any).enemies) {
+                    const index = (this.scene as any).enemies.indexOf(this)
+                    if (index > -1) {
+                        ;(this.scene as any).enemies.splice(index, 1)
+                    }
                 }
                 this.destroy()
             },

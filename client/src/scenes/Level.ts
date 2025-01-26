@@ -18,36 +18,92 @@ import { Bubble } from '../classes/Bubble'
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
-    constructor() {
-        super('Level')
 
-        /* START-USER-CTR-CODE */
+	constructor() {
+		super("Level");
+
+		/* START-USER-CTR-CODE */
         // Write your code here.
         /* END-USER-CTR-CODE */
-    }
+	}
 
-    editorCreate(): void {
-        // level1Map
-        const level1Map = this.add.tilemap('BubbleNautsMap')
-        level1Map.addTilesetImage('Decoration', 'decoration')
-        level1Map.addTilesetImage('Bubbles', 'bubbles')
-        level1Map.addTilesetImage('Player', 'player')
-        level1Map.addTilesetImage('Environment', 'environment')
-        level1Map.createLayer('Ground', ['Environment'], 0, 0)
-        level1Map.createLayer('Walls', ['Environment'], 0, 0)
-        level1Map.createLayer('Floor', ['Environment', 'Decoration'], 0, 0)
-        level1Map.createLayer('RoadBottom', ['Decoration'], 0, 0)
-        level1Map.createLayer('RoadTop', ['Environment', 'Decoration'], 0, 0)
-        level1Map.createLayer('Base', ['Environment', 'Decoration'], 0, 0)
+	editorCreate(): void {
 
-        this.level1Map = level1Map
+		// level1Map
+		const level1Map = this.add.tilemap("BubbleNautsMapUpdated");
+		level1Map.addTilesetImage("Decoration", "decoration");
+		level1Map.addTilesetImage("Bubbles", "bubbles");
+		level1Map.addTilesetImage("Player", "player");
+		level1Map.addTilesetImage("Environment", "environment");
 
-        this.events.emit('scene-awake')
-    }
+		// ground_1
+		level1Map.createLayer("Ground", ["Environment","Decoration"], 0, 0);
 
-    private level1Map!: Phaser.Tilemaps.Tilemap
+		// floor_1
+		level1Map.createLayer("Floor", ["Environment","Decoration"], 0, 0);
 
-    /* START-USER-CODE */
+		// walls_1
+		level1Map.createLayer("Walls", ["Environment"], 0, 0);
+
+		// road_DecorationsFloor_1
+		level1Map.createLayer("Road/DecorationsFloor", ["Environment"], 0, 0);
+
+		// road_RoadBottom_1
+		level1Map.createLayer("Road/RoadBottom", ["Decoration"], 0, 0);
+
+		// road_RoadTop_1
+		level1Map.createLayer("Road/RoadTop", ["Environment","Decoration"], 0, 0);
+
+		// baseDecorations_1
+		level1Map.createLayer("BaseDecorations", [], 0, 0);
+
+		// base_1
+		level1Map.createLayer("Base", ["Environment","Decoration"], 0, 0);
+
+		// grass_Grass_1
+		const grass_Grass_1 = level1Map.createLayer("Grass/Grass", ["Decoration"], 0, 0)!;
+		grass_Grass_1.visible = false;
+
+		// grass_Grass
+		level1Map.createLayer("Grass/Grass2", ["Decoration"], 0, 0);
+
+		// grass_Grass_2
+		const grass_Grass_2 = level1Map.createLayer("Grass/Grass3", ["Decoration"], 0, 0)!;
+		grass_Grass_2.visible = false;
+
+		// grass_Grass_3
+		const grass_Grass_3 = level1Map.createLayer("Grass/Grass4", ["Decoration"], 0, 0)!;
+		grass_Grass_3.visible = false;
+
+		// mapDecorations_Decorations_1
+		level1Map.createLayer("MapDecorations/Decorations", ["Decoration"], 0, 0);
+
+		// mapDecorations_Decorations
+		level1Map.createLayer("MapDecorations/Decorations2", ["Decoration"], 0, 0);
+
+		// mapDecorations_Decorations_2
+		level1Map.createLayer("MapDecorations/Decorations3", ["Decoration"], 0, 0);
+
+		// objective_Objective_1
+		level1Map.createLayer("Objective/Objective", ["Decoration"], 0, 0);
+
+		// objective_ObjectiveDecorations_1
+		level1Map.createLayer("Objective/ObjectiveDecorations", ["Decoration"], 0, 0);
+
+		// objective_ObjectiveDecorations
+		level1Map.createLayer("Objective/ObjectiveDecorations2", ["Decoration"], 0, 0);
+
+		// waterLayer_1
+		level1Map.createLayer("WaterLayer", ["Environment"], 0, 0);
+
+		this.level1Map = level1Map;
+
+		this.events.emit("scene-awake");
+	}
+
+	private level1Map!: Phaser.Tilemaps.Tilemap;
+
+	/* START-USER-CODE */
     private player!: Player
     // enemies will be filled by the EnemySpawner
     private enemies: Enemy[] = []
@@ -123,7 +179,7 @@ export default class Level extends Phaser.Scene {
             fontSize: '11px',
             fill: 'white',
         })
-        this.add.text(325, 190, 'Regen air in base', {
+        this.add.text(325, 190, 'Regen air on open shell', {
             fontSize: '11px',
             fill: 'white',
         })
@@ -351,3 +407,8 @@ export default class Level extends Phaser.Scene {
         })
     }
 }
+/* END-USER-CODE */
+
+/* END OF COMPILED CODE */
+
+// You can write more code here
