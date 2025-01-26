@@ -16,6 +16,7 @@ let gameState: GameState = {
     players: {},
     enemies: {},
     bubbles: {},
+    towers: {},
     mapData: {
         enemySpawnPoints: [],
         enemyPath: [],
@@ -178,6 +179,7 @@ io.on('connection', (socket) => {
             players: {},
             enemies: {},
             bubbles: {},
+            towers: {},
             mapData: {
                 enemySpawnPoints: [],
                 enemyPath: [],
@@ -238,6 +240,18 @@ io.on('connection', (socket) => {
         }
     })
 
+    socket.on('placeTower', (towerData) => {
+        // Add tower to game state
+        gameState.towers[towerData.serverId] = {
+            x: towerData.x,
+            y: towerData.y,
+            type: towerData.type,
+        }
+
+        // Broadcast tower placement to other players
+        socket.broadcast.emit('towerPlaced', towerData)
+    })
+
     socket.on('checkGameState', (data, callback) => {
         callback(gameState.gameStarted)
     })
@@ -255,6 +269,7 @@ io.on('connection', (socket) => {
                 players: {},
                 enemies: {},
                 bubbles: {},
+                towers: {},
                 mapData: {
                     enemySpawnPoints: [],
                     enemyPath: [],
