@@ -25,7 +25,7 @@ export class Player extends Actor {
     private weapon: Weapon
     private weaponManager: WeaponManager
     private lastHealthUpdateTime: number = 0
-    public coins: number = 100
+    public coins: number = 0
 
     // Dash-related properties
     private lastDashTime: number = 0
@@ -76,6 +76,7 @@ export class Player extends Actor {
             color: '#9de1f6',
             fontStyle: 'bold',
         })
+        this.label.setDepth(1000)
         this.healthBar = scene.add.text(
             x - 30,
             y - 60,
