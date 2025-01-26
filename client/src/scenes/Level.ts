@@ -189,9 +189,11 @@ export default class Level extends Phaser.Scene {
         )
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
-        const interfaceimg = this.add.image(0, 0, 'interfaceimg')
+        const interfaceimg = this.add.image(500, 600, 'interfaceimg')
         interfaceimg.setOrigin(0, 1)
-        interfaceimg.setDisplaySize(560, 96)
+        interfaceimg.setDisplaySize(300, 64)
+        interfaceimg.setScrollFactor(0)
+        interfaceimg.setDepth(1000)
         // A static button that can be used to send a message to the server
         this.startGameButton = this.add.image(320, 20, 'StartButtonRendered')
         this.startGameButton.setOrigin(0, 0)

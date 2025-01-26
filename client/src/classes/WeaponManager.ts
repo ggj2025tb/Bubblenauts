@@ -36,14 +36,15 @@ export class WeaponManager {
 
         // Weapon indicator
         this.weaponIndicator = scene.add
-            .text(10, 10, 'Current Weapon: Melee', {
+            // .text(240, 140, 'Current Weapon: Melee', { // Original position top right
+            .text(510, 555, 'Current Weapon: Melee', {
                 fontSize: '18px',
                 color: '#ffffff',
                 backgroundColor: 'rgba(0,0,0,0.5)',
                 padding: { x: 5, y: 5 },
             })
             .setScrollFactor(0)
-            .setDepth(1000)
+            .setDepth(1500)
 
         // Weapon switch instructions
         // GRRRRRRRRRR folgt nicht der Kamera
