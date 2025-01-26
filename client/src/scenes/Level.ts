@@ -268,6 +268,8 @@ export default class Level extends Phaser.Scene {
         })
 
         this.socket.on('waveFinished', (wave: number) => {
+            this.gameStarted = false
+
             this.enemies.forEach((enemy) => enemy.destroy())
             this.enemies = []
 

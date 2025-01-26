@@ -169,8 +169,8 @@ io.on('connection', (socket) => {
     socket.on('gameOver', () => {
         gameState.gameStarted = false
 
-        enemyCounter = 0
         clearInterval(enemySpawnerInterval)
+        enemyCounter = 0
         gameState = {
             gameStarted: false,
             wave: 0,
