@@ -4,7 +4,6 @@ export class Bubble extends Actor {
     private pathArray: number[][]
     private speed: number = 50
     public healthBar: Phaser.GameObjects.Text
-    private lastHealthUpdateTime: number = 0
     private socket: Socket
 
     constructor(
@@ -13,12 +12,11 @@ export class Bubble extends Actor {
         pathArray: number[][],
         socket: Socket
     ) {
-        super(scene, bubbleStart[0], bubbleStart[1], 'FufuSuperDino')
+        super(scene, bubbleStart[0], bubbleStart[1], 'singleBubble')
         // PHYSICS
         this.getBody().setSize(10, 10)
         this.getBody().setOffset(8, 0)
-        this.setTint(0xf00ff0)
-        this.scale = 0.3
+        this.scale = 2
         this.pathArray = pathArray
         this.healthBar = scene.add.text(
             bubbleStart[0] - 35,
@@ -28,25 +26,24 @@ export class Bubble extends Actor {
         this.socket = socket
     }
 
-    updateHealth(time: number, delta: number): void {
-        if (time - this.lastHealthUpdateTime > 200) {
-            this.health -= 1
+    public getDamage(value?: number): void {
+        super.getDamage(value)
 
-            this.healthBar.text = this.health + '% Life'
-            this.lastHealthUpdateTime = time
+        this.health -= 1
+        this.healthBar.text = this.health + '% Life'
 
-            this.socket.emit('bubbleHealthUpdate', {
-                health: this.health,
-            })
+        this.socket.emit('bubbleHealthUpdate', {
+            health: this.health,
+        })
 
-            if (this.health <= 0) {
-                this.socket.emit('gameOver')
-                this.scene.scene.start('GameOver')
-            }
+        if (this.health <= 0) {
+            this.socket.emit('gameOver')
+            this.scene.scene.start('GameOver')
         }
     }
 
     update(time: number, delta: number): void {
+        this.anims.play('bubble_idle', true)
         if (this.pathArray.length !== 0) {
             // move to pathArray[0]
             this.scene.physics.moveTo(
