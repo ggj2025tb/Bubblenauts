@@ -41,57 +41,10 @@
                     "keyframe": false
                 }
             ],
-            "frameRate": 12,
+            "frameRate": 10,
             "skipMissedFrames": true,
             "repeat": -1,
             "randomFrame": false
-        },
-        {
-            "key": "enemy_1_death",
-            "type": "frame",
-            "frames": [
-                {
-                    "key": "enemy_1_death",
-                    "frame": 0,
-                    "duration": 0,
-                    "keyframe": false
-                },
-                {
-                    "key": "enemy_1_death",
-                    "frame": 1,
-                    "duration": 0,
-                    "keyframe": false
-                },
-                {
-                    "key": "enemy_1_death",
-                    "frame": 2,
-                    "duration": 0,
-                    "keyframe": false
-                },
-                {
-                    "key": "enemy_1_death",
-                    "frame": 3,
-                    "duration": 0,
-                    "keyframe": false
-                },
-                {
-                    "key": "enemy_1_death",
-                    "frame": 4,
-                    "duration": 0,
-                    "keyframe": false
-                },
-                {
-                    "key": "enemy_1_death",
-                    "frame": 5,
-                    "duration": 0,
-                    "keyframe": false
-                }
-            ],
-            "frameRate": 12,
-            "skipMissedFrames": true,
-            "repeat": -1,
-            "randomFrame": false,
-            "hideOnComplete": true
         },
         {
             "key": "enemy_1_walk",
@@ -122,7 +75,7 @@
                     "keyframe": false
                 }
             ],
-            "frameRate": 12,
+            "frameRate": 8,
             "skipMissedFrames": true,
             "repeat": -1,
             "randomFrame": false
