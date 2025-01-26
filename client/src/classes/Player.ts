@@ -207,7 +207,7 @@ export class Player extends Actor {
             }
 
             // Regular movement controls (only if not dashing)
-            if (!this.isDashing) {
+            if (!this.isDashing && this.scene.input.keyboard.enabled) {
                 if (this.keyW?.isDown) {
                     this.body.velocity.y = -this.MOVEMENT_SPEED
                 }
