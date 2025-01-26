@@ -15,95 +15,139 @@ import type {
     Bubble as ServerBubble,
 } from '../../types/ServerTypes'
 import { Bubble } from '../classes/Bubble'
+import { TowerManager } from '../classes/TowerManager'
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
+    constructor() {
+        super('Level')
 
-	constructor() {
-		super("Level");
-
-		/* START-USER-CTR-CODE */
+        /* START-USER-CTR-CODE */
         // Write your code here.
         /* END-USER-CTR-CODE */
-	}
+    }
 
-	editorCreate(): void {
+    editorCreate(): void {
+        // level1Map
+        const level1Map = this.add.tilemap('BubbleNautsMapUpdated')
+        level1Map.addTilesetImage('Decoration', 'decoration')
+        level1Map.addTilesetImage('Bubbles', 'bubbles')
+        level1Map.addTilesetImage('Player', 'player')
+        level1Map.addTilesetImage('Environment', 'environment')
 
-		// level1Map
-		const level1Map = this.add.tilemap("BubbleNautsMapUpdated");
-		level1Map.addTilesetImage("Decoration", "decoration");
-		level1Map.addTilesetImage("Bubbles", "bubbles");
-		level1Map.addTilesetImage("Player", "player");
-		level1Map.addTilesetImage("Environment", "environment");
+        // ground_1
+        level1Map.createLayer('Ground', ['Environment', 'Decoration'], 0, 0)
 
-		// ground_1
-		level1Map.createLayer("Ground", ["Environment","Decoration"], 0, 0);
+        // floor_1
+        level1Map.createLayer('Floor', ['Environment', 'Decoration'], 0, 0)
 
-		// floor_1
-		level1Map.createLayer("Floor", ["Environment","Decoration"], 0, 0);
+        // walls_1
+        level1Map.createLayer('Walls', ['Environment'], 0, 0)
 
-		// walls_1
-		level1Map.createLayer("Walls", ["Environment"], 0, 0);
+        // road_DecorationsFloor_1
+        level1Map.createLayer('Road/DecorationsFloor', ['Environment'], 0, 0)
 
-		// road_DecorationsFloor_1
-		level1Map.createLayer("Road/DecorationsFloor", ["Environment"], 0, 0);
+        // road_RoadBottom_1
+        level1Map.createLayer('Road/RoadBottom', ['Decoration'], 0, 0)
 
-		// road_RoadBottom_1
-		level1Map.createLayer("Road/RoadBottom", ["Decoration"], 0, 0);
+        // road_RoadTop_1
+        level1Map.createLayer(
+            'Road/RoadTop',
+            ['Environment', 'Decoration'],
+            0,
+            0
+        )
 
-		// road_RoadTop_1
-		level1Map.createLayer("Road/RoadTop", ["Environment","Decoration"], 0, 0);
+        // baseDecorations_1
+        level1Map.createLayer('BaseDecorations', [], 0, 0)
 
-		// baseDecorations_1
-		level1Map.createLayer("BaseDecorations", [], 0, 0);
+        // base_1
+        level1Map.createLayer('Base', ['Environment', 'Decoration'], 0, 0)
 
-		// base_1
-		level1Map.createLayer("Base", ["Environment","Decoration"], 0, 0);
+        // grass_Grass_1
+        const grass_Grass_1 = level1Map.createLayer(
+            'Grass/Grass',
+            ['Decoration'],
+            0,
+            0
+        )!
+        grass_Grass_1.visible = false
 
-		// grass_Grass_1
-		const grass_Grass_1 = level1Map.createLayer("Grass/Grass", ["Decoration"], 0, 0)!;
-		grass_Grass_1.visible = false;
+        // grass_Grass
+        level1Map.createLayer('Grass/Grass2', ['Decoration'], 0, 0)
 
-		// grass_Grass
-		level1Map.createLayer("Grass/Grass2", ["Decoration"], 0, 0);
+        // grass_Grass_2
+        const grass_Grass_2 = level1Map.createLayer(
+            'Grass/Grass3',
+            ['Decoration'],
+            0,
+            0
+        )!
+        grass_Grass_2.visible = false
 
-		// grass_Grass_2
-		const grass_Grass_2 = level1Map.createLayer("Grass/Grass3", ["Decoration"], 0, 0)!;
-		grass_Grass_2.visible = false;
+        // grass_Grass_3
+        const grass_Grass_3 = level1Map.createLayer(
+            'Grass/Grass4',
+            ['Decoration'],
+            0,
+            0
+        )!
+        grass_Grass_3.visible = false
 
-		// grass_Grass_3
-		const grass_Grass_3 = level1Map.createLayer("Grass/Grass4", ["Decoration"], 0, 0)!;
-		grass_Grass_3.visible = false;
+        // mapDecorations_Decorations_1
+        level1Map.createLayer(
+            'MapDecorations/Decorations',
+            ['Decoration'],
+            0,
+            0
+        )
 
-		// mapDecorations_Decorations_1
-		level1Map.createLayer("MapDecorations/Decorations", ["Decoration"], 0, 0);
+        // mapDecorations_Decorations
+        level1Map.createLayer(
+            'MapDecorations/Decorations2',
+            ['Decoration'],
+            0,
+            0
+        )
 
-		// mapDecorations_Decorations
-		level1Map.createLayer("MapDecorations/Decorations2", ["Decoration"], 0, 0);
+        // mapDecorations_Decorations_2
+        level1Map.createLayer(
+            'MapDecorations/Decorations3',
+            ['Decoration'],
+            0,
+            0
+        )
 
-		// mapDecorations_Decorations_2
-		level1Map.createLayer("MapDecorations/Decorations3", ["Decoration"], 0, 0);
+        // objective_Objective_1
+        level1Map.createLayer('Objective/Objective', ['Decoration'], 0, 0)
 
-		// objective_Objective_1
-		level1Map.createLayer("Objective/Objective", ["Decoration"], 0, 0);
+        // objective_ObjectiveDecorations_1
+        level1Map.createLayer(
+            'Objective/ObjectiveDecorations',
+            ['Decoration'],
+            0,
+            0
+        )
 
-		// objective_ObjectiveDecorations_1
-		level1Map.createLayer("Objective/ObjectiveDecorations", ["Decoration"], 0, 0);
+        // objective_ObjectiveDecorations
+        level1Map.createLayer(
+            'Objective/ObjectiveDecorations2',
+            ['Decoration'],
+            0,
+            0
+        )
 
-		// objective_ObjectiveDecorations
-		level1Map.createLayer("Objective/ObjectiveDecorations2", ["Decoration"], 0, 0);
+        // waterLayer_1
+        level1Map.createLayer('WaterLayer', ['Environment'], 0, 0)
 
-		// waterLayer_1
-		level1Map.createLayer("WaterLayer", ["Environment"], 0, 0);
+        this.level1Map = level1Map
 
-		this.level1Map = level1Map;
+        this.events.emit('scene-awake')
+    }
 
-		this.events.emit("scene-awake");
-	}
+    private level1Map!: Phaser.Tilemaps.Tilemap
 
-	private level1Map!: Phaser.Tilemaps.Tilemap;
-
-	/* START-USER-CODE */
+    /* START-USER-CODE */
     private player!: Player
     // enemies will be filled by the EnemySpawner
     private enemies: Enemy[] = []
@@ -117,6 +161,7 @@ export default class Level extends Phaser.Scene {
     private waveText!: Phaser.GameObjects.Text
     private mapData!: ServerMapData
     public gameStarted: boolean = false
+    private towerManager: TowerManager
 
     create() {
         this.socket = this.registry.get('socket')
@@ -151,6 +196,7 @@ export default class Level extends Phaser.Scene {
         this.startGameButton.setOrigin(0, 0)
         this.startGameButton.setDisplaySize(144, 48)
         this.startGameButton.setInteractive()
+        this.towerManager = new TowerManager(this, this.socket)
 
         // display fix wave number but with following camera
         this.add.text(325, 80, 'Wave: ', {
@@ -405,6 +451,9 @@ export default class Level extends Phaser.Scene {
         this.bubbles.forEach((bubble) => {
             bubble.update(time, delta)
         })
+
+        // Add tower manager update
+        this.towerManager.update(time, this.enemies)
     }
 }
 /* END-USER-CODE */
