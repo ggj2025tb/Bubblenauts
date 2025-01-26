@@ -160,8 +160,7 @@ export class Player extends Actor {
                         let allDied = true;
 
                         if (this.scene.otherPlayers) {
-                            this.scene.otherPlayers.forEach((player) => function () {
-                                console.log(player)
+                            this.scene.otherPlayers.forEach((player) => {
                                 if (player.health > 0) {
                                     allDied = false;
                                 }

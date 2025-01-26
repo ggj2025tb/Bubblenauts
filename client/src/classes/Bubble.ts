@@ -40,8 +40,6 @@ export class Bubble extends Actor {
             })
 
             if (this.health <= 0) {
-                // scenen wechsel hier
-                // alert('game over')
                 this.socket.emit('gameOver')
                 this.scene.scene.start('GameOver')
             }
