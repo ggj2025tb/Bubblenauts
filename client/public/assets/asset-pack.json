@@ -123,6 +123,161 @@
                 "key": "enemy_1_walk"
             },
             {
+                "url": "assets/enemies/enemy_2.png",
+                "type": "image",
+                "key": "enemy_2"
+            },
+            {
+                "url": "assets/enemies/enemy_2_attack.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_2_attack"
+            },
+            {
+                "url": "assets/enemies/enemy_2_walk.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_2_walk"
+            },
+            {
+                "url": "assets/enemies/enemy_3.png",
+                "type": "image",
+                "key": "enemy_3"
+            },
+            {
+                "url": "assets/enemies/enemy_3_attack.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_3_attack"
+            },
+            {
+                "url": "assets/enemies/enemy_3_walk.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_3_walk"
+            },
+            {
+                "url": "assets/enemies/enemy_4.png",
+                "type": "image",
+                "key": "enemy_4"
+            },
+            {
+                "url": "assets/enemies/enemy_4_attack.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_4_attack"
+            },
+            {
+                "url": "assets/enemies/enemy_4_walk.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_4_walk"
+            },
+            {
+                "url": "assets/enemies/enemy_5.png",
+                "type": "image",
+                "key": "enemy_5"
+            },
+            {
+                "url": "assets/enemies/enemy_5_attack.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_5_attack"
+            },
+            {
+                "url": "assets/enemies/enemy_5_walk.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_5_walk"
+            },
+            {
+                "url": "assets/enemies/enemy_6.png",
+                "type": "image",
+                "key": "enemy_6"
+            },
+            {
+                "url": "assets/enemies/enemy_6_attack.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_6_attack"
+            },
+            {
+                "url": "assets/enemies/enemy_6_walk.png",
+                "frameConfig": {
+                    "frameWidth": 48,
+                    "frameHeight": 48,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "enemy_6_walk"
+            },
+            {
                 "url": "assets/tileset/environment.png",
                 "frameConfig": {
                     "frameWidth": 32,
@@ -139,11 +294,6 @@
                 "url": "assets/FufuSuperDino.png",
                 "type": "image",
                 "key": "FufuSuperDino"
-            },
-            {
-                "url": "assets/singleBubble.png",
-                "type": "image",
-                "key": "singleBubble"
             },
             {
                 "url": "assets/Harpune.png",
@@ -177,6 +327,11 @@
                 "url": "assets/animations/playerGreenBlueAnimation.json",
                 "type": "animation",
                 "key": "playerGreenBlueAnimation"
+            },
+            {
+                "url": "assets/singleBubble.png",
+                "type": "image",
+                "key": "singleBubble"
             },
             {
                 "url": "assets/StartButtonRendered.png",
