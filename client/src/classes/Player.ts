@@ -71,9 +71,12 @@ export class Player extends Actor {
         this.getBody().setOffset(8, 0)
         this.getBody().setDrag(this.DRAG, this.DRAG)
 
-        this.label = scene.add.text(x - 16, y - 80, this.playerName)
+        this.label = scene.add.text(x - 16, y - 80, this.playerName, {
+            color: '#9de1f6',
+            fontStyle: 'bold',
+        })
         this.healthBar = scene.add.text(
-            x - 16,
+            x - 30,
             y - 60,
             this.health.toString() + '% Air'
         )
@@ -208,7 +211,7 @@ export class Player extends Actor {
         }
 
         this.label.setPosition(this.x - 16, this.y - 80)
-        this.healthBar.setPosition(this.x - 16, this.y - 60)
+        this.healthBar.setPosition(this.x - 30, this.y - 60)
 
         if (this.body.velocity.x !== 0 || this.body.velocity.y !== 0) {
             this.socket.emit('playerUpdate', {

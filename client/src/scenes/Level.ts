@@ -105,6 +105,28 @@ export default class Level extends Phaser.Scene {
             fill: 'white',
         })
 
+        // Füge text darunter hinzu mit anweisungen
+        this.add.text(325, 110, 'Press "WASD" to move', {
+            fontSize: '12px',
+            fill: 'white',
+        })
+        this.add.text(325, 130, 'Press "Shift" to dash', {
+            fontSize: '12px',
+            fill: 'white',
+        })
+        this.add.text(325, 150, 'Click to shoot/attack', {
+            fontSize: '12px',
+            fill: 'white',
+        })
+        this.add.text(325, 170, 'Press "1" or "2" to switch weapon', {
+            fontSize: '12px',
+            fill: 'white',
+        })
+        this.add.text(325, 190, 'Regen air in base', {
+            fontSize: '12px',
+            fill: 'white',
+        })
+
         this.mapData = {
             enemySpawnPoints: [
                 [1200, 100],
@@ -147,6 +169,11 @@ export default class Level extends Phaser.Scene {
 
             const mapData = this.mapData
             this.socket.emit('startGame', { mapData })
+        })
+
+        this.socket.on('disableStartButton', () => {
+            this.startGameButton.alpha = 0.5
+            this.startGameButton.disableInteractive()
         })
 
         this.socket.on('gameState', (gameState: GameState) => {

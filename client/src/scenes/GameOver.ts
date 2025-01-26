@@ -56,7 +56,9 @@ export default class GameOver extends Phaser.Scene {
         })
 
         buttonBg.on('pointerdown', () => {
-            this.scene.start('Menu')
+            // this.scene.start('Menu')
+            // reload the game
+            window.location.reload()
         })
     }
 }

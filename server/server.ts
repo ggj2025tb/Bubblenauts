@@ -249,6 +249,7 @@ io.on('connection', (socket) => {
         spawnBubble()
         startEnemySpawner()
         io.emit('gameState', gameState)
+        io.emit('disableStartButton')
     })
 })
 
