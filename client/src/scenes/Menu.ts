@@ -1,7 +1,8 @@
+import { Socket } from 'socket.io-client'
 export default class Menu extends Phaser.Scene {
     private nameInput!: HTMLInputElement
     private button!: HTMLButtonElement
-    private div!: HTMLButtonElement
+    private socket!: Socket
 
     constructor() {
         super('Menu')
@@ -16,9 +17,18 @@ export default class Menu extends Phaser.Scene {
         )
 
         this.socket = this.registry.get('socket')
+
+        // Get existing app div
+        const appDiv = document.getElementById('app')
+
+        // Create and style input
         this.nameInput = document.createElement('input')
-        this.nameInput.style.width = '800px'
-        this.nameInput.style.height = '120px'
+        // center
+        this.nameInput.style.position = 'absolute'
+        this.nameInput.style.left = '50%'
+        this.nameInput.style.top = '50%'
+        this.nameInput.style.transform = 'translate(-50%, -130%)'
+        this.nameInput.style.width = '50%'
         this.nameInput.style.textAlign = 'center'
         this.nameInput.style.backgroundColor = 'rgba(0, 0, 0, 0.0)'
         this.nameInput.style.border = 'none'
@@ -32,27 +42,21 @@ export default class Menu extends Phaser.Scene {
                 this.joinGame(this)
             }
         }
-        this.div = document.createElement('div')
-        this.div.style.width = '100%'
-        this.div.style.textAlign = 'center'
-        this.div.style.position = 'absolute'
-        this.div.style.top = 'calc(100% - 61%)'
-        this.div.appendChild(this.nameInput)
 
-        this.div.appendChild(document.createElement('br'))
-        this.div.appendChild(document.createElement('br'))
-        this.div.appendChild(document.createElement('br'))
-        this.div.appendChild(document.createElement('br'))
-
+        // Create and style button
         this.button = document.createElement('button')
-        this.button.style.height = '100px'
-        this.button.style.width = '450px'
+        this.button.style.position = 'absolute'
+        this.button.style.left = '50%'
+        this.button.style.top = '50%'
+        this.button.style.transform = 'translate(-50%, 10%)'
+        this.button.style.width = '40%'
+        this.button.style.height = '30%'
         this.button.style.opacity = '0.0'
-        // this.button.textContent = 'Join Game'
         this.button.onclick = () => this.joinGame(this)
-        this.div.appendChild(this.button)
 
-        document.body.appendChild(this.div)
+        // Append elements to app div
+        appDiv?.appendChild(this.nameInput)
+        appDiv?.appendChild(this.button)
         this.nameInput.focus()
     }
 
