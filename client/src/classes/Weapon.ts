@@ -6,7 +6,7 @@ export class Weapon {
     private scene: Phaser.Scene
     private player: Phaser.GameObjects.GameObject
     private mousePointer: Phaser.Input.Pointer
-    private hitBox: Phaser.GameObjects.Rectangle
+    private hitBox: Phaser.GameObjects.Sprite
     private isAttacking: boolean = false
     private attackCooldown: number = 500
     private lastAttackTime: number = 0
@@ -35,8 +35,11 @@ export class Weapon {
         this.weaponSprite.setOrigin(0.5, 0.8)
         this.weaponSprite.angle = 90
 
-        this.hitBox = scene.add.rectangle(0, 0, 50, 30, 0xff0000, 0.2)
-        scene.physics.add.existing(this.hitBox, false)
+        // this.hitBox = scene.add.rectangle(0, 0, 50, 30, 0xff0000, 0.2)
+        // use asset singleBubble as hitbox
+        this.hitBox = scene.add.sprite(0, 0, 'singleBubble')
+        this.hitBox.setVisible(false)
+        this.hitBox = scene.physics.add.existing(this.hitBox, false)
 
         // Update weapon position in game loop
         scene.events.on('update', () => this.updateWeaponPosition())
@@ -79,13 +82,18 @@ export class Weapon {
             this.mousePointer.worldY
         )
 
+        // Hitbox visible for 500ms
+        this.hitBox.setVisible(true)
+        this.hitBox.setAlpha(1)
+        this.scene.time.delayedCall(500, () => {
+            this.hitBox.setVisible(false)
+        })
+
         const attackSprite = this.scene.add.sprite(
             originalX,
             originalY,
             this.weaponSprite.texture.key
         )
-        attackSprite.setScale(1.2)
-        attackSprite.setOrigin(0, 0.5)
         attackSprite.angle = Phaser.Math.RadToDeg(mouseAngle) + 90
 
         // Hide original sprite
@@ -95,11 +103,13 @@ export class Weapon {
             targets: attackSprite,
             x: originalX + Math.cos(mouseAngle) * 30,
             y: originalY + Math.sin(mouseAngle) * 30,
-            scaleY: 1.4,
+            angle: Phaser.Math.RadToDeg(mouseAngle) + 90,
+            // scaleY: 1.4,
             duration: 100,
             yoyo: true,
             onComplete: () => {
                 attackSprite.destroy()
+
                 this.weaponSprite.setVisible(true)
                 this.isAnimating = false
             },
