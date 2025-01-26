@@ -128,12 +128,12 @@ export class Gun {
         // Set world bounds for projectile
         projectile.body.setCollideWorldBounds(true)
 
-        // Destroy after 1 second
-        // this.scene.time.delayedCall(1000, () => {
-        //     if (projectile.active) {
-        //         projectile.destroy()
-        //     }
-        // })
+        // Destroy after 4 second
+        this.scene.time.delayedCall(4000, () => {
+            if (projectile.active) {
+                projectile.destroy()
+            }
+        })
 
         // Check enemy collision
         enemies.forEach((enemy) => {
