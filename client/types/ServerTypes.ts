@@ -6,6 +6,7 @@ export interface Player {
     direction?: number
     health: number
     animation?: string
+    coins?: number
 }
 
 export interface Enemy {
