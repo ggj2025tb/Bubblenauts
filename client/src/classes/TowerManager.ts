@@ -177,13 +177,12 @@ export class TowerManager {
             offset += 40
             towerSprite.setInteractive()
             towerSprite.on('pointerdown', () => {
-                this.socket.emit('checkPlayerCoins', {}, (coins: number) => {
-                    console.log('Player coins:', coins)
-                    this.playerCoins = coins
-                })
+                const coins = this.scene.getCoins()
+                console.log(coins)
                 const cost = config.cost || 0
-                if (this.playerCoins >= cost) {
+                if (coins >= cost) {
                     this.selectTowerType(type)
+                    this.scene.updateCoins(coins - cost)
                 } else {
                     // Optional: Add feedback that player can't afford tower
                     console.log('Not enough coins for this tower')

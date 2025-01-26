@@ -1,10 +1,11 @@
 import Phaser from 'phaser'
 import { Enemy } from './Enemy'
 import { Socket } from 'socket.io-client'
+import { Player } from './Player'
 
 export class Weapon {
     private scene: Phaser.Scene
-    private player: Phaser.GameObjects.GameObject
+    private player: Player
     private mousePointer: Phaser.Input.Pointer
     private hitBox: Phaser.GameObjects.Sprite
     private isAttacking: boolean = false
@@ -20,7 +21,7 @@ export class Weapon {
 
     constructor(
         scene: Phaser.Scene,
-        player: Phaser.GameObjects.GameObject,
+        player: Player,
         mousePointer: Phaser.Input.Pointer,
         weaponSpriteName: string
     ) {
@@ -169,6 +170,10 @@ export class Weapon {
 
     private damageEnemy(enemy: Enemy): void {
         enemy.getDamage(this.damage)
+        if (enemy.health - this.damage <= 0) {
+            this.player.coins = this.player.coins + 10
+            this.scene.updateCoins(this.player.coins)
+        }
     }
 
     public isCurrentlyAttacking(): boolean {

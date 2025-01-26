@@ -329,8 +329,6 @@ export default class Level extends Phaser.Scene {
             this.waveNumber = gameState.wave
             this.waveText.setText(this.waveNumber.toString())
 
-            this.coinText.setText(this.player.coins.toString())
-
             this.gameStarted = gameState.gameStarted
 
             // Create sprites for other players EXCEPT current player
@@ -377,11 +375,6 @@ export default class Level extends Phaser.Scene {
             if (enemy) {
                 enemy.die()
             }
-        })
-
-        this.socket.on('setPlayerCoins', (coins: number) => {
-            this.player.coins = coins
-            this.coinText.setText(coins.toString())
         })
 
         this.socket.on('enemyCreated', (enemy: ServerEnemy) => {
@@ -494,6 +487,15 @@ export default class Level extends Phaser.Scene {
 
         const graphics = this.add.graphics()
         graphics.lineStyle(3, 0xffffff, 1)
+    }
+
+    updateCoins(coins: number) {
+        this.coinText.setText(coins.toString())
+        this.player.coins = coins
+    }
+
+    getCoins() {
+        return this.player.coins
     }
 
     update(time: number, delta: number): void {
