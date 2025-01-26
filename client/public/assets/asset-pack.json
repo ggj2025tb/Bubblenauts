@@ -84,6 +84,31 @@
                 "key": "enemy_1"
             },
             {
+                "url": "assets/animations/enemy_2.json",
+                "type": "animation",
+                "key": "enemy_2"
+            },
+            {
+                "url": "assets/animations/enemy_3.json",
+                "type": "animation",
+                "key": "enemy_3"
+            },
+            {
+                "url": "assets/animations/enemy_4.json",
+                "type": "animation",
+                "key": "enemy_4"
+            },
+            {
+                "url": "assets/animations/enemy_5.json",
+                "type": "animation",
+                "key": "enemy_5"
+            },
+            {
+                "url": "assets/animations/enemy_6.json",
+                "type": "animation",
+                "key": "enemy_6"
+            },
+            {
                 "url": "assets/enemies/enemy_1_attack.png",
                 "frameConfig": {
                     "frameWidth": 48,
@@ -95,19 +120,6 @@
                 },
                 "type": "spritesheet",
                 "key": "enemy_1_attack"
-            },
-            {
-                "url": "assets/enemies/enemy_1_death.png",
-                "frameConfig": {
-                    "frameWidth": 48,
-                    "frameHeight": 48,
-                    "startFrame": 0,
-                    "endFrame": -1,
-                    "spacing": 0,
-                    "margin": 0
-                },
-                "type": "spritesheet",
-                "key": "enemy_1_death"
             },
             {
                 "url": "assets/enemies/enemy_1_walk.png",

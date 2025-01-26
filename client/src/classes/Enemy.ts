@@ -14,6 +14,7 @@ export class Enemy extends Actor {
     private dmgAgainstBubble: number = 2
     private dmgAgainstPlayer: number = 5
     private findNewTargetCooldown: number = 1000
+    private enemyAnimType: number = 1
 
     constructor(
         scene: Phaser.Scene,
@@ -35,6 +36,8 @@ export class Enemy extends Actor {
         this.players = players
         // Select next target
         this.selectNewTarget()
+
+        this.enemyAnimType = Phaser.Math.Between(1, 6)
     }
 
     update(time: number, delta: number): void {
@@ -81,8 +84,6 @@ export class Enemy extends Actor {
             this.speed
         )
 
-        this.checkFlip()
-
         //check if the enemy is close to the bubble
         if (
             Phaser.Math.Distance.Between(
@@ -90,11 +91,12 @@ export class Enemy extends Actor {
                 this.y,
                 this.actorToFollow.x,
                 this.actorToFollow.y
-            ) < 10
+            ) < 20
         ) {
-            this.anims.play('enemy_1_attack', true)
+            this.anims.play('enemy_' + this.enemyAnimType + '_attack', true)
         } else {
-            this.anims.play('enemy_1_walk', true)
+            this.checkFlip()
+            this.anims.play('enemy_' + this.enemyAnimType + '_walk', true)
         }
     }
 
@@ -179,7 +181,6 @@ export class Enemy extends Actor {
                 if (index > -1) {
                     ;(this.scene as any).enemies.splice(index, 1)
                 }
-                this.anims.play('enemy_1_death')
                 this.destroy()
             },
         })
