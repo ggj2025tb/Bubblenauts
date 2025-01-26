@@ -32,7 +32,7 @@ export class Tower extends Phaser.GameObjects.Sprite {
         this.range = config.range
 
         if (config.type == 'advanced') {
-            this.tint = 0xff00ff;
+            this.tint = 0xff00ff
         }
 
         // Add to scene and enable physics
@@ -179,10 +179,11 @@ export class TowerManager {
                 .setDepth(1500)
 
             if (type == 'advanced') {
-                towerSprite.tint = 0xff00ff;
+                towerSprite.tint = 0xff00ff
             }
 
-            this.scene.add.text(menuX + offset + 13, menuY - 10, config.cost.toString())
+            this.scene.add
+                .text(menuX + offset + 13, menuY - 10, config.cost.toString())
                 .setStyle({
                     color: 'gold',
                     fontFamily: 'arial',
@@ -195,7 +196,7 @@ export class TowerManager {
             towerSprite.setInteractive()
             towerSprite.on('pointerdown', () => {
                 const coins = this.scene.getCoins()
-                console.log(coins)
+
                 const cost = config.cost || 0
                 if (coins >= cost) {
                     this.selectTowerType(type)
@@ -225,7 +226,7 @@ export class TowerManager {
         )
 
         if (type == 'advanced') {
-            this.currentDragTower.tint = 0xff00ff;
+            this.currentDragTower.tint = 0xff00ff
         }
 
         this.scene.input.on('pointermove', this.updateDragTower, this)
