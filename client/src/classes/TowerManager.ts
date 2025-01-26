@@ -101,10 +101,12 @@ export class Tower extends Phaser.GameObjects.Sprite {
         this.scene.physics.add.overlap(projectile, this.target, () => {
             if (this.target instanceof Enemy) {
                 this.target?.getDamage(this.damage)
-                this.socket.emit('enemyGetDamage', {
-                    enemyId: this.target.id,
-                    damage: this.damage,
-                })
+                if (this.socket) {
+                    this.socket.emit('enemyGetDamage', {
+                        enemyId: this.target.id,
+                        damage: this.damage,
+                    })
+                }
             }
             projectile.destroy()
         })
