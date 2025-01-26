@@ -178,24 +178,26 @@ export class Enemy extends Actor {
     public die(): void {
         this.isDying = true
 
-        // Death animation
-        this.scene.tweens.add({
-            targets: this,
-            alpha: 0,
-            scale: 0,
-            duration: 500,
-            ease: 'Power2',
-            onComplete: () => {
-                // Remove from scene and enemies array
-
-                if (this.scene && (this.scene as any).enemies) {
-                    const index = (this.scene as any).enemies.indexOf(this)
-                    if (index > -1) {
-                        ;(this.scene as any).enemies.splice(index, 1)
+        if (this.scene) {
+            // Death animation
+            this.scene.tweens.add({
+                targets: this,
+                alpha: 0,
+                scale: 0,
+                duration: 500,
+                ease: 'Power2',
+                onComplete: () => {
+                    // Remove from scene and enemies array
+    
+                    if (this.scene && (this.scene as any).enemies) {
+                        const index = (this.scene as any).enemies.indexOf(this)
+                        if (index > -1) {
+                            ;(this.scene as any).enemies.splice(index, 1)
+                        }
                     }
-                }
-                this.destroy()
-            },
-        })
+                    this.destroy()
+                },
+            })
+        }
     }
 }
