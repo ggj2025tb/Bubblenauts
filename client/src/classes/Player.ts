@@ -154,6 +154,7 @@ export class Player extends Actor {
                         })
                     } else {
                         this.scene.input.keyboard.enabled = false
+                        this.setInteractive(false)
                         this.body.velocity.x = 0
                         this.body.velocity.y = 0
                     }
