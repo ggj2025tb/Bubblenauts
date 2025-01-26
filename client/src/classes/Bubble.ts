@@ -66,8 +66,8 @@ export class Bubble extends Actor {
                 this.pathArray.shift()
 
                 if (this.pathArray.length === 0) {
-                    // todo: do something, like getting bubble coins
                     this.destroy()
+                    this.healthBar.destroy()
                     this.socket.emit('waveCompleted')
                 }
             }
