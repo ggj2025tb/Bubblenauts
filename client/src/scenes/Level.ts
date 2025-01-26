@@ -181,6 +181,8 @@ export default class Level extends Phaser.Scene {
             true
         )
 
+        this.player.setDepth(1000)
+
         this.cameras.main.setBounds(
             0,
             0,
@@ -196,7 +198,15 @@ export default class Level extends Phaser.Scene {
         box1.visible = false
         box2.visible = false
 
-        this.physics.add.collider(this.player, colliderBox)
+        const boundary = this.physics.add.staticGroup();
+        boundary.create(0, 30, null).setSize(9999, 1).setVisible(false); // Top boundary
+        boundary.create(0, this.level1Map.heightInPixels - 30, null).setSize(9999, 1).setVisible(false); // Bottom boundary
+        boundary.create(0, 0, null).setSize(20, 9999).setVisible(false); // Left boundary
+        boundary.create(9999, 0, null).setSize(1, this.level1Map.heightInPixels - 30).setVisible(false); // Right boundary
+
+        this.physics.add.collider(this.player, boundary);
+
+        this.physics.add.collider(this.player, colliderBox);
 
         this.cameras.main.startFollow(this.player, true, 0.09, 0.09)
         this.cameras.main.setZoom(1.5)
@@ -230,6 +240,7 @@ export default class Level extends Phaser.Scene {
         this.startGameButton.setOrigin(0, 0)
         this.startGameButton.setDisplaySize(144, 48)
         this.startGameButton.setInteractive()
+        this.startGameButton.setDepth(0)
         this.towerManager = new TowerManager(this, this.socket)
 
         // display fix wave number but with following camera
