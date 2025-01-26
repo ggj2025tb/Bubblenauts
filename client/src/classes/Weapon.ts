@@ -33,6 +33,7 @@ export class Weapon {
         this.weaponSprite = scene.add.sprite(0, 0, weaponSpriteName)
         this.weaponSprite.setScale(1.2)
         this.weaponSprite.setOrigin(0.5, 0.8)
+        this.weaponSprite.setDepth(1000)
         this.weaponSprite.angle = 90
 
         // this.hitBox = scene.add.rectangle(0, 0, 50, 30, 0xff0000, 0.2)

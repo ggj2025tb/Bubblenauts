@@ -81,6 +81,7 @@ export class Player extends Actor {
             y - 60,
             this.health.toString() + '% Air'
         )
+        this.healthBar.setDepth(1000)
     }
 
     private performDash(time: number): void {
