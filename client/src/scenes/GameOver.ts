@@ -19,6 +19,17 @@ export default class GameOver extends Phaser.Scene {
         )
         gameOverText.setOrigin(0.5)
 
+        this.add.text(
+            this.cameras.main.centerX,
+            this.cameras.main.centerY - 20,
+            'Game created with ❤️ by Milka, DerMaddin, kinimodmeyer, AKManiac & SH4CK3R',
+            {
+                fontSize: '11px',
+                color: '#ffffff',
+                fontStyle: 'bold',
+            }
+        ).setOrigin(0.5)
+
         // Create button background
         const buttonWidth = 200
         const buttonHeight = 50
