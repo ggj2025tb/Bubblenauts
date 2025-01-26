@@ -2,7 +2,7 @@ import { Actor } from './Actor'
 import { Socket } from 'socket.io-client'
 export class Bubble extends Actor {
     private pathArray: number[][]
-    private speed: number = 50
+    private speed: number = 700
     public healthBar: Phaser.GameObjects.Text
     private socket: Socket
 

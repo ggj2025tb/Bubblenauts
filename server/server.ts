@@ -178,6 +178,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('waveCompleted', () => {
+        gameState.gameStarted = false
         io.emit('waveFinished', gameState.wave)
     })
 
@@ -240,16 +241,18 @@ io.on('connection', (socket) => {
     })
 
     socket.on('startGame', ({ mapData }) => {
-        gameState.gameStarted = true
-        gameState.mapData.enemySpawnPoints = mapData.enemySpawnPoints
-        gameState.mapData.enemyPath = mapData.enemyPath
-        gameState.mapData.bubbleSpawnPoint = mapData.bubbleSpawnPoint
-        gameState.mapData.bubblePath = mapData.bubblePath
-        gameState.wave += 1
-        spawnBubble()
-        startEnemySpawner()
-        io.emit('gameState', gameState)
-        io.emit('disableStartButton')
+        if (!gameState.gameStarted) {
+            gameState.gameStarted = true
+            gameState.mapData.enemySpawnPoints = mapData.enemySpawnPoints
+            gameState.mapData.enemyPath = mapData.enemyPath
+            gameState.mapData.bubbleSpawnPoint = mapData.bubbleSpawnPoint
+            gameState.mapData.bubblePath = mapData.bubblePath
+            gameState.wave += 1
+            spawnBubble()
+            startEnemySpawner()
+            io.emit('gameState', gameState)
+            io.emit('disableStartButton')
+        }
     })
 })
 
