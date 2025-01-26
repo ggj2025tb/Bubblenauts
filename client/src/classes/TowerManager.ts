@@ -182,7 +182,16 @@ export class TowerManager {
                 towerSprite.tint = 0xff00ff;
             }
 
-            offset += 40
+            this.scene.add.text(menuX + offset + 13, menuY - 10, config.cost.toString())
+                .setStyle({
+                    color: 'gold',
+                    fontFamily: 'arial',
+                    fontSize: '11px',
+                })
+                .setScrollFactor(0)
+                .setDepth(1500)
+
+            offset += 50
             towerSprite.setInteractive()
             towerSprite.on('pointerdown', () => {
                 this.socket.emit('checkPlayerCoins', {}, (coins: number) => {
