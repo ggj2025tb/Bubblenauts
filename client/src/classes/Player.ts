@@ -132,8 +132,8 @@ export class Player extends Actor {
             if (time - this.lastHealthUpdateTime > 400) {
                 if (
                     this.x >= 90 &&
-                    this.x <= 200 &&
-                    this.y >= 100 &&
+                    this.x <= 210 &&
+                    this.y >= 60 &&
                     this.y <= 180
                 ) {
                     if (this.health < 95) {
