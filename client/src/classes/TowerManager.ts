@@ -119,6 +119,7 @@ export class TowerManager {
     private selectedTowerType: string | null = null
     private currentDragTower: Phaser.GameObjects.Sprite | null = null
     private remoteTowers: Map<string, Tower> = new Map() // Track remote towers
+    private playerCoins: number = 0
 
     constructor(scene: Phaser.Scene, socket: Socket) {
         this.scene = scene
@@ -178,7 +179,19 @@ export class TowerManager {
             )
 
             towerSprite.setInteractive()
-            towerSprite.on('pointerdown', () => this.selectTowerType(type))
+            towerSprite.on('pointerdown', () => {
+                this.socket.emit('checkPlayerCoins', {}, (coins: number) => {
+                    console.log('Player coins:', coins)
+                    this.playerCoins = coins
+                })
+                const cost = config.cost || 0
+                if (this.playerCoins >= cost) {
+                    this.selectTowerType(type)
+                } else {
+                    // Optional: Add feedback that player can't afford tower
+                    console.log('Not enough coins for this tower')
+                }
+            })
 
             this.towerMenu.add(towerSprite)
             yOffset += 50
