@@ -179,6 +179,7 @@ io.on('connection', (socket) => {
 
     socket.on('waveCompleted', () => {
         gameState.gameStarted = false
+        clearInterval(enemySpawnerInterval)
         io.emit('waveFinished', gameState.wave)
     })
 
