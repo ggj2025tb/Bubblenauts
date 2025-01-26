@@ -11,6 +11,8 @@ export class WeaponManager {
     private mousePointer: Phaser.Input.Pointer
     private weaponIndicator: Phaser.GameObjects.Text
     private weaponSwitchText: Phaser.GameObjects.Text
+    private lastGunAttackTime: number = 0
+    private readonly GUN_COOLDOWN: number = 500
 
     constructor(
         scene: Phaser.Scene,
@@ -85,6 +87,19 @@ export class WeaponManager {
         if (this.scene.registry.get('socket').id === this.socket.id) {
             const currentWeapon = this.getCurrentWeapon()
             currentWeapon?.attack()
+
+            const currentTime = this.scene.time.now
+            if (
+                this.currentWeapon === 'gun' &&
+                currentTime - this.lastGunAttackTime < this.GUN_COOLDOWN
+            ) {
+                return
+            }
+
+            // Update last attack time for gun
+            if (this.currentWeapon === 'gun') {
+                this.lastGunAttackTime = currentTime
+            }
 
             this.socket.emit('playerAttack', {
                 weaponType: this.currentWeapon === 'melee' ? 'melee' : 'gun',

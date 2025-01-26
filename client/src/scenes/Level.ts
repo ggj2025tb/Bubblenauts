@@ -259,8 +259,9 @@ export default class Level extends Phaser.Scene {
             (playerInfo: { id: string; health: number }) => {
                 const otherPlayer = this.otherPlayers.get(playerInfo.id)
                 if (otherPlayer) {
-                    otherPlayer.health = playerInfo.health;
-                    otherPlayer.healthBar.text = playerInfo.health.toString() + '% Air'
+                    otherPlayer.health = playerInfo.health
+                    otherPlayer.healthBar.text =
+                        playerInfo.health.toString() + '% Air'
                 }
             }
         )

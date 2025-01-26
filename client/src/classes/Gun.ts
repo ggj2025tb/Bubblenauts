@@ -45,11 +45,16 @@ export class Gun {
         const currentTime = this.scene.time.now
         const player: any = this.player
 
+        // Apply cooldown check for ALL projectiles
         if (currentTime - this.lastAttackTime < this.attackCooldown) {
-            return;
+            return
         }
 
-        // For remote projectiles, use provided parameters
+        // Update attack state and time for all projectiles
+        this.isAttacking = true
+        this.lastAttackTime = currentTime
+
+        // Handle remote vs local projectiles
         if (this.isRemote && remoteParams) {
             this.createRemoteProjectile(
                 remoteParams.x,
@@ -58,10 +63,6 @@ export class Gun {
             )
             return
         }
-
-        this.isAttacking = true
-        this.lastAttackTime = currentTime
-
         // Calculate angle to mouse pointer
         const angle = Phaser.Math.Angle.Between(
             player.x,
@@ -102,6 +103,7 @@ export class Gun {
         const projectile = this.projectiles.get(x, y, this.texture)
 
         if (projectile) {
+            projectile.body.onWorldBounds = true
             projectile.setActive(true)
             projectile.setVisible(true)
             projectile.body.enable = true
