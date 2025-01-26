@@ -2,6 +2,24 @@
     "section1": {
         "files": [
             {
+                "url": "assets/animations/bubble.json",
+                "type": "animation",
+                "key": "bubble"
+            },
+            {
+                "url": "assets/Bubble.png",
+                "frameConfig": {
+                    "frameWidth": 40,
+                    "frameHeight": 40,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Bubble"
+            },
+            {
                 "url": "assets/tilemap/BubbleNautsMap.json",
                 "type": "tilemapTiledJSON",
                 "key": "BubbleNautsMap"
@@ -49,6 +67,21 @@
                 },
                 "type": "spritesheet",
                 "key": "dreizack"
+            },
+            {
+                "url": "assets/animations/dreizack.json",
+                "type": "animation",
+                "key": "dreizack"
+            },
+            {
+                "url": "assets/enemies/enemy_1.png",
+                "type": "image",
+                "key": "enemy_1"
+            },
+            {
+                "url": "assets/animations/enemy_1.json",
+                "type": "animation",
+                "key": "enemy_1"
             },
             {
                 "url": "assets/enemies/enemy_1_attack.png",
@@ -108,9 +141,9 @@
                 "key": "FufuSuperDino"
             },
             {
-                "url": "assets/enemies/enemy_1.png",
+                "url": "assets/singleBubble.png",
                 "type": "image",
-                "key": "enemy_1"
+                "key": "singleBubble"
             },
             {
                 "url": "assets/Harpune.png",
@@ -144,16 +177,6 @@
                 "url": "assets/animations/playerGreenBlueAnimation.json",
                 "type": "animation",
                 "key": "playerGreenBlueAnimation"
-            },
-            {
-                "url": "assets/animations/enemy_1.json",
-                "type": "animation",
-                "key": "enemy_1"
-            },
-            {
-                "url": "assets/animations/dreizack.json",
-                "type": "animation",
-                "key": "dreizack"
             },
             {
                 "url": "assets/StartButtonRendered.png",
