@@ -191,9 +191,28 @@ export default class Level extends Phaser.Scene {
         this.cameras.main.setZoom(1.5)
         const interfaceimg = this.add.image(500, 600, 'interfaceimg')
         interfaceimg.setOrigin(0, 1)
-        interfaceimg.setDisplaySize(300, 64)
+        interfaceimg.setDisplaySize(300, 50)
         interfaceimg.setScrollFactor(0)
         interfaceimg.setDepth(1000)
+
+        this.add
+            .text(530, 585, 'Coins:', {
+                fontSize: '11px',
+                color: '#ffffff',
+            })
+            .setOrigin(0, 1)
+            .setScrollFactor(0)
+            .setDepth(1500)
+
+        this.coinText = this.add
+            .text(590, 585, this.player.coins.toString(), {
+                fontSize: '11px',
+                color: '#ffffff',
+            })
+            .setOrigin(0, 1)
+            .setScrollFactor(0)
+            .setDepth(1500)
+
         // A static button that can be used to send a message to the server
         this.startGameButton = this.add.image(320, 20, 'StartButtonRendered')
         this.startGameButton.setOrigin(0, 0)
@@ -207,15 +226,6 @@ export default class Level extends Phaser.Scene {
             fill: 'white',
         })
         this.waveText = this.add.text(390, 80, this.waveNumber.toString(), {
-            fontSize: '21px',
-            fill: 'white',
-        })
-
-        this.add.text(425, 80, 'Coins: ', {
-            fontSize: '21px',
-            fill: 'white',
-        })
-        this.coinText = this.add.text(500, 80, this.player.coins.toString(), {
             fontSize: '21px',
             fill: 'white',
         })

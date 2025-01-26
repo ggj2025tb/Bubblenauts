@@ -188,7 +188,7 @@ export class Enemy extends Actor {
                 ease: 'Power2',
                 onComplete: () => {
                     // Remove from scene and enemies array
-    
+
                     if (this.scene && (this.scene as any).enemies) {
                         const index = (this.scene as any).enemies.indexOf(this)
                         if (index > -1) {

@@ -110,7 +110,7 @@ export class Weapon {
                 yoyo: true,
                 onComplete: () => {
                     attackSprite.destroy()
-    
+
                     this.weaponSprite.setVisible(true)
                     this.isAnimating = false
                 },
