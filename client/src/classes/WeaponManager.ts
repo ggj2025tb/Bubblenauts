@@ -120,7 +120,7 @@ export class WeaponManager {
         if (this.weapons.has(weaponKey)) {
             this.currentWeapon = weaponKey
             this.weaponIndicator.setText(
-                `Current Weapon: ${weaponKey === 'melee' ? 'Melee' : 'Gun'}`
+                `Current Weapon: ${weaponKey === 'melee' ? 'Melee' : 'Ranged'}`
             )
         }
     }
