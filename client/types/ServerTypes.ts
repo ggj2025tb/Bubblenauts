@@ -25,6 +25,12 @@ export interface Bubble {
     pathArray: number[][]
 }
 
+export interface Tower {
+    x: number
+    y: number
+    type: string
+}
+
 export interface MapData {
     enemySpawnPoints: number[][]
     enemyPath: number[][]
@@ -38,5 +44,6 @@ export interface GameState {
     players: Record<string, Player>
     enemies: Record<string, Enemy>
     bubbles: Record<string, Bubble>
+    towers: Record<string, Tower>
     mapData: MapData
 }

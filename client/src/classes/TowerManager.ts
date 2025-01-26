@@ -117,6 +117,7 @@ export class TowerManager {
     private towerMenu: Phaser.GameObjects.Group
     private selectedTowerType: string | null = null
     private currentDragTower: Phaser.GameObjects.Sprite | null = null
+    private remoteTowers: Map<string, Tower> = new Map() // Track remote towers
 
     constructor(scene: Phaser.Scene, socket: Socket) {
         this.scene = scene
@@ -147,6 +148,18 @@ export class TowerManager {
         ])
 
         this.createTowerMenu()
+
+        socket.on(
+            'towerPlaced',
+            (towerData: {
+                x: number
+                y: number
+                type: string
+                serverId: string
+            }) => {
+                this.placeRemoteTower(towerData)
+            }
+        )
     }
 
     private createTowerMenu(): void {
@@ -160,7 +173,7 @@ export class TowerManager {
             const towerSprite = this.scene.add.sprite(
                 menuX,
                 menuY + yOffset,
-                `tower_${type}`
+                `turret_base`
             )
 
             towerSprite.setInteractive()
@@ -182,7 +195,7 @@ export class TowerManager {
         this.currentDragTower = this.scene.add.sprite(
             this.scene.input.x,
             this.scene.input.y,
-            `tower_${type}`
+            `turret_base`
         )
 
         this.scene.input.on('pointermove', this.updateDragTower, this)
@@ -201,16 +214,28 @@ export class TowerManager {
         const config = this.towerConfigs.get(this.selectedTowerType)
         if (!config) return
 
-        // Check if placement is valid (not on walls, etc.)
+        // Generate a unique server ID for this tower
+        const serverId = `tower_${Date.now()}_${Math.random()
+            .toString(36)
+            .substr(2, 9)}`
+
         const tower = new Tower(
             this.scene,
             pointer.x,
             pointer.y,
-            `tower_${this.selectedTowerType}`,
+            `turret_base`,
             config
         )
 
         this.towers.push(tower)
+
+        // Emit tower placement to server
+        this.socket.emit('placeTower', {
+            x: pointer.x,
+            y: pointer.y,
+            type: this.selectedTowerType,
+            serverId: serverId,
+        })
 
         // Clean up drag state
         if (this.currentDragTower) {
@@ -221,8 +246,32 @@ export class TowerManager {
         this.selectedTowerType = null
     }
 
+    private placeRemoteTower(towerData: {
+        x: number
+        y: number
+        type: string
+        serverId: string
+    }): void {
+        const config = this.towerConfigs.get(towerData.type)
+        if (!config) return
+
+        // Check if tower already exists to prevent duplicates
+        if (this.remoteTowers.has(towerData.serverId)) return
+
+        const tower = new Tower(
+            this.scene,
+            towerData.x,
+            towerData.y,
+            `turret_base`,
+            config
+        )
+
+        this.remoteTowers.set(towerData.serverId, tower)
+    }
+
     update(time: number, enemies: Enemy[]): void {
         // Update all placed towers
         this.towers.forEach((tower) => tower.update(time, enemies))
+        this.remoteTowers.forEach((tower) => tower.update(time, enemies))
     }
 }
