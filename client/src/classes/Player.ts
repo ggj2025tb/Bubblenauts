@@ -76,6 +76,7 @@ export class Player extends Actor {
             color: '#9de1f6',
             fontStyle: 'bold',
         })
+        this.label.setDepth(1000)
         this.healthBar = scene.add.text(
             x - 30,
             y - 60,
