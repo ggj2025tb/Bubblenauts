@@ -38,6 +38,7 @@ export class Tower extends Phaser.GameObjects.Sprite {
         // Create range visualization
         this.rangeCircle = scene.add.graphics()
         this.rangeCircle.lineStyle(2, 0xffffff, 0.5)
+        // this.rangeCircle.setScale(1.5)
         this.rangeCircle.strokeCircleShape(
             new Phaser.Geom.Circle(x, y, this.range)
         )
@@ -173,7 +174,7 @@ export class TowerManager {
             const towerSprite = this.scene.add.sprite(
                 menuX,
                 menuY + yOffset,
-                `turret_base`
+                `turret`
             )
 
             towerSprite.setInteractive()
@@ -195,7 +196,7 @@ export class TowerManager {
         this.currentDragTower = this.scene.add.sprite(
             this.scene.input.x,
             this.scene.input.y,
-            `turret_base`
+            `turret`
         )
 
         this.scene.input.on('pointermove', this.updateDragTower, this)
@@ -223,9 +224,10 @@ export class TowerManager {
             this.scene,
             pointer.x,
             pointer.y,
-            `turret_base`,
+            `turret`,
             config
         )
+        tower.setScale(1.5)
 
         this.towers.push(tower)
 
@@ -262,7 +264,7 @@ export class TowerManager {
             this.scene,
             towerData.x,
             towerData.y,
-            `turret_base`,
+            `turret`,
             config
         )
 
