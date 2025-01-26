@@ -366,6 +366,11 @@
                 "key": "turret_base"
             },
             {
+                "url": "assets/turret_bullet.png",
+                "type": "image",
+                "key": "turret_bullet"
+            },
+            {
                 "url": "assets/turret_canon.png",
                 "type": "image",
                 "key": "turret_canon"
