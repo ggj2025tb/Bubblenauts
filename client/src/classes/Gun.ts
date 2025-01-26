@@ -7,7 +7,7 @@ export class Gun {
     private mousePointer: Phaser.Input.Pointer
     private projectiles: Phaser.Physics.Arcade.Group
     private isAttacking: boolean = false
-    private attackCooldown: number = 300
+    private attackCooldown: number = 500
     private lastAttackTime: number = 0
     private damage: number = 15
     private texture: string
@@ -44,6 +44,10 @@ export class Gun {
     }): void {
         const currentTime = this.scene.time.now
         const player: any = this.player
+
+        if (currentTime - this.lastAttackTime < this.attackCooldown) {
+            return;
+        }
 
         // For remote projectiles, use provided parameters
         if (this.isRemote && remoteParams) {
