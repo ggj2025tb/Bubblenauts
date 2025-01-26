@@ -60,6 +60,7 @@ export default class Level extends Phaser.Scene {
     private waveNumber: number
     private waveText!: Phaser.GameObjects.Text
     private mapData!: ServerMapData
+    public gameStarted: boolean = false
 
     create() {
         this.socket = this.registry.get('socket')
@@ -184,6 +185,8 @@ export default class Level extends Phaser.Scene {
 
             this.waveNumber = gameState.wave
             this.waveText.setText(this.waveNumber.toString())
+
+            this.gameStarted = gameState.gameStarted
 
             // Create sprites for other players EXCEPT current player
             Object.values(gameState.players).forEach((player) => {

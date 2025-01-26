@@ -127,39 +127,41 @@ export class Player extends Actor {
     }
 
     updateHealth(time: number, delta: number): void {
-        if (time - this.lastHealthUpdateTime > 400) {
-            if (
-                this.x >= 90 &&
-                this.x <= 200 &&
-                this.y >= 100 &&
-                this.y <= 180
-            ) {
-                if (this.health < 95) {
-                    this.health += 5
-                    this.socket.emit('playerHealthUpdate', {
-                        health: this.health,
-                    })
+        if (this.scene.gameStarted) {
+            if (time - this.lastHealthUpdateTime > 400) {
+                if (
+                    this.x >= 90 &&
+                    this.x <= 200 &&
+                    this.y >= 100 &&
+                    this.y <= 180
+                ) {
+                    if (this.health < 95) {
+                        this.health += 5
+                        this.socket.emit('playerHealthUpdate', {
+                            health: this.health,
+                        })
+                    } else {
+                        this.health = 100
+                        this.socket.emit('playerHealthUpdate', {
+                            health: this.health,
+                        })
+                    }
                 } else {
-                    this.health = 100
-                    this.socket.emit('playerHealthUpdate', {
-                        health: this.health,
-                    })
+                    if (this.health > 0) {
+                        this.health -= 1
+                        this.socket.emit('playerHealthUpdate', {
+                            health: this.health,
+                        })
+                    } else {
+                        this.scene.input.keyboard.enabled = false
+                        this.body.velocity.x = 0
+                        this.body.velocity.y = 0
+                    }
                 }
-            } else {
-                if (this.health > 0) {
-                    this.health -= 1
-                    this.socket.emit('playerHealthUpdate', {
-                        health: this.health,
-                    })
-                } else {
-                    this.scene.input.keyboard.enabled = false
-                    this.body.velocity.x = 0
-                    this.body.velocity.y = 0
-                }
-            }
 
-            this.healthBar.text = this.health.toString() + '% Air'
-            this.lastHealthUpdateTime = time
+                this.healthBar.text = this.health.toString() + '% Air'
+                this.lastHealthUpdateTime = time
+            }
         }
     }
 
