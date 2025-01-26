@@ -244,7 +244,7 @@ export default class Level extends Phaser.Scene {
         })
 
         this.socket.on('bubbleCreated', (bubble: ServerBubble) => {
-            console.log(`Spawning bubble at ${bubble.x}, ${bubble.y}`)
+            this.bubbles = []
             const newBubble = new Bubble(
                 this,
                 [bubble.x, bubble.y],
