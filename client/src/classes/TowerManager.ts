@@ -235,25 +235,33 @@ export class TowerManager {
 
     private updateDragTower(pointer: Phaser.Input.Pointer): void {
         if (this.currentDragTower) {
-            this.currentDragTower.setPosition(pointer.x, pointer.y)
+            // Get world coordinates considering camera scroll
+            const worldPoint = this.scene.cameras.main.getWorldPoint(
+                pointer.x,
+                pointer.y
+            )
+            this.currentDragTower.setPosition(worldPoint.x, worldPoint.y)
         }
     }
 
     private placeTower(pointer: Phaser.Input.Pointer): void {
-        if (!this.selectedTowerType) return
+        if (!this.selectedTowerType || !this.currentDragTower) return
 
         const config = this.towerConfigs.get(this.selectedTowerType)
         if (!config) return
 
-        // Generate a unique server ID for this tower
+        const worldPoint = this.scene.cameras.main.getWorldPoint(
+            pointer.x,
+            pointer.y
+        )
         const serverId = `tower_${Date.now()}_${Math.random()
             .toString(36)
             .substr(2, 9)}`
 
         const tower = new Tower(
             this.scene,
-            pointer.x,
-            pointer.y,
+            worldPoint.x,
+            worldPoint.y,
             `turret`,
             config
         )
@@ -261,10 +269,10 @@ export class TowerManager {
 
         this.towers.push(tower)
 
-        // Emit tower placement to server
+        // Emit tower placement with world coordinates
         this.socket.emit('placeTower', {
-            x: pointer.x,
-            y: pointer.y,
+            x: worldPoint.x,
+            y: worldPoint.y,
             type: this.selectedTowerType,
             serverId: serverId,
         })
@@ -274,6 +282,10 @@ export class TowerManager {
             this.currentDragTower.destroy()
             this.currentDragTower = null
         }
+
+        // Remove event listeners
+        this.scene.input.off('pointermove', this.updateDragTower, this)
+        this.scene.input.off('pointerup', this.placeTower, this)
 
         this.selectedTowerType = null
     }
